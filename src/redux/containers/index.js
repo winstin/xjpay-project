@@ -17,6 +17,22 @@ import GetManger from './GetManger/GetManger';
 import ChannelStatistics from './ChannelStatistics/ChannelStatistics';
 import CommodityStatistics from './CommodityStatistics/CommodityStatistics';
 import Login from './Login/Login';
+import UserManger from './UserManger/UserManger';
+import RoleManger from './RoleManger/RoleManger';
+import OrderManger from './OrderManger/OrderManger';
 
-
-export  {Login,ChannelStatistics,CommodityStatistics,GetManger,ServiceManger,BatchPage,GunsIndex,ServiceRate, AutoEva, App}
+export  {
+	UserManger,
+	Login,
+	ChannelStatistics,
+	CommodityStatistics,
+	GetManger,
+	ServiceManger,
+	BatchPage,
+	GunsIndex,
+	ServiceRate,
+	AutoEva,
+	App,
+	RoleManger,
+	OrderManger
+}

@@ -15,7 +15,7 @@ import Menu from 'qnui/lib/menu';
 import './app.css'
 
 /**
-<li> <IndexLink to="/dist/" activeStyle={{color:'red'}}>Home</IndexLink> </li>-->
+<li> <IndexLink to="/" activeStyle={{color:'red'}}>Home</IndexLink> </li>-->
 
 **/
 var App = React.createClass({
@@ -37,7 +37,7 @@ var App = React.createClass({
                         <Myitem
                             kind = "navigation_max"
                             itemId="Trade"
-                            icon="form"
+                            icon="account"
                             link="/dist"
                             text="商户管理"
                         >
@@ -45,7 +45,7 @@ var App = React.createClass({
                                   <Myitem
                                       itemId="Trade"
                                       kind = "navigation_max"
-                                      link="/dist/GunsIndex"
+                                      link="/"
                                       text="商户管理"
                                       ></Myitem>
                               </Navigation>
@@ -54,50 +54,50 @@ var App = React.createClass({
                             kind = "navigation_max"
                             itemId="Item"
                             icon="store"
-                            link="/dist/SendError"
+                            link="/SendError"
                             text="交易管理"
                         >
                             <Navigation>
                                   <Myitem
                                       itemId="Item"
                                       kind = "navigation_max"
-                                      link="/dist/BatchPage"
+                                      link="/BatchPage"
                                       text="交易流水查询"
                                       ></Myitem>
                                   {/*<Myitem
                                       itemId="Item"
                                       kind = "navigation_max"
-                                      link="/dist/Cancel"
+                                      link="/Cancel"
                                       text="自定义打印"
                                       ></Myitem>
                                   <Myitem
                                       itemId="Item"
                                       kind = "navigation_max"
-                                      link="/dist/refund/todo"
+                                      link="/refund/todo"
                                       text="快递模板"
                                       ></Myitem>
                                   <Myitem
                                       itemId="Item"
                                       kind = "navigation_max"
-                                      link="/dist/refund/search"
+                                      link="/refund/search"
                                       text="发货模板"
                                       ></Myitem>
                                   <Myitem
                                       itemId="Item"
                                       kind = "navigation_max"
-                                      link="/dist/refund/storage"
+                                      link="/refund/storage"
                                       text="商品简称"
                                       ></Myitem>
                                   <Myitem
                                       itemId="Item"
                                       kind = "navigation_max"
-                                      link="/dist/Box"
+                                      link="/Box"
                                       text="打印设置"
                                       ></Myitem>
                                   <Myitem
                                       itemId="Item"
                                       kind = "navigation_max"
-                                      link="/dist/stockControl"
+                                      link="/stockControl"
                                       text="打印日志"
                                       ></Myitem>*/}
                             </Navigation>
@@ -106,26 +106,26 @@ var App = React.createClass({
                             kind = "navigation_max"
                             itemId="Box"
                             icon="box"
-                            link="/dist/Interceptor"
+                            link="/Interceptor"
                             text="结算管理"
                         >
                             <Navigation>
                                   <Myitem
                                       itemId="Box"
                                       kind = "navigation_max"
-                                      link="/dist/CommodityStatistics"
+                                      link="/CommodityStatistics"
                                       text="商品手续统计"
                                       ></Myitem>
                                   <Myitem
                                       itemId="Box"
                                       kind = "navigation_max"
-                                      link="/dist/ChannelStatistics"
+                                      link="/ChannelStatistics"
                                       text="渠道分润统计"
                                       ></Myitem>
                                   <Myitem
                                       itemId="Box"
                                       kind = "navigation_max"
-                                      link="/dist/GetManger"
+                                      link="/GetManger"
                                       text="收益管理"
                                       ></Myitem>
                             </Navigation>
@@ -134,27 +134,27 @@ var App = React.createClass({
                             itemId="AutoEva"
                             kind = "navigation_max"
                             icon="set"
-                            link="/dist/ServiceManger"
+                            link="/ServiceManger"
                             text="服务商管理"
                         ></Myitem>
                         <Myitem
                             kind = "navigation_max"
                             itemId="EvaMan"
                             icon="bags"
-                            link="/dist/ServiceRate"
+                            link="/ServiceRate"
                             text="服务商费率"
                         >
                         {/*<Navigation>
                               <Myitem
                                   itemId="EvaMan"
                                   kind = "navigation_max"
-                                  link="/dist/ratemanager"
+                                  link="/ratemanager"
                                   text="评价管理"
                                   ></Myitem>
                               <Myitem
                                   itemId="EvaMan"
                                   kind = "navigation_max"
-                                  link="/dist/batcheva"
+                                  link="/batcheva"
                                   text="批量评价"
                                   ></Myitem>
                           </Navigation>*/}
@@ -163,7 +163,7 @@ var App = React.createClass({
                             kind = "navigation_max"
                             itemId="SmsCare"
                             icon="dollar"
-                            link="/dist/Message"
+                            link="/Message"
                             text="短信关怀"
                         >
                         </Myitem>
@@ -171,25 +171,53 @@ var App = React.createClass({
                             kind = "navigation_max"
                             itemId="MultiShop"
                             icon="dollar"
-                            link="/dist/multishop"
+                            link="/multishop"
                             text="多店铺管理"
+                        >
+                        </Myitem>*/}
+                        {/*<Myitem
+                            kind = "navigation_max"
+                            itemId="Setting"
+                            icon="personal-center"
+                            link="/itemList"
+                            text="个人中心"
                         >
                         </Myitem>*/}
                         <Myitem
                             kind = "navigation_max"
-                            itemId="Setting"
+                            itemId="Settings"
                             icon="set"
-                            link="/dist/itemList"
-                            text="个人中心"
+                            link="/Login"
+                            text="设置"
                         >
                         </Myitem>
                         <Myitem
                             kind = "navigation_max"
-                            itemId="Settings"
-                            icon="set"
-                            link="/dist/Login"
-                            text="设置"
+                            itemId="User"
+                            icon="account"
+                            link="/Interceptor"
+                            text="系统管理"
                         >
+                            <Navigation>
+                                  <Myitem
+                                      itemId="User"
+                                      kind = "navigation_max"
+                                      link="/UserManger"
+                                      text="用户管理"
+                                      ></Myitem>
+                                  <Myitem
+                                      itemId="User"
+                                      kind = "navigation_max"
+                                      link="/RoleManger"
+                                      text="角色管理"
+                                      ></Myitem>
+                                  <Myitem
+                                      itemId="User"
+                                      kind = "navigation_max"
+                                      link="/OrderManger"
+                                      text="菜单管理"
+                                      ></Myitem>
+                            </Navigation>
                         </Myitem>
                     </Navigation>
                 </div>

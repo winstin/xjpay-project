@@ -1,7 +1,7 @@
 const Appconfig = {
     'http':'http://',
-    'cdn':'q.aiyongbao.com',
-    'url':'ebs.aiyongbao.com'
+    'cdn':'web.xjpay.cc',
+    'url':'web.xjpay.cc'
 }
 export default Appconfig
 /**

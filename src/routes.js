@@ -4,7 +4,7 @@ import {Router, Route, IndexRoute} from 'react-router'
 //从src/containers/index.js导入
 
 
-import {Login,CommodityStatistics,ChannelStatistics,GetManger,ServiceManger,BatchPage,GunsIndex,ServiceRate,AutoEva, App} from './redux/containers/'
+import {OrderManger,RoleManger,UserManger,Login,CommodityStatistics,ChannelStatistics,GetManger,ServiceManger,BatchPage,GunsIndex,ServiceRate,AutoEva, App} from './redux/containers/'
 
 // import ErrorOrder from './redux/components/ErrorOrder'
 
@@ -25,19 +25,22 @@ import {Login,CommodityStatistics,ChannelStatistics,GetManger,ServiceManger,Batc
 //     }
 // ];
 export const createRoutes = () => ({
-    path: '/dist/GunsIndex',
+    path: '/',
     component: App,
     indexRoute: {component: GunsIndex},
     childRoutes: [
-        {path:'/dist/autoeva',component:AutoEva},
-        {path:'/dist/ServiceRate',component:ServiceRate},
-        {path:'/dist/GunsIndex',component:GunsIndex},
-        {path:'/dist/BatchPage',component:BatchPage},
-        {path:'/dist/ServiceManger',component:ServiceManger},
-        {path:'/dist/GetManger',component:GetManger},
-        {path:'/dist/ChannelStatistics',component:ChannelStatistics},
-        {path:'/dist/CommodityStatistics',component:CommodityStatistics},
-        {path:'/dist/Login',component:Login},
+        {path:'/',component:GunsIndex},
+        {path:'/autoeva',component:AutoEva},
+        {path:'/ServiceRate',component:ServiceRate},
+        {path:'/BatchPage',component:BatchPage},
+        {path:'/ServiceManger',component:ServiceManger},
+        {path:'/GetManger',component:GetManger},
+        {path:'/ChannelStatistics',component:ChannelStatistics},
+        {path:'/CommodityStatistics',component:CommodityStatistics},
+        {path:'/Login',component:Login},
+        {path:'/UserManger',component:UserManger},
+        {path:'/RoleManger',component:RoleManger},
+        {path:'/OrderManger',component:OrderManger},
     // PageNotFound(),
     // Redirect
   ]
