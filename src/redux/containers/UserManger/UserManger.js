@@ -15,7 +15,8 @@ import Dimensions from 'react-dimensions';
 import Dialog from 'qnui/lib/dialog';
 import Dropdown from 'qnui/lib/dropdown';
 import Menu from 'qnui/lib/menu';
-
+import CustomDialog from '../../components/CustomDialog/index.js'
+import RoleDialog from '../../components/RoleDialog/index.js'
 
 import './UserManger.css';
 
@@ -62,7 +63,8 @@ class UserManger extends Component {
         this.state = {
             data: getData(30),
             visible: false,
-            visibles:false
+            visibles:false,
+            rolevisible:false
         };
     }
 
@@ -127,14 +129,21 @@ class UserManger extends Component {
             return (
                 <div>
                     <Row>
-                        <span style={{fontSize:'14px',marginTop:'7px',width:'80px'}}>渠道编号：</span>
-                         <Row>
-                            <Input placeholder="渠道编号" className="textClsName"   style={{width:'120px'}} onChange={this.onchange.bind(this,'id')}/>
-                            <span style={{fontSize:'14px',marginTop:'7px',width:'70px',marginLeft:'12px'}}>渠道名称：</span>
-                            <Input placeholder="渠道名称" className="textClsName"   style={{width:'120px',marginLeft:'6px'}} onChange={this.onchange.bind(this,'name')}/>
-                            <Button type="primary" style={{width:'100px',marginLeft:'10px'}} onClick={this.searchData.bind(this)}>搜索</Button>
-                            <Button type="normal" style={{width:'100px',marginLeft:'10px'}} onClick={this.onOpen}>添加</Button>
-                        </Row>
+                        <span style={{fontSize:'14px',marginTop:'7px',width:'80px'}}>用户名称：</span>
+                        <Input placeholder="帐号/姓名/手机号" className="textClsName"   className='marginRight' onChange={this.onchange.bind(this,'id')}/>
+                        <span style={{fontSize:'14px',marginTop:'7px',width:'80px'}}>注册时间：</span>
+                        <RangePicker />
+                        
+                    </Row>
+                    <Row className='marginTop-larger'>
+                        <Button type="primary" style={{width:'100px'}} onClick={this.searchData.bind(this)}>搜索</Button>
+                        <Button type="normal" className='top-btn' onClick={this.onOpen}>添加</Button>
+                        <Button type="normal" className='top-btn' onClick={this.onOpen}>修改</Button>
+                        <Button type="primary" className='top-btn' onClick={this.searchData.bind(this)}>删除</Button>
+                        <Button type="normal" className='top-btn' onClick={this.onOpen}>重置密码</Button>
+                        <Button type="primary" className='top-btn' onClick={this.searchData.bind(this)}>冻结</Button>
+                        <Button type="normal" className='top-btn' onClick={this.onOpen}>解除冻结</Button>
+                        <Button type="primary" className='top-btn' onClick={()=>{this.setState({rolevisible:true})}}>角色分配</Button>
                     </Row>
                     <div style={{marginTop:'20px'}}>
                         <Table dataSource={data} onRowClick={onRowClick} fixedHeader maxBodyHeight={containerHeight} rowSelection={rowSelection}>
@@ -153,85 +162,8 @@ class UserManger extends Component {
                         <Pagination defaultCurrent={1} size="large" onChange={this.handleChange.bind(this)} pageSize={15} total={total}/>
                     </div>
 
-                    <Dialog visible={this.state.visible}
-                            onOk={this.onClose}
-                            closable="esc,mask,close"
-                            onCancel={this.onClose}
-                            onClose={this.onClose} title="添加">
-                        <Row>
-                            <div className="flexStyle">
-                                <span></span>
-                                <span style={{fontSize:'14px',marginTop:'7px'}}>渠道编号：</span>
-                            </div>
-                            
-                            <Dropdown trigger={<Input placeholder="渠道编号" className="textClsName"   style={{width:'180px'}} onChange={this.onchange.bind(this,'id')}/>}
-                                      triggerType="click"
-                                      visible={this.state.visibles}
-                                      onVisibleChange={this.onVisibleChange}
-                                      safeNode={() => this.refs.button}>
-                                {menu}
-                            </Dropdown>
-                            <div className="flexStyle">
-                                <span></span>
-                                <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>业务类型：</span>
-                            </div>
-                            <Input placeholder="业务类型" className="textClsName"   style={{width:'180px'}} onChange={this.onchange.bind(this,'name')}/>
-                        </Row>
-                        <Row className="marginTop">
-                            <div className="flexStyle">
-                                <span></span>
-                                <span style={{fontSize:'14px',marginTop:'7px'}}>上游渠道：</span>
-                            </div>
-                            <Dropdown trigger={<Input placeholder="上游渠道" className="textClsName"   style={{width:'180px'}} onChange={this.onchange.bind(this,'id')}/>}
-                                      triggerType="click"
-                                      visible={this.state.visibles1}
-                                      onVisibleChange={this.onVisibleChange}
-                                      safeNode={() => this.refs.button}>
-                                {menu}
-                            </Dropdown>
-                            <div className="flexStyle">
-                                <span></span>
-                                <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>交易类型：</span>
-                            </div>
-                            <Input placeholder="交易类型" className="textClsName"   style={{width:'180px'}} onChange={this.onchange.bind(this,'name')}/>
-                        </Row>
-                        <Row className="marginTop">
-                            <div className="flexStyle">
-                                <span></span>
-                                <span style={{fontSize:'14px',marginTop:'7px'}}>结算类型：</span>
-                            </div>
-                            <Dropdown trigger={<Input placeholder="结算类型" className="textClsName"   style={{width:'180px'}} onChange={this.onchange.bind(this,'id')}/>}
-                                      triggerType="click"
-                                      visible={this.state.visibles2}
-                                      onVisibleChange={this.onVisibleChange}
-                                      safeNode={() => this.refs.button}>
-                                {menu}
-                            </Dropdown>
-                            <div className="flexStyle">
-                                <span></span>
-                                <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>鉴权费：</span>
-                            </div>
-                            <Input placeholder="鉴权费" className="textClsName"   style={{width:'180px'}} onChange={this.onchange.bind(this,'name')}/>
-                        </Row>
-                        <Row className="marginTop">
-                            <div className="flexStyle">
-                                <span></span>
-                                <span style={{fontSize:'14px',marginTop:'7px'}}>结算费率(‰)：</span>
-                            </div>
-                            <Dropdown trigger={<Input placeholder="结算费率(‰)" className="textClsName"   style={{width:'180px'}} onChange={this.onchange.bind(this,'id')}/>}
-                                      triggerType="click"
-                                      visible={this.state.visibles3}
-                                      onVisibleChange={this.onVisibleChange}
-                                      safeNode={() => this.refs.button}>
-                                {menu}
-                            </Dropdown>
-                            <div className="flexStyle">
-                                <span></span>
-                                <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>代付费(分)：</span>
-                            </div>
-                            <Input placeholder="代付费(分)" className="textClsName"   style={{width:'180px'}} onChange={this.onchange.bind(this,'name')}/>
-                        </Row>
-                    </Dialog>
+                    <CustomDialog visible={this.state.visible} index={this} title="添加"/>
+                    <RoleDialog visible={this.state.rolevisible} index={this} title="角色分配"/>
                 </div>
             );
         // }else{
@@ -255,7 +187,7 @@ function mapDispatchToProps(dispatch,ownProps){
 
 export default Dimensions({
   getHeight: function() { //element
-    return window.innerHeight - 190;
+    return window.innerHeight - 237;
   },
   getWidth: function() { //element
     return window.innerWidth - 24;

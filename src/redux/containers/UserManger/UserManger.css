@@ -16,3 +16,17 @@
     height: 30px
 
 }
+
+.marginTop-larger{
+    margin-top: 20px;
+}
+
+.marginRight{
+    margin-right: 20px;
+    width: 180px;
+}
+
+.top-btn{
+    width: 100px;
+    margin-left: 10px;
+}

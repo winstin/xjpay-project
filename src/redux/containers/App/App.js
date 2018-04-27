@@ -14,13 +14,21 @@ import Icon from 'qnui/lib/icon';
 import Menu from 'qnui/lib/menu';
 import './app.css'
 
-/**
-<li> <IndexLink to="/" activeStyle={{color:'red'}}>Home</IndexLink> </li>-->
 
-**/
-var App = React.createClass({
+
+
+
+
+
+class App extends Component {
+    constructor(props) {
+        super(props);
+
+    }
+
 
     render(){
+        // return(<div style={{flex:'1',backgroundColor:'red'}}>1111</div>)
         return(
             <div id="container">
                 <div id="navigation" style={{backgroundColor:"#3189DC"}} className="navigation_max">
@@ -45,7 +53,7 @@ var App = React.createClass({
                                   <Myitem
                                       itemId="Trade"
                                       kind = "navigation_max"
-                                      link="/"
+                                      link="/index"
                                       text="商户管理"
                                       ></Myitem>
                               </Navigation>
@@ -229,5 +237,15 @@ var App = React.createClass({
             </div>
         )
     }
-})
+}
+
+
+
 export default App
+
+
+// var App = React.createClass({
+
+    
+// })
+// export default App

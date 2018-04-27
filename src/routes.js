@@ -27,9 +27,9 @@ import {OrderManger,RoleManger,UserManger,Login,CommodityStatistics,ChannelStati
 export const createRoutes = () => ({
     path: '/',
     component: App,
-    indexRoute: {component: GunsIndex},
+    indexRoute: {component: ''},
     childRoutes: [
-        {path:'/',component:GunsIndex},
+        {path:'/index',component:GunsIndex},
         {path:'/autoeva',component:AutoEva},
         {path:'/ServiceRate',component:ServiceRate},
         {path:'/BatchPage',component:BatchPage},
