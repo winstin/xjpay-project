@@ -4,7 +4,7 @@ import {Router, Route, IndexRoute} from 'react-router'
 //从src/containers/index.js导入
 
 
-import {OrderManger,RoleManger,UserManger,Login,CommodityStatistics,ChannelStatistics,GetManger,ServiceManger,BatchPage,GunsIndex,ServiceRate,AutoEva, App} from './redux/containers/'
+import {PersonalCenter,OrderManger,RoleManger,UserManger,Login,CommodityStatistics,ChannelStatistics,GetManger,ServiceManger,BatchPage,GunsIndex,ServiceRate,AutoEva, App} from './redux/containers/'
 
 // import ErrorOrder from './redux/components/ErrorOrder'
 
@@ -24,6 +24,7 @@ import {OrderManger,RoleManger,UserManger,Login,CommodityStatistics,ChannelStati
 //         component: Not
 //     }
 // ];
+
 export const createRoutes = () => ({
     path: '/',
     component: App,
@@ -41,6 +42,7 @@ export const createRoutes = () => ({
         {path:'/UserManger',component:UserManger},
         {path:'/RoleManger',component:RoleManger},
         {path:'/OrderManger',component:OrderManger},
+        {path:'/Personal',component:PersonalCenter},
     // PageNotFound(),
     // Redirect
   ]

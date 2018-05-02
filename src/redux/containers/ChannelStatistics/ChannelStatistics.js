@@ -58,12 +58,12 @@ class GunsIndex extends Component {
 
   }
   componentWillMount() {
-      console.log('Component WILL MOUNT!');
+      // console.log('Component WILL MOUNT!');
   }
 
   componentDidMount(){
-    console.log("首次渲染页面")
-    console.log(this.props)
+    // console.log("首次渲染页面")
+    // console.log(this.props)
     const {getInitData} = (this.props);
     getInitData();
   }

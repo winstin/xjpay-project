@@ -18,8 +18,8 @@ import {ajax} from "../../actions/AY_API"
 import './main.css'
 class AutoEva extends Component {
     componentWillMount() {
-        console.log('Component WILL MOUNT!');
-        console.log(window.user_nick);
+        // console.log('Component WILL MOUNT!');
+        // console.log(window.user_nick);
         const {getInitData} = this.props;
         getInitData();
     }

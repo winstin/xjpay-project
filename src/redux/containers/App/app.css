@@ -17,7 +17,7 @@
 #module_data {
     width: 100%;
     overflow: auto;
-    padding: 10px 30px 10px 5px;
+    padding: 10px 10px 10px 10px;
 }
 .excep-buttons{
     position: fixed;
@@ -149,4 +149,144 @@
     width: 337px;
     margin: 0 auto;
     margin-top: 10px;
+}
+
+
+#login {
+    /*background-color: #F3F3F3;*/
+    display: flex;
+    min-width: 960px;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+}
+.block{
+    display: block;
+    text-align: center;
+}
+
+.loginImg{
+    width: 40%;
+    height: 40%;
+    border-radius: 500px
+}
+
+.block .next-input-medium{
+    width: 40%;
+    border: 0px;
+}
+
+.block .next-btn-medium{
+    width: 40%;
+    border-radius: 20px;
+    height: 40px;
+    font-size: 20px
+}
+
+.block input{
+    border-radius: 20px;
+    border: 1px solid #e5e5e5;
+    /*font-size: 30px;*/
+    font-family: "微软雅黑";
+    height: 40px
+}
+
+.label label{
+    width: 40%;
+    display: flex;
+    justify-content: flex-start;
+    /* align-items: center; */
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 10px
+}
+.loginBcakground{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    margin: 0px;
+    padding: 0px;
+    z-index: -99999;
+}
+
+.guns-title{
+    font-family: "微软雅黑";
+    font-size: 40px;
+    font-weight: bold;
+    color: #fff;
+    padding: 5px;
+}
+
+.flexStyles{
+    justify-content: flex-end;
+    width: 140px;
+    display: flex;
+}
+
+.text-center{
+    text-align: center;
+    justify-content: center;
+}
+.PersonalCenter{
+    text-align: center;
+    justify-content: center;
+    border: 1px solid #eee;
+    height: 100%;
+    overflow: auto;
+    padding: 10px
+}
+
+.input-width{
+    width: 50%;
+    text-align: left;
+}
+
+.tips-title{
+    font-weight: bold;
+    font-size:24px;margin-top:7px;width:80px;
+}
+
+.border-bottom{
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+    margin-bottom: 10px
+}
+
+.space-bottom{
+    padding-bottom: 10px;
+    margin-bottom: 10px
+}
+
+.text-left{
+    text-align: left;
+}
+
+.changePassword{
+    text-align: center;
+    justify-content: center;
+    border: 1px solid #eee;
+    height: 100%;
+    overflow: auto;
+    padding: 10px;
+    display: flex;
+    /*align-items: center;*/
+    padding-top: 50px
+}
+
+
+.flex-end{
+    justify-content: flex-end;
+    display: flex;
+    width: 100px
+}
+
+.detail-width{
+    width: 300px;
+    font-size: 14px
+}
+
+.marginTop-20{
+    margin-top: 20px
 }

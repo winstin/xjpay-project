@@ -13,7 +13,6 @@ class RoleDialog extends Component {
         this.state = {
             value: 'orange'
         };
-        console.log(Config.RolePlayer)
     }
 
     

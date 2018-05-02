@@ -10,7 +10,7 @@ import {ajax} from "./AY_API"
 export function getInitData(){
     return (dispatch)=>{
         ajax("/agentrate/list","","GET",function(e){
-            console.log("GoodsListTable：", e);
+            // console.log("GoodsListTable：", e);
             dispatch({
                 type:INITDATA,
                 dataSource: e
@@ -36,7 +36,7 @@ export function SearchData(appId,appName){
             appId:appId,
             appName:appName
         },"GET",function(e){
-            console.log("GoodsListTable：", e);
+            // console.log("GoodsListTable：", e);
             dispatch({
                 type:INITDATA,
                 dataSource: e

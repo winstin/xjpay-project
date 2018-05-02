@@ -19,21 +19,9 @@ export function addEva(data){
 export function getInitData(){
 
     return (dispatch)=>{
-        console.log('getInitData');
+        
         ajax("/iytrade2/showzdrate","","POST",function(e){
-            console.log("GoodsListTable：", e);
-            console.log("GoodsListTable：", e.myoff);
-            console.log("GoodsListTable：", e.emailrate);
-
-            console.log("GoodsListTable：", e.flag);
-            console.log("GoodsListTable：", e.robday + "   " + e.robhouser);
-            console.log("GoodsListTable：", e.timingday + "   " + e.timinghouser);
-
-            console.log("GoodsListTable：", e.blackrate);
-            console.log("GoodsListTable：", e.blackcloud + "  " + e.blackcloudcount);
-            console.log("GoodsListTable：", e.zdblackrate);
-
-            console.log("GoodsListTable：", e.ratetexts);
+            
             let autoSwitchState,radioSwitchState,filterStyle,evaStyle;
             if (e.myoff == 'on') {
                 e.myoff = true;

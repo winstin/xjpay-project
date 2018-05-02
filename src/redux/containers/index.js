@@ -20,6 +20,7 @@ import Login from './Login/Login';
 import UserManger from './UserManger/UserManger';
 import RoleManger from './RoleManger/RoleManger';
 import OrderManger from './OrderManger/OrderManger';
+import PersonalCenter from './PersonalCenter/PersonalCenter';
 
 export  {
 	UserManger,
@@ -34,5 +35,6 @@ export  {
 	AutoEva,
 	App,
 	RoleManger,
-	OrderManger
+	OrderManger,
+	PersonalCenter
 }

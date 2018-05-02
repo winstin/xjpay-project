@@ -16,6 +16,7 @@ class Demo extends React.Component {
     constructor(props) {
         super(props);
         this.field = new Field(this);
+        
     }
 
     handleSubmit() {
@@ -23,6 +24,7 @@ class Demo extends React.Component {
         ajax("/login",this.field.getValues(),"Post",function(e){
             console.log("GoodsListTable：", e);
         });
+        location.href='/UserManger'
 
     }
 
@@ -38,18 +40,28 @@ class Demo extends React.Component {
         };
 
         return (
-            <Form direction="ver" field={this.field} >
-                <FormItem label="用户名：" {...formItemLayout}>
-                     <Input htmlType="username" {...init('username')} placeholder="请输入账号"/>
-                </FormItem>
-                <FormItem label="密码：" required {...formItemLayout}>
-                    <Input htmlType="password" {...init('password')} placeholder="请输入密码"/>
-                </FormItem>
-                <FormItem label=" " {...formItemLayout} >
-                    <Button type="primary" onClick={this.handleSubmit.bind(this)}>确定</Button>
+            <div className="changePassword">
+                <div style={{width:'50%'}}>
+                    <div className="space-bottom">
+                        <span className='tips-title'>修改密码</span>
+                    </div>
+                    <Form direction="ver" field={this.field} >
+                        <FormItem label="原密码：" required {...formItemLayout}>
+                            <Input htmlType="password" {...init('password')} placeholder="请输入原密码"/>
+                        </FormItem>
+                        <FormItem label="新密码：" required {...formItemLayout}>
+                            <Input htmlType="password" {...init('password')} placeholder="请输入新密码"/>
+                        </FormItem>
+                        <FormItem label="新密码验证：" required {...formItemLayout}>
+                            <Input htmlType="password" {...init('password')} placeholder="请输入新密码验证"/>
+                        </FormItem>
+                        <FormItem label=" " {...formItemLayout} >
+                            <Button type="primary" onClick={this.handleSubmit.bind(this)}>确定</Button>
 
-                </FormItem>
-            </Form>
+                        </FormItem>
+                    </Form>
+                </div>
+            </div>
         );
     }
 }

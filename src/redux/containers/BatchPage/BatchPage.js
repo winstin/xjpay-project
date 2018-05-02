@@ -13,12 +13,11 @@ import { Row, Col } from 'qnui/lib/grid';
 import Input from 'qnui/lib/input';
 import Pagination from 'qnui/lib/pagination';
 import Dimensions from 'react-dimensions';
+import TradeDetailDialog from '../../components/TradeDetailDialog/index.js'
 
 
-const onRowClick = function(record, index, e) {
-        console.log(record, index, e);
-    },
-    getData = (length) => {
+
+const   getData = (length) => {
         let result = [];
         for (let i = 0; i < length; i++) {
             result.push({
@@ -39,7 +38,8 @@ class BatchPage extends Component {
         super(props);
 
         this.state = {
-            dataSource: getData(30)
+            dataSource: getData(30),
+            detailvisible:false
         };
 
     }
@@ -68,9 +68,23 @@ class BatchPage extends Component {
     getInitData();
   }
 
+    onRowClick(record, index, e) {
+        console.log(record, index, e);
+        this.setState({detailvisible:true})
+    }
+  // showDetail(value){
+  //       alert(value);
+  // }
+
+  //  cellRender = (value, index, record, context) => {
+  //       return <span onClick={this.showDetail.bind(this,value)}>{value+'c'}</span>;
+  //  }
+
   render() {
         const {containerHeight} = (this.props);
         
+        
+
         return (
             <div>
                 <Row>
@@ -93,50 +107,47 @@ class BatchPage extends Component {
                 </Row>
                 <Row style={{marginTop:'20px'}}>
                     <span style={{fontSize:'14px',marginTop:'7px',width:'80px'}}>查询条件：</span>
-                     <Row>
-                        <Input placeholder="订单号" className="textClsName"   style={{width:'120px'}}/>
-                        <Input placeholder="渠道订单号" className="textClsName"  style={{width:'120px',marginLeft:'12px'}}/>
-                        <Input placeholder="渠道名称" className="textClsName"  style={{width:'120px',marginLeft:'12px'}}/>
-                        <Input placeholder="渠道编号" className="textClsName"  style={{width:'120px',marginLeft:'12px'}}/>
-                        <Input placeholder="商户名称" className="textClsName"  style={{width:'120px',marginLeft:'12px'}}/>
-                        <Input placeholder="商户号" className="textClsName"  style={{width:'120px',marginLeft:'12px'}}/>
-                        <Input placeholder="订单状态" className="textClsName"  style={{width:'120px',marginLeft:'12px'}}/>
-                        <Input placeholder="交易结果" className="textClsName"  style={{width:'120px',marginLeft:'12px'}}/>
-                        
-                    </Row>
-
+                    <Input placeholder="订单号" className="textClsName"   style={{width:'120px'}}/>
+                    <Input placeholder="渠道订单号" className="textClsName"  style={{width:'120px',marginLeft:'12px'}}/>
+                    <Input placeholder="渠道名称" className="textClsName"  style={{width:'120px',marginLeft:'12px'}}/>
+                    <Input placeholder="渠道编号" className="textClsName"  style={{width:'120px',marginLeft:'12px'}}/>
+                    <Input placeholder="商户名称" className="textClsName"  style={{width:'120px',marginLeft:'12px'}}/>
+                    <Input placeholder="商户号" className="textClsName"  style={{width:'120px',marginLeft:'12px'}}/>
+                    <Input placeholder="订单状态" className="textClsName"  style={{width:'120px',marginLeft:'12px'}}/>
+                    <Input placeholder="交易结果" className="textClsName"  style={{width:'120px',marginLeft:'12px'}}/>
                 </Row>
                 <Row style={{marginTop:'20px'}}>
-                        <span style={{fontSize:'14px',marginTop:'7px',width:'70px'}}>时间选择：</span>
+                        <span style={{fontSize:'14px',marginTop:'7px',width:'80px'}}>时间选择：</span>
                         <RangePicker />
                         <Button type="primary" style={{width:'80px',marginLeft:'10px'}} >搜索</Button>
                         <Button type="normal" style={{width:'80px',marginLeft:'10px'}} >导出</Button>
                 </Row>
                 <div style={{marginTop:'20px'}}>
-                    <Table dataSource={this.state.dataSource} onRowClick={onRowClick} fixedHeader maxBodyHeight={containerHeight}>
+                    <Table dataSource={this.state.dataSource} onRowClick={this.onRowClick.bind(this)} fixedHeader maxBodyHeight={containerHeight}>
                         <Table.Column title="订单号" dataIndex="id" width={100}/>
                         <Table.Column title="渠道订单号" dataIndex="title.name" width={120}/>
-                        <Table.Column title="交易时间" dataIndex="time"  width={100}/>
                         <Table.Column title="商户号" dataIndex="time"  width={100}/>
                         <Table.Column title="商户名称" dataIndex="time"  width={100}/>
-                        <Table.Column title="所属渠道" dataIndex="time"  width={100}/>
+                        <Table.Column title="交易时间" dataIndex="time"  width={100}/>
+                        {/*<Table.Column title="所属渠道" dataIndex="time"  width={100}/>*/}
                         <Table.Column title="渠道编号" dataIndex="time"  width={100}/>
                         <Table.Column title="交易金额" dataIndex="time"  width={100}/>
                         <Table.Column title="费率（‰）" dataIndex="time"  width={120}/>
                         <Table.Column title="代付费" dataIndex="time"  width={100}/>
                         <Table.Column title="交易手续费" dataIndex="time"  width={120}/>
                         <Table.Column title="交易状态" dataIndex="time"  width={100}/>
-                        <Table.Column title="银行名称" dataIndex="time"  width={100}/>
+                        {/*<Table.Column title="银行名称" dataIndex="time"  width={100}/>*/}
                         <Table.Column title="交易结果" dataIndex="time"  width={100}/>
-                        <Table.Column title="上游渠道" dataIndex="time"  width={100}/>
+                        {/*<Table.Column title="上游渠道" dataIndex="time"  width={100}/>
                         <Table.Column title="交易卡号" dataIndex="time"  width={100}/>
                         <Table.Column title="交易类型" dataIndex="time"  width={100}/>
-                        <Table.Column title="结算卡号" dataIndex="time"  width={100}/>
+                        <Table.Column title="结算卡号" dataIndex="time"  width={100}/>*/}
                     </Table>
                 </div>
                 <div style={{marginTop:'20px',float:'right'}}>
                     <Pagination defaultCurrent={2} size="large" />
                 </div>
+                <TradeDetailDialog visible={this.state.detailvisible} index={this} title="交易流水详情"/>
             </div>
         );
     }
