@@ -22,28 +22,28 @@ export function ajax(url,args={},type="POST",callback){
     data.data = args;
     data.dataType = "json";
     
-    // data.credentials='include';
+    data.credentials='include';
 
-    // data.xhrFields = {
-    //     withCredentials: true
-    // },
-    // data.crossDomain = true,
+    data.xhrFields = {
+        withCredentials: true
+    },
+    data.crossDomain = true,
 
 
 
     // data.contentType = "application/json; charset=utf-8";
 
 
-    console.log(data)
+    // console.log(data)
     // data.jsonp  = 'callback', //指定一个查询参数名称来覆盖默认的 jsonp 回调参数名 callback
     // data.callback = '', //设置回调函数名
     $.ajax(data).done(function(rsp) {
         callback(rsp);
     }).fail(function(data,status,xhr) {
-        console.error(data);
-        // document.getElementById('app').innerHTML = data.responseText;
-        console.error(status);
-        console.error(xhr);
+        // console.error(data);
+        // // document.getElementById('app').innerHTML = data.responseText;
+        // console.error(status);
+        // console.error(xhr);
     });
 
 

@@ -11,8 +11,6 @@ const initialState = {
     'total':0
 }
 export default function PrintDialog(state = initialState, action){
-    console.log("初始化状态");
-    console.log(action);
     switch (action.type) {
         case INITDATA:
                 return Object.assign({},state,{

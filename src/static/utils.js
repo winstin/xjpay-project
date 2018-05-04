@@ -1,4 +1,11 @@
 import fetchJsonp from 'fetch-jsonp';
+// import fetch from 'fetch-jsonp';
+
+import Feedback from 'qnui/lib/feedback';
+const Toast = Feedback.toast;
+
+const webUrl = "http://localhost:3000";
+
 var Tools = {
   /**
    * 判断一个值是否为空
@@ -130,55 +137,99 @@ var Tools = {
    * @return {[type]}            [description]
    */
   api: function({method,args='',mode='jsonp',callback,errCallback = undefined,isloading = true}){
-      var self = this;
+    var self = this;
+    
+    
     if (mode == 'jsonp') {
-      args = this.buildStr(args);
-      if(args!=''){
-          args = '?'+args;
+      // args = this.buildStr(args);
+      // if(args!=''){
+      //     args = '?'+args;
+      // }
+      // console.log('111')
+      // fetchJsonp('https://web.xjpay.cc' + method + args, {
+      // // fetchJsonp(host + method + args, {
+      //   jsonpCallback: 'callback'
+      // })
+      // .then((response) => console.log(response))//返回数据类型json
+      // .then((responseText) => {
+      //   if(responseText == 'fail'){
+      //     //遇见错误时弹框提示   by Mothpro
+      //     //session获取失败登录失效
+      //   }else{
+      //       try {
+      //           callback(responseText);
+      //       } catch (e) {
+      //           // console.error("后台php调用失败"+method,e);
+      //       }
+      //   }
+      // })
+      // .catch((error) => {
+         
+
+      //     //错误处理，待补充
+      //     // console.log(error);
+      //     if (errCallback) {
+      //       errCallback(error);
+      //     } else {
+
+      //     }
+      // });
+      // 
+      if(isloading){
+         showLoading('加载数据中...');
       }
-      fetchJsonp('https://web.xjpay.cc' + method + args, {
-      // fetchJsonp(host + method + args, {
-        jsonpCallback: 'callback'
-      })
-      .then((response) => response.json())//返回数据类型json
-      .then((responseText) => {
-        if(responseText == 'fail'){
-          //遇见错误时弹框提示   by Mothpro
-          //session获取失败登录失效
-        }else{
-            try {
-                callback(responseText);
-            } catch (e) {
-                // console.error("后台php调用失败"+method,e);
-            }
+      var formData = new FormData();
+        formData = this.buildArgs(formData,args);
+        args = this.buildStr(args);
+        if(args!=''){
+            args = '?'+args;
         }
-      })
-      .catch((error) => {
-          if (isloading) {
-          } else {
-            // statement
-          }
+        fetch(`${webUrl+method+args}`, {
+        // fetch(`${host}${method}`, {
+            method : 'GET',
+            mode : 'json',
+            credentials: 'include',//携带cookies
+               
+            // body : formData,
+        }).then((res)=>res.json()).then(function(responseText){
+            if(isloading){
+                hideLoading();
+            }
 
-          //错误处理，待补充
-          // console.log(error);
-          if (errCallback) {
-            errCallback(error);
-          } else {
+            if(responseText == 'fail'){
+                //遇见错误时弹框提示   by Mothpro
+                //session获取失败登录失效
+            }else{
+                callback(responseText);
+            }
+        }, function(error){
+            if(isloading){
+                hideLoading();
+            }
+            //错误处理，待补充
+            // console.log(error);
+            if (errCallback) {
+                errCallback(error);
+            } else {
 
-          }
-      });
+            }
+        });
     } else {
         var formData = new FormData();
         formData = this.buildArgs(formData,args);
-        fetch(`${'https://web.xjpay.cc'}${method}`, {
+        args = this.buildStr(args);
+        if(args!=''){
+            args = '?'+args;
+        }
+        fetch(`${webUrl+method+args}`, {
         // fetch(`${host}${method}`, {
-            method : 'POST',
+            method : 'GET',
             mode : 'cors',
-            credentials: 'include',//携带cookies
-            headers: {
-                'Content-Type': 'application/json;charset=UTF-8'
-            },     
-            body : formData,
+            // credentials: 'include',//携带cookies
+            // headers: {
+            //     'Content-Type': 'application/json;charset=UTF-8',
+            // },     
+            // body : formData,
         }).then((res)=>res.json()).then(function(responseText){
 
             if(responseText == 'fail'){
@@ -188,10 +239,6 @@ var Tools = {
                 callback(responseText);
             }
         }, function(error){
-            if (isloading) {
-            } else {
-              // statement
-            }
             //错误处理，待补充
             // console.log(error);
             if (errCallback) {
@@ -216,15 +263,17 @@ var Tools = {
    * @return   {[type]}                 [description]
    */
   ajax: function({method,args={},mode='jsonp',type="POST",callback,errCallback}){
-     
-      const uri = "https://web.xjpay.cc"+method;
+      args = this.buildStr(args);
+      if(args!=''){
+          args = '?'+args;
+      }
+      const uri = "https://web.xjpay.cc"+method+args;
       let data = {};
       data.url = uri;
 
-      data.data = args;
       data.dataType = mode;
-      data.type = type;
-      // data.credentials='include';
+      data.type = 'GET';
+      data.credentials='include';
 
       data.xhrFields = {
           withCredentials: true
@@ -234,8 +283,8 @@ var Tools = {
       // data.contentType = "jsonp";
       // data.jsonp  = 'callback', //指定一个查询参数名称来覆盖默认的 jsonp 回调参数名 callback
       // data.callback = '', //设置回调函数名
-      $.ajax(data).done(function(rsp) {
-          callback(rsp);
+      $.ajax(data).done(function() {
+          // callback();
       }).fail(function(data,status,xhr) {
           console.error(data);
           // document.getElementById('app').innerHTML = data.responseText;
@@ -244,8 +293,55 @@ var Tools = {
       });
 
      
-  }
+  },
 
+  /**
+   * @Author   Winstin
+   * @DateTime 2018-05-03
+   * @param    string
+   * @license  时间差
+   * @version  [version]
+   * @param    {[type]}   date1 开始时间
+   * @param    {[type]}   date2 结束时间
+   * @return   {[type]}         [description]
+   */
+  compareTime:function(date1,date2){
+
+    date1 = new Date(date1);
+    var date3=date2.getTime()-date1.getTime()  //时间差的毫秒数
+
+
+    //计算出相差天数
+    var days=Math.floor(date3/(24*3600*1000))
+     
+    //计算出小时数
+
+    var leave1=date3%(24*3600*1000)    //计算天数后剩余的毫秒数
+    var hours=Math.floor(leave1/(3600*1000))
+    //计算相差分钟数
+    var leave2=leave1%(3600*1000)        //计算小时数后剩余的毫秒数
+    var minutes=Math.floor(leave2/(60*1000))
+    //计算相差秒数
+    var leave3=leave2%(60*1000)      //计算分钟数后剩余的毫秒数
+    var seconds=Math.round(leave3/1000)
+    // alert(" 相差 "+days+"天 "+hours+"小时 "+minutes+" 分钟"+seconds+" 秒");
+
+    let result = {
+      days:days,
+      hours:hours,
+      minutes:minutes,
+      seconds:seconds
+    }
+    return result;
+  },
+
+  errorToast: function(text,){
+      Toast.error({content: text,hasMask:true,duration: 500});
+  },
+
+  successToast: function(text,){
+      Toast.success({content: text,hasMask:true,duration: 500});
+  }
 
 };
 
@@ -254,6 +350,8 @@ export const ajax = Tools.ajax.bind(Tools);
 export const isEmpty = Tools.isEmpty.bind(Tools);
 export const hideLoading = Tools.hideLoading.bind(Tools);
 export const showLoading = Tools.showLoading.bind(Tools);
-
+export const compareTime = Tools.compareTime.bind(Tools);
+export const errorToast = Tools.errorToast.bind(Tools);
+export const successToast = Tools.successToast.bind(Tools);
 
 export default Tools;

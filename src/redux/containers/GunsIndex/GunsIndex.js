@@ -13,7 +13,7 @@ import { Row, Col } from 'qnui/lib/grid';
 import Input from 'qnui/lib/input';
 import Pagination from 'qnui/lib/pagination';
 import Dimensions from 'react-dimensions';
-
+import TimePicker from 'qnui/lib/time-picker';
 
 const onRowClick = function(record, index, e) {
         console.log(record, index, e);
@@ -74,17 +74,31 @@ class GunsIndex extends Component {
             <div>
                 <Row>
                     <span style={{fontSize:'14px',marginTop:'7px',width:'80px'}}>查询条件：</span>
-                     <Row>
-                        <Input placeholder="商户名称" className="textClsName"   style={{width:'120px'}}/>
-                        <Input placeholder="商户编号" className="textClsName"  style={{width:'120px',marginLeft:'12px'}}/>
-                        <span style={{fontSize:'14px',marginTop:'7px',width:'70px',marginLeft:'12px'}}>时间选择：</span>
-                        <RangePicker /><Button type="primary" style={{width:'100px',marginLeft:'10px'}} >搜索</Button>
-                    </Row>
+                    <Input placeholder="商户名称" className="textClsName"   style={{width:'160px'}}/>
+                    <Input placeholder="商户编号" className="textClsName"  style={{width:'160px',marginLeft:'12px'}}/>
+                    {/*<span style={{fontSize:'14px',marginTop:'7px',width:'70px',marginLeft:'12px'}}>时间选择：</span>
+                    <DatePicker onChange={(val, str) => console.log(val, str)} /><TimePicker defaultValue="11:11:11" />
+                    <RangePicker showTime={true} onChange={(a, b) => console.log(a, b)} resetTime={false}/>
+                    <Button type="primary" style={{width:'100px',marginLeft:'10px'}} >搜索</Button>*/}
+                </Row>
+
+                <Row style={{marginTop:'20px'}}>
+                    
+                    <span style={{fontSize:'14px',marginTop:'7px',width:'80px'}}>开始时间：</span>
+                    <DatePicker onChange={(val, str) => console.log(val, str)} />&nbsp;&nbsp;&nbsp;&nbsp;
+                    <TimePicker />
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    <span style={{fontSize:'14px',marginTop:'7px',width:'80px'}}>结束时间：</span>
+                    <DatePicker onChange={(val, str) => console.log(val, str)} />&nbsp;&nbsp;&nbsp;&nbsp;
+                    <TimePicker />
+                    {/*<RangePicker showTime={true} onChange={(a, b) => console.log(a, b)} resetTime={false}/>*/}
+                    <Button type="primary" style={{width:'100px',marginLeft:'10px'}} >搜索</Button>
                 </Row>
                 <div style={{marginTop:'20px'}}>
                     <Table dataSource={this.state.dataSource} onRowClick={onRowClick} fixedHeader maxBodyHeight={containerHeight}>
                         <Table.Column title="商户号" dataIndex="id"/>
                         <Table.Column title="商户名称" dataIndex="title.name"/>
+                        <Table.Column title="身份证号" dataIndex="account"/>
                         <Table.Column title="结算卡号" dataIndex="time"/>
                         <Table.Column title="渠道名称" dataIndex="time"/>
                         <Table.Column title="渠道编号" dataIndex="time"/>
@@ -121,7 +135,7 @@ function mapDispatchToProps(dispatch,ownProps){
 
 export default Dimensions({
   getHeight: function() { //element
-    return window.innerHeight - 190;
+    return window.innerHeight - 230;
   },
   getWidth: function() { //element
     return window.innerWidth - 24;

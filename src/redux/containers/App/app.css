@@ -290,3 +290,22 @@
 .marginTop-20{
     margin-top: 20px
 }
+
+/*.next-table-selection .next-checkbox .next-checkbox-inner{
+    display: none
+}
+
+.next-table-body .next-checkbox .next-checkbox-inner{
+    display: inline-block;
+}*/
+
+.warining{
+    font-size: 20px;
+    color: red;
+    margin-bottom: 15px
+}
+
+.marginBottom{
+    margin-bottom: 10px
+}
+

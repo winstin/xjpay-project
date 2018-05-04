@@ -14,20 +14,25 @@ import Icon from 'qnui/lib/icon';
 import Menu from 'qnui/lib/menu';
 import './app.css'
 
-import Form from 'qnui/lib/form';
 import Input from 'qnui/lib/input';
 import Button from 'qnui/lib/button';
 import Checkbox from 'qnui/lib/checkbox';
 import Field from 'qnui/lib/field';
 
-import {api} from "static/utils.js"
-import {ajax} from "../../actions/AY_API";
+import {api,ajax,compareTime,isEmpty} from "static/utils.js"
+import Dialog from 'qnui/lib/dialog';
 
 import testImg from 'static/login.png';
 import bcakgroundImg from 'static/loginbackgrond.jpg';
 
 
-const FormItem = Form.Item;
+function clearAllCookie() {  
+    var keys = document.cookie.match(/[^ =;]+(?=\=)/g);  
+    if(keys) {  
+        for(var i = keys.length; i--;)  
+            document.cookie = keys[i] + '=0;expires=' + new Date(0).toUTCString()  
+    }  
+}  
 
 class App extends Component {
     constructor(props) {
@@ -36,32 +41,101 @@ class App extends Component {
         this.state={
           isLogin:false,
           password:'',
-          username:''
+          username:'',
+          msg:''
         }
     }
 
 
+    componentDidMount(){
+        let self = this; 
+        let now = new Date();
+        let loginTime = localStorage.getItem("loginTime");
+        if (!isEmpty(loginTime)) {
+          let res = compareTime(loginTime,now);
+          if(res.minutes >= 30){
+              self.setState({msg:'登录超时!'})
+          }else{
+              self.setState({isLogin:true})
+          }
+        }
+
+    }
+
     handleSubmit() {
-        // console.log(this.field.getValues());
-        // ajax("/login",{username:this.state.username,password:this.state.password},"Post",function(e){
-        //     console.log("GoodsListTable：", e);
-        // });
-        // ajax("/rest/auth",{userName:this.state.username,passWord:this.state.password},"POST",function(e){
-        //     console.log("GoodsListTable：", e);
+        let self = this;
+       
+        // ajax({
+        //     method:'/rest/auth',
+        //     mode:'json',
+        //     type:'POST',
+        //     args:{userName:this.state.username,password:this.state.password},
+        //     callback:(rsp)=>{
+        //        // console.log(rsp);
+        //        // 
+        //        document.cookie = rsp.randomKey +"="+ rsp.token;
+        //        self.setState({isLogin:true})
+        //     },
+        //     errCallback:(msg)=>{
+        //         // MsgToast('error','初始化获取数据失败！',2000);
+        //     }
         // });
 
+        // api({
+        //     method:'/rest/auth',
+        //     mode:'json',
+        //     args:{userName:this.state.username,password:this.state.password},
+        //     callback:(rsp)=>{
+        //         console.log(rsp);
+
+        //         let now = new Date();
+        //         console.log(now)
+                
+        //         localStorage.setItem("randomKey",rsp.randomKey);
+        //         localStorage.setItem("token",rsp.token);
+        //         localStorage.setItem("loginTime",now);
+
+        //         clearAllCookie();
+        //         document.cookie = rsp.randomKey +"="+ rsp.token;
+        //         self.setState({isLogin:true})
+        //     },
+        //     errCallback:(msg)=>{
+        //         self.setState({msg:'账号密码错误！'});
+        //         clearAllCookie();
+        //         console.log(msg)
+        //     }
+        // });
+
+
         api({
-            method:'/rest/auth',
+            method:'/rest/login',
             mode:'json',
-            args:{userName:this.state.username,passWord:this.state.password},
+            args:{username:this.state.username,password:this.state.password},
             callback:(rsp)=>{
-               
+                console.log(rsp);
+                let now = new Date();
+                localStorage.setItem("loginTime",now);
+                self.setState({isLogin:true,msg:''});
             },
             errCallback:(msg)=>{
-                // MsgToast('error','初始化获取数据失败！',2000);
+                self.setState({msg:'账号密码错误！'});
+                // clearAllCookie();
+                console.log(msg)
             }
         });
-        this.setState({isLogin:true})
+    }
+
+    loginOut(){
+        let self = this;
+        Dialog.confirm({
+            content: '是否退出当前帐号？',
+            title: '退出',
+            onOk:()=>{
+              clearAllCookie();
+              localStorage.setItem("loginTime",null);
+              self.setState({isLogin:false})
+            }
+        });
     }
 
 
@@ -74,15 +148,7 @@ class App extends Component {
     }  
     render(){
         const init = this.field.init;
-        const {isLogin,username,password} = this.state;
-        const formItemLayout = {
-            labelCol: {
-                fixedSpan: 10
-            },
-            wrapperCol: {
-                span: 14
-            }
-        };
+        const {isLogin,username,password,msg} = this.state;
         if(!isLogin){
           return(
             <div id="login">
@@ -102,6 +168,9 @@ class App extends Component {
                     <Input htmlType="password" placeholder="请输入密码" value={password} onChange={this.onchange.bind(this,'password')}/>
                   </div>
                   <div className="marginTop"></div>
+                  {msg!="" && <div className="block label marginBottom">
+                    <span className='warining'>{msg}</span>
+                  </div>}
                   <div className="block label">
                     <Checkbox id="apple" value="apple" >记住我</Checkbox>
                   </div>
@@ -130,14 +199,14 @@ class App extends Component {
                               kind = "navigation_max"
                               itemId="Trade"
                               icon="account"
-                              link="/dist"
+                              link="/"
                               text="商户管理"
                           >
                               <Navigation>
                                     <Myitem
                                         itemId="Trade"
                                         kind = "navigation_max"
-                                        link="/index"
+                                        link="/"
                                         text="商户管理"
                                         ></Myitem>
                                 </Navigation>
@@ -156,42 +225,6 @@ class App extends Component {
                                         link="/BatchPage"
                                         text="交易流水查询"
                                         ></Myitem>
-                                    {/*<Myitem
-                                        itemId="Item"
-                                        kind = "navigation_max"
-                                        link="/Cancel"
-                                        text="自定义打印"
-                                        ></Myitem>
-                                    <Myitem
-                                        itemId="Item"
-                                        kind = "navigation_max"
-                                        link="/refund/todo"
-                                        text="快递模板"
-                                        ></Myitem>
-                                    <Myitem
-                                        itemId="Item"
-                                        kind = "navigation_max"
-                                        link="/refund/search"
-                                        text="发货模板"
-                                        ></Myitem>
-                                    <Myitem
-                                        itemId="Item"
-                                        kind = "navigation_max"
-                                        link="/refund/storage"
-                                        text="商品简称"
-                                        ></Myitem>
-                                    <Myitem
-                                        itemId="Item"
-                                        kind = "navigation_max"
-                                        link="/Box"
-                                        text="打印设置"
-                                        ></Myitem>
-                                    <Myitem
-                                        itemId="Item"
-                                        kind = "navigation_max"
-                                        link="/stockControl"
-                                        text="打印日志"
-                                        ></Myitem>*/}
                               </Navigation>
                           </Myitem>
                           <Myitem
@@ -223,67 +256,6 @@ class App extends Component {
                               </Navigation>
                           </Myitem>
                           <Myitem
-                              itemId="AutoEva"
-                              kind = "navigation_max"
-                              icon="set"
-                              link="/ServiceManger"
-                              text="服务商管理"
-                          ></Myitem>
-                          <Myitem
-                              kind = "navigation_max"
-                              itemId="EvaMan"
-                              icon="bags"
-                              link="/ServiceRate"
-                              text="服务商费率"
-                          >
-                          {/*<Navigation>
-                                <Myitem
-                                    itemId="EvaMan"
-                                    kind = "navigation_max"
-                                    link="/ratemanager"
-                                    text="评价管理"
-                                    ></Myitem>
-                                <Myitem
-                                    itemId="EvaMan"
-                                    kind = "navigation_max"
-                                    link="/batcheva"
-                                    text="批量评价"
-                                    ></Myitem>
-                            </Navigation>*/}
-                          </Myitem>
-                          {/*<Myitem
-                              kind = "navigation_max"
-                              itemId="SmsCare"
-                              icon="dollar"
-                              link="/Message"
-                              text="短信关怀"
-                          >
-                          </Myitem>
-                          <Myitem
-                              kind = "navigation_max"
-                              itemId="MultiShop"
-                              icon="dollar"
-                              link="/multishop"
-                              text="多店铺管理"
-                          >
-                          </Myitem>*/}
-                          {<Myitem
-                              kind = "navigation_max"
-                              itemId="Setting"
-                              icon="personal-center"
-                              link="/Personal"
-                              text="个人资料"
-                          >
-                          </Myitem>}
-                          <Myitem
-                              kind = "navigation_max"
-                              itemId="Settings"
-                              icon="set"
-                              link="/Login"
-                              text="修改密码"
-                          >
-                          </Myitem>
-                          <Myitem
                               kind = "navigation_max"
                               itemId="User"
                               icon="account"
@@ -310,6 +282,46 @@ class App extends Component {
                                         text="菜单管理"
                                         ></Myitem>
                               </Navigation>
+                          </Myitem>
+                          <Myitem
+                              itemId="AutoEva"
+                              kind = "navigation_max"
+                              icon="set"
+                              link="/ServiceManger"
+                              text="服务商管理"
+                          ></Myitem>
+                          <Myitem
+                              kind = "navigation_max"
+                              itemId="EvaMan"
+                              icon="bags"
+                              link="/ServiceRate"
+                              text="服务商费率"
+                          >
+                          </Myitem>
+                          <Myitem
+                              kind = "navigation_max"
+                              itemId="Setting"
+                              icon="personal-center"
+                              link="/Personal"
+                              text="个人资料"
+                          >
+                          </Myitem>
+                          <Myitem
+                              kind = "navigation_max"
+                              itemId="Settings"
+                              icon="set"
+                              link="/Login"
+                              text="修改密码"
+                          >
+                          </Myitem>
+
+                          <Myitem
+                              kind = "navigation_max"
+                              itemId="Settings"
+                              icon="set"
+                              onClick = {this.loginOut.bind(this)}
+                              text="退出"
+                          >
                           </Myitem>
                       </Navigation>
                   </div>

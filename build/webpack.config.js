@@ -4,6 +4,8 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const config = require('../config')
 const debug = require('debug')('app:webpack:config')
+const proxy = require('http-proxy-middleware')
+
 
 const paths = config.utils_paths
 const __DEV__ = config.globals.__DEV__
@@ -11,6 +13,11 @@ const __PROD__ = config.globals.__PROD__
 const __TEST__ = config.globals.__TEST__
 
 debug('Creating configuration.')
+
+
+// const context = [`/rest/*`]
+
+
 const webpackConfig = {
   name: 'client',
   target: 'web',
@@ -19,7 +26,19 @@ const webpackConfig = {
     root: paths.client(),
     extensions: ['', '.js', '.jsx', '.json']
   },
-  module: {}
+  module: {},
+  // devServer: {
+  //    host: 'localhost',
+  //    port: '3000',
+  //    proxy: [
+  //        {
+  //             context: context,
+  //             target: 'https://web.xjpay.cc',
+  //             changeOrigin: true,
+  //             secure: false
+  //       }
+  //    ]
+  // }
 }
 // ------------------------------------
 // Entry Points

@@ -16,6 +16,10 @@ class Myitem extends Component {
         let myItem = kind == 'navigation_min'?this.showItem_min():this.showItem_max();
         return myItem;
     }
+
+
+
+
     showItem_min(){
         const { kind, icon, text, link, itemId, router, selectType, activeId, activeType, itemMouseOver, itemActive, itemUnline } = this.props;
         //是否处于激活状态
@@ -112,7 +116,7 @@ class Myitem extends Component {
         let next_navigation_item_open = copy_actvieType || sub_activeType || selectType? 'next-navigation-item-opened':'';
         // console.log(itemId+'当前活跃状态：'+copy_actvieType+'   是否子目录:'+sub_activeType +' 是否含有子目录：'+ishavachildren)
         return (
-            <li style={{backgroundColor:'#3189DC'}} className={`next-navigation-item ${next_navigation_item_open}`} >
+            <li style={{backgroundColor:'#3189DC'}} className={`next-navigation-item ${next_navigation_item_open}`} onClick={this.props.onClick} >
                 <div className="next-navigation-item-content">
                         {span_sub_icon(ishavachildren)}
                 </div>

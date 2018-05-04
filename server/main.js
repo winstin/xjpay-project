@@ -7,7 +7,21 @@ const config = require('../config')
 
 const app = express()
 const paths = config.utils_paths
+const proxy = require('http-proxy-middleware')
+const context = [`/rest/agents/list`,`/rest/login`]
+const cookieParser = require('cookie-parser');
 
+//options可选的配置参数请自行看readme.md文档，通常只需要配置target，也就是你的api所属的域名。
+const options = {
+    target: 'https://web.xjpay.cc',
+    changeOrigin: true
+}
+
+//将options对象用proxy封装起来，作为参数传递
+const apiProxy = proxy(options)
+
+//现在你只需要执行这一行代码，当你访问需要跨域的api资源时，就可以成功访问到了。
+app.use(context, apiProxy)
 // ------------------------------------
 // Apply Webpack HMR Middleware
 // ------------------------------------
@@ -24,7 +38,10 @@ if (config.env === 'development') {
     lazy        : false,
     stats       : config.compiler_stats
   }))
-  app.use(require('webpack-hot-middleware')(compiler))
+  app.use(require('webpack-hot-middleware')(compiler));
+
+  app.use(cookieParser());
+
 
   // Serve static assets from ~/src/static since Webpack is unaware of
   // these files. This middleware doesn't need to be enabled outside

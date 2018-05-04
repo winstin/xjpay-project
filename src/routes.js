@@ -28,9 +28,9 @@ import {PersonalCenter,OrderManger,RoleManger,UserManger,Login,CommodityStatisti
 export const createRoutes = () => ({
     path: '/',
     component: App,
-    indexRoute: {component: ''},
+    indexRoute: {component: GunsIndex},
     childRoutes: [
-        {path:'/index',component:GunsIndex},
+        {path:'/',component:GunsIndex},
         {path:'/autoeva',component:AutoEva},
         {path:'/ServiceRate',component:ServiceRate},
         {path:'/BatchPage',component:BatchPage},

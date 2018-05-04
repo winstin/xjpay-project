@@ -7,8 +7,7 @@ import Search from 'qnui/lib/search';
 import Tab from 'qnui/lib/tab';
 import Button from 'qnui/lib/button';
 import Table from 'qnui/lib/table';
-import * as ServiceRate from '../../actions/ServiceRate'
-// import {getInitData} from '../../actions/ServiceRate';
+import * as ServiceManger from '../../actions/ServiceManger'
 import { Row, Col } from 'qnui/lib/grid';
 import Input from 'qnui/lib/input';
 import Pagination from 'qnui/lib/pagination';
@@ -17,30 +16,19 @@ import Dialog from 'qnui/lib/dialog';
 import Dropdown from 'qnui/lib/dropdown';
 import Menu from 'qnui/lib/menu';
 
+import ServiceMangerDialog from '../../components/ServiceMangerDialog/index.js'
+
+import {errorToast} from "static/utils.js"
+
+
+
+// import {showLoading,hideLoading,isEmpty} from "static/utils.js"
+
 const onRowClick = function(record, index, e) {
         console.log(record, index, e);
-    },
-    getData = (length) => {
-        let result = [];
-        for (let i = 0; i < length; i++) {
-            result.push({
-                title: {name: `2000`},
-                id: 100306660940 + i,
-                time: 2000 + i
-            });
-        }
-        return result;
-    },
-    render = (value, index, record) => {
-        return <a>Remove({record.id})</a>;
-    };
+    }
 const rowSelection = {
         onChange: onRowClick,
-        getProps: (record) => {
-            return {
-                disabled: record.id === 23324
-            };
-        }
     };
 
 const menu = (
@@ -51,47 +39,51 @@ const menu = (
         <Menu.Item>Option 4</Menu.Item>
     </Menu>
 );
-class ServiceManger extends Component {
-  constructor(props) {
+class ServiceMangers extends Component {
+    constructor(props) {
         super(props);
-
         this.state = {
-            dataSource: getData(30),
             visible:false,
-            visibles:false
+            visibles:false,
+            tip:''
         };
 
     }
 
-  onSearch(value) {
-      console.log(value);
-  }
-
-  loadTradeList(){
-    let self = this;
-    let list = [];
-    //gettbtime();
-
-    const {getTradeList} = this.props;
-    getTradeList();
-
-  }
-  componentWillMount() {
-      console.log('Component WILL MOUNT!');
-  }
-
-  componentDidMount(){
-    console.log("首次渲染页面")
-    console.log(this.props)
-    const {getInitData} = (this.props);
-    getInitData();
-  }
+    onSearch(value) {
+        console.log(value);
+    }
 
 
-   onOpen = () => {
-        this.setState({
-            visible: true
-        });
+    componentWillMount() {
+
+    }
+
+    componentDidMount(){
+        const {getInitData} = (this.props);
+        getInitData();
+    }
+
+
+   onOpen(type){
+        const {chooseDatas} = (this.props);
+
+        if(chooseDatas.length == 0){
+            errorToast('请选择一条记录！');
+            return;
+        }
+
+        if(type == "add"){
+            this.setState({
+                visible: true,
+                tip:'添加'
+            });
+        }else{
+            this.setState({
+                visible: true,
+                tip:'修改'
+            });
+        }
     };
 
     onClose = () => {
@@ -112,8 +104,45 @@ class ServiceManger extends Component {
         });
     };
 
-  render() {
-        const {containerHeight} = (this.props);
+
+    onRowClick = (index,record)=>{
+        const {setData} = this.props;
+        setData(index,record);
+    }
+
+    changePageno(e){
+        const {getInitData} = (this.props);
+        getInitData(e);
+    }
+
+
+    cellRender = (value, index, record, context) => {
+        if(value == 1){
+            return '对公';
+        }else{
+            return '对私';
+        }
+    }
+
+    cellAccountprovince = (value, index, record, context) => {
+        if(value == 1){
+            return '平台服务商';
+        }else{
+            return '渠道服务商';
+        }
+    }
+
+    cellAccountaddress = (value, index, record, context) => {
+        if(value == 1){
+            return '企业代理';
+        }else{
+            return '个人代理';
+        }
+    }
+
+    render() {
+        const {containerHeight,dataSource,total,chooseDatas} = (this.props);
+
         return (
             <div>
                 <Row >
@@ -125,257 +154,63 @@ class ServiceManger extends Component {
                     </Row>
                 </Row>
                 <div style={{marginTop:'20px'}}>
-                    <Button type="primary" style={{width:'100px',marginLeft:'10px'}} onClick={this.onOpen}>添加</Button>
-                    <Button type="normal" style={{width:'100px',marginLeft:'10px'}} onClick={this.onOpen}>修改</Button>
+                    <Button type="primary" style={{width:'100px',marginLeft:'10px'}} onClick={this.onOpen.bind(this,'add')}>添加</Button>
+                    <Button type="normal" style={{width:'100px',marginLeft:'10px'}} onClick={this.onOpen.bind(this,'change')}>修改</Button>
                     <Button type="secondary" style={{width:'120px',marginLeft:'10px'}} >冻结/启用</Button>
                 </div>
                 <div style={{marginTop:'20px'}}>
-                    <Table dataSource={this.state.dataSource} onRowClick={onRowClick} fixedHeader maxBodyHeight={containerHeight} rowSelection={rowSelection}>
-                        <Table.Column title="渠道编号" dataIndex="time" width={100}/>
-                        <Table.Column title="公司名称" dataIndex="time" width={100}/>
-                        <Table.Column title="执照编号" dataIndex="time" width={100}/>
-                        <Table.Column title="渠道类型" dataIndex="time" width={100}/>
-                        <Table.Column title="渠道级别" dataIndex="time" width={100}/>
-                        <Table.Column title="签约时间" dataIndex="time" width={100}/>
-                        <Table.Column title="到期时间" dataIndex="time" width={100}/>
-                        <Table.Column title="法人姓名" dataIndex="time" width={100}/>
-                        <Table.Column title="法人电话" dataIndex="time" width={100}/>
-                        <Table.Column title="所在省份" dataIndex="time" width={100}/>
+                    <Table dataSource={dataSource} fixedHeader maxBodyHeight={containerHeight} rowSelection={{onChange: this.onRowClick,mode:'single'}}>
+                        <Table.Column title="渠道编号" dataIndex="appId" width={100}/>
+                        <Table.Column title="公司名称" dataIndex="name" width={100}/>
+                        <Table.Column title="执照编号" dataIndex="accountcity" width={200}/>
+                        <Table.Column title="渠道类型" dataIndex="accountprovince" cell={this.cellAccountprovince} width={100}/>
+                        <Table.Column title="渠道级别" dataIndex="accountaddress" cell={this.cellAccountaddress} width={100}/>
+                        <Table.Column title="签约时间" dataIndex="signdate" width={100}/>
+                        <Table.Column title="到期时间" dataIndex="expiredate" width={100}/>
+                        <Table.Column title="法人姓名" dataIndex="principal" width={100}/>
+                        <Table.Column title="法人电话" dataIndex="phone" width={130}/>
+                        <Table.Column title="所在省份" dataIndex="province" width={100}/>
 
-                        <Table.Column title="所在城市" dataIndex="time" width={100}/>
-                        <Table.Column title="详细地址" dataIndex="time" width={100}/>
-                        <Table.Column title="法人邮箱" dataIndex="time" width={100}/>
-                        <Table.Column title="商务邮箱" dataIndex="time" width={100}/>
+                        <Table.Column title="所在城市" dataIndex="city" width={100}/>
+                        <Table.Column title="详细地址" dataIndex="address" width={100}/>
+                        <Table.Column title="法人邮箱" dataIndex="linkman" width={180}/>
+                        <Table.Column title="商务邮箱" dataIndex="linkmantel" width={180}/>
 
-                        <Table.Column title="财务邮箱" dataIndex="time" width={100}/>
-                        <Table.Column title="APP名称" dataIndex="time"  width={100}/>
+                        <Table.Column title="财务邮箱" dataIndex="idtype" width={180}/>
+                        <Table.Column title="APP名称" dataIndex="appname"  width={100}/>
 
-                        <Table.Column title="官网地址" dataIndex="time" width={100}/>
-                        <Table.Column title="账户类型" dataIndex="time" width={100}/>
-                        <Table.Column title="收款户名" dataIndex="time" width={100}/>
-                        <Table.Column title="开户行" dataIndex="time" width={100}/>
-                        <Table.Column title="收款账户" dataIndex="time" width={100}/>
+                        <Table.Column title="官网地址" dataIndex="website" width={100}/>
+                        <Table.Column title="账户类型" dataIndex="accounttype" cell={this.cellRender} width={100}/>
+                        <Table.Column title="收款户名" dataIndex="accountname" width={100}/>
+                        <Table.Column title="开户行" dataIndex="bank" width={100}/>
+                        <Table.Column title="收款账户" dataIndex="account" width={200}/>
 
                         <Table.Column title="状态" dataIndex="time" width={100}/>
                     </Table>
                 </div>
                 <div style={{marginTop:'20px',float:'right'}}>
-                    <Pagination defaultCurrent={2} size="large" />
+                    <Pagination defaultCurrent={1} size="large" total={total} pageSize={20} onChange={this.changePageno.bind(this)} />
                 </div>
-                <Dialog visible={this.state.visible}
-                            onOk={this.onClose}
-                            closable="esc,mask,close"
-                            onCancel={this.onClose}
-                            onClose={this.onClose} title="添加">
-                        <span style={{fontSize:'24px',marginTop:'7px',width:'80px'}}>基础信息</span>
 
-                        <Row className="marginTop">
-                            <div className="flexStyle">
-                                <span></span>
-                                <span style={{fontSize:'14px',marginTop:'7px'}}>公司名称：</span>
-                            </div>
-                            
-                            <Dropdown trigger={<Input placeholder="公司名称" className="textClsName"   style={{width:'180px'}} />}
-                                      triggerType="click"
-                                      visible={this.state.visibles}
-                                      onVisibleChange={this.onVisibleChange}
-                                      safeNode={() => this.refs.button}>
-                                {menu}
-                            </Dropdown>
-                            <div className="flexStyle">
-                                <span></span>
-                                <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>执照编号：</span>
-                            </div>
-                            <Input placeholder="执照编号" className="textClsName"   style={{width:'180px'}} />
-                        </Row>
-                        <Row className="marginTop">
-                            <div className="flexStyle">
-                                <span></span>
-                                <span style={{fontSize:'14px',marginTop:'7px'}}>渠道类型：</span>
-                            </div>
-                            <Dropdown trigger={<Input placeholder="渠道类型" className="textClsName"   style={{width:'180px'}} />}
-                                      triggerType="click"
-                                      visible={this.state.visibles1}
-                                      onVisibleChange={this.onVisibleChange}
-                                      safeNode={() => this.refs.button}>
-                                {menu}
-                            </Dropdown>
-                            <div className="flexStyle">
-                                <span></span>
-                                <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>渠道级别：</span>
-                            </div>
-                            <Input placeholder="渠道级别" className="textClsName"   style={{width:'180px'}} />
-                        </Row>
-                        <Row className="marginTop">
-                            <div className="flexStyle">
-                                <span></span>
-                                <span style={{fontSize:'14px',marginTop:'7px'}}>签约时间：</span>
-                            </div>
-                            <Dropdown trigger={<Input placeholder="签约时间" className="textClsName"   style={{width:'180px'}} />}
-                                      triggerType="click"
-                                      visible={this.state.visibles2}
-                                      onVisibleChange={this.onVisibleChange}
-                                      safeNode={() => this.refs.button}>
-                                {menu}
-                            </Dropdown>
-                            <div className="flexStyle">
-                                <span></span>
-                                <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>到期时间：</span>
-                            </div>
-                            <Input placeholder="到期时间" className="textClsName"   style={{width:'180px'}} />
-                        </Row>
-                        <Row className="marginTop">
-                            <div className="flexStyle">
-                                <span></span>
-                                <span style={{fontSize:'14px',marginTop:'7px'}}>法人姓名：</span>
-                            </div>
-                            <Dropdown trigger={<Input placeholder="法人姓名" className="textClsName"   style={{width:'180px'}} />}
-                                      triggerType="click"
-                                      visible={this.state.visibles3}
-                                      onVisibleChange={this.onVisibleChange}
-                                      safeNode={() => this.refs.button}>
-                                {menu}
-                            </Dropdown>
-                            <div className="flexStyle">
-                                <span></span>
-                                <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>法人姓名：</span>
-                            </div>
-                            <Input placeholder="法人姓名" className="textClsName"   style={{width:'180px'}} />
-                        </Row>
-                        <Row className="marginTop">
-                            <div className="flexStyle">
-                                <span></span>
-                                <span style={{fontSize:'14px',marginTop:'7px'}}>所在省份：</span>
-                            </div>
-                            <Dropdown trigger={<Input placeholder="所在省份" className="textClsName"   style={{width:'180px'}} />}
-                                      triggerType="click"
-                                      visible={this.state.visibles2}
-                                      onVisibleChange={this.onVisibleChange}
-                                      safeNode={() => this.refs.button}>
-                                {menu}
-                            </Dropdown>
-                            <div className="flexStyle">
-                                <span></span>
-                                <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>所在城市：</span>
-                            </div>
-                            <Input placeholder="所在城市" className="textClsName"   style={{width:'180px'}} />
-                        </Row>
-                        <Row className="marginTop">
-                            <div className="flexStyle">
-                                <span></span>
-                                <span style={{fontSize:'14px',marginTop:'7px'}}>详细地址：</span>
-                            </div>
-                            <Dropdown trigger={<Input placeholder="详细地址" className="textClsName"   style={{width:'180px'}} />}
-                                      triggerType="click"
-                                      visible={this.state.visibles3}
-                                      onVisibleChange={this.onVisibleChange}
-                                      safeNode={() => this.refs.button}>
-                                {menu}
-                            </Dropdown>
-                            <div className="flexStyle">
-                                <span></span>
-                                <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>法人邮箱：</span>
-                            </div>
-                            <Input placeholder="法人邮箱" className="textClsName"   style={{width:'180px'}} />
-                        </Row>
-
-                        <Row className="marginTop">
-                            <div className="flexStyle">
-                                <span></span>
-                                <span style={{fontSize:'14px',marginTop:'7px'}}>商务邮箱：</span>
-                            </div>
-                            <Dropdown trigger={<Input placeholder="商务邮箱" className="textClsName"   style={{width:'180px'}} />}
-                                      triggerType="click"
-                                      visible={this.state.visibles3}
-                                      onVisibleChange={this.onVisibleChange}
-                                      safeNode={() => this.refs.button}>
-                                {menu}
-                            </Dropdown>
-                            <div className="flexStyle">
-                                <span></span>
-                                <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>财务邮箱：</span>
-                            </div>
-                            <Input placeholder="财务邮箱" className="textClsName"   style={{width:'180px'}} />
-                        </Row>
-
-                        <Row className="marginTop">
-                            <div className="flexStyle">
-                                <span></span>
-                                <span style={{fontSize:'14px',marginTop:'7px'}}>APP名称：</span>
-                            </div>
-                            <Dropdown trigger={<Input placeholder="APP名称" className="textClsName"   style={{width:'180px'}} />}
-                                      triggerType="click"
-                                      visible={this.state.visibles3}
-                                      onVisibleChange={this.onVisibleChange}
-                                      safeNode={() => this.refs.button}>
-                                {menu}
-                            </Dropdown>
-                            <div className="flexStyle">
-                                <span></span>
-                                <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>官网地址：</span>
-                            </div>
-                            <Input placeholder="官网地址" className="textClsName"   style={{width:'180px'}} />
-                        </Row>
-
-
-                        <span style={{fontSize:'24px',lineHeight:'60px'}}>结算信息</span>
-                        <Row>
-                            <div className="flexStyle">
-                                <span></span>
-                                <span style={{fontSize:'14px',marginTop:'7px'}}>账户类型：</span>
-                            </div>
-                            
-                            <Dropdown trigger={<Input placeholder="账户类型" className="textClsName"   style={{width:'180px'}} />}
-                                      triggerType="click"
-                                      visible={this.state.visibles}
-                                      onVisibleChange={this.onVisibleChange}
-                                      safeNode={() => this.refs.button}>
-                                {menu}
-                            </Dropdown>
-                            <div className="flexStyle">
-                                <span></span>
-                                <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>收款户名：</span>
-                            </div>
-                            <Input placeholder="收款户名" className="textClsName"   style={{width:'180px'}} />
-                        </Row>
-                        <Row className="marginTop">
-                            <div className="flexStyle">
-                                <span></span>
-                                <span style={{fontSize:'14px',marginTop:'7px'}}>开户行：</span>
-                            </div>
-                            <Dropdown trigger={<Input placeholder="开户行" className="textClsName"   style={{width:'180px'}} />}
-                                      triggerType="click"
-                                      visible={this.state.visibles1}
-                                      onVisibleChange={this.onVisibleChange}
-                                      safeNode={() => this.refs.button}>
-                                {menu}
-                            </Dropdown>
-                            <div className="flexStyle">
-                                <span></span>
-                                <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>收款账户：</span>
-                            </div>
-                            <Input placeholder="收款账户" className="textClsName"   style={{width:'180px'}} />
-                        </Row>
-                </Dialog>
+                {chooseDatas.length==1 && <ServiceMangerDialog  visible={this.state.visible} index={this} title={this.state.tip} dataSource={chooseDatas[0]}/>}
+                
             </div>
         );
     }
-    reduceContent() {
-        this.setState({
-            dataSource: getData(10)
-        });
-    }
+    
 }
 
 function mapStateToProps(state, ownProps){
     return {
-        data:state.ServiceRate.isupdate
+        dataSource:state.ServiceManger.dataSource,
+        total:state.ServiceManger.total,
+        chooseDatas:state.ServiceManger.chooseDatas
     }
 }
 
 
 function mapDispatchToProps(dispatch,ownProps){
-    return  bindActionCreators( ServiceRate , dispatch )
+    return  bindActionCreators( ServiceManger , dispatch )
 }
 
 export default Dimensions({
@@ -385,4 +220,4 @@ export default Dimensions({
   getWidth: function() { //element
     return window.innerWidth - 24;
   }
-})(connect(mapStateToProps, mapDispatchToProps)(ServiceManger))
+})(connect(mapStateToProps, mapDispatchToProps)(ServiceMangers))
