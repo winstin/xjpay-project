@@ -108,129 +108,159 @@ class ServiceRates extends Component {
             visibles
         });
     };
+
+
+    cellRender = (value, index, record, context) => {
+        if(value == 1){
+            return '银联快捷';
+        }else{
+            return value;
+        }
+    }
+
+    cellUpstream = (value, index, record, context) => {
+        if(value == 'KFT_SERVICE'){
+            return 'Q3';
+        }else if(value == 'HF_SERVICE'){
+            return 'Q1';
+        }else{
+            return value;
+        }
+    }
+
+    cellPointType = (value, index, record, context) => {
+       if(value == 0){
+            return '商旅类';
+        }else if(value == 2){
+            return '一般类';
+        }else{
+            
+            return '-';
+        }
+    }
+
+
+    cellType = (value, index, record, context) => {
+        if(value == 0){
+            return 'D0';
+        }else{
+            return value;
+        }
+    }
     render() {
         const {dataSource,isLoad,total,containerHeight} = this.props;
-        const {data} = this.state;
-        
-       
-        // if(!isLoad){
-            console.log('服务商')
-            console.log(dataSource);
-            return (
-                <div>
-                    <Row>
-                        <span style={{fontSize:'14px',marginTop:'7px',width:'80px'}}>渠道编号：</span>
-                         <Row>
-                            <Input placeholder="渠道编号" className="textClsName"   style={{width:'120px'}} onChange={this.onchange.bind(this,'id')}/>
-                            <span style={{fontSize:'14px',marginTop:'7px',width:'70px',marginLeft:'12px'}}>渠道名称：</span>
-                            <Input placeholder="渠道名称" className="textClsName"   style={{width:'120px',marginLeft:'6px'}} onChange={this.onchange.bind(this,'name')}/>
-                            <Button type="primary" style={{width:'100px',marginLeft:'10px'}} onClick={this.searchData.bind(this)}>搜索</Button>
-                            <Button type="normal" style={{width:'100px',marginLeft:'10px'}} onClick={this.onOpen}>添加</Button>
-                        </Row>
+        return (
+            <div>
+                <Row>
+                    <span style={{fontSize:'14px',marginTop:'7px',width:'80px'}}>渠道编号：</span>
+                     <Row>
+                        <Input placeholder="渠道编号" className="textClsName"   style={{width:'120px'}} onChange={this.onchange.bind(this,'id')}/>
+                        <span style={{fontSize:'14px',marginTop:'7px',width:'70px',marginLeft:'12px'}}>渠道名称：</span>
+                        <Input placeholder="渠道名称" className="textClsName"   style={{width:'120px',marginLeft:'6px'}} onChange={this.onchange.bind(this,'name')}/>
+                        <Button type="primary" style={{width:'100px',marginLeft:'10px'}} onClick={this.searchData.bind(this)}>搜索</Button>
+                        <Button type="normal" style={{width:'100px',marginLeft:'10px'}} onClick={this.onOpen}>添加</Button>
                     </Row>
-                    <div style={{marginTop:'20px'}}>
-                        <Table dataSource={data} onRowClick={onRowClick} fixedHeader maxBodyHeight={containerHeight}>
-                            <Table.Column title="编号" dataIndex="id"/>
-                            <Table.Column title="创建时间" dataIndex="createTime"/>
-                            <Table.Column title="服务商编号" dataIndex="appid"/>
-                            <Table.Column title="服务商名称" dataIndex="agentName"/>
-                            <Table.Column title="业务类型" dataIndex="time"/>
-                            <Table.Column title="上游渠道" dataIndex="time"/>
-                            <Table.Column title="交易类型" dataIndex="time"/>
-                            <Table.Column title="结算类型" dataIndex="time"/>
-                            <Table.Column title="鉴权费" dataIndex="d0fee"/>
-                            <Table.Column title="结算费率" dataIndex="fee0"/>
-                            <Table.Column title="代付费" dataIndex="time"/>
-                        </Table>
-                    </div>
-                    <div style={{marginTop:'20px',float:'right'}}>
-                        <Pagination defaultCurrent={1} size="large" onChange={this.handleChange.bind(this)} pageSize={15} total={total}/>
-                    </div>
-
-                    <Dialog visible={this.state.visible}
-                            onOk={this.onClose}
-                            closable="esc,mask,close"
-                            onCancel={this.onClose}
-                            onClose={this.onClose} title="添加">
-                        <Row>
-                            <div className="flexStyle">
-                                <span></span>
-                                <span style={{fontSize:'14px',marginTop:'7px'}}>渠道编号：</span>
-                            </div>
-                            
-                            <Dropdown trigger={<Input placeholder="渠道编号" className="textClsName"   style={{width:'180px'}} onChange={this.onchange.bind(this,'id')}/>}
-                                      triggerType="click"
-                                      visible={this.state.visibles}
-                                      onVisibleChange={this.onVisibleChange}
-                                      safeNode={() => this.refs.button}>
-                                {menu}
-                            </Dropdown>
-                            <div className="flexStyle">
-                                <span></span>
-                                <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>业务类型：</span>
-                            </div>
-                            <Input placeholder="业务类型" className="textClsName"   style={{width:'180px'}} onChange={this.onchange.bind(this,'name')}/>
-                        </Row>
-                        <Row className="marginTop">
-                            <div className="flexStyle">
-                                <span></span>
-                                <span style={{fontSize:'14px',marginTop:'7px'}}>上游渠道：</span>
-                            </div>
-                            <Dropdown trigger={<Input placeholder="上游渠道" className="textClsName"   style={{width:'180px'}} onChange={this.onchange.bind(this,'id')}/>}
-                                      triggerType="click"
-                                      visible={this.state.visibles1}
-                                      onVisibleChange={this.onVisibleChange}
-                                      safeNode={() => this.refs.button}>
-                                {menu}
-                            </Dropdown>
-                            <div className="flexStyle">
-                                <span></span>
-                                <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>交易类型：</span>
-                            </div>
-                            <Input placeholder="交易类型" className="textClsName"   style={{width:'180px'}} onChange={this.onchange.bind(this,'name')}/>
-                        </Row>
-                        <Row className="marginTop">
-                            <div className="flexStyle">
-                                <span></span>
-                                <span style={{fontSize:'14px',marginTop:'7px'}}>结算类型：</span>
-                            </div>
-                            <Dropdown trigger={<Input placeholder="结算类型" className="textClsName"   style={{width:'180px'}} onChange={this.onchange.bind(this,'id')}/>}
-                                      triggerType="click"
-                                      visible={this.state.visibles2}
-                                      onVisibleChange={this.onVisibleChange}
-                                      safeNode={() => this.refs.button}>
-                                {menu}
-                            </Dropdown>
-                            <div className="flexStyle">
-                                <span></span>
-                                <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>鉴权费：</span>
-                            </div>
-                            <Input placeholder="鉴权费" className="textClsName"   style={{width:'180px'}} onChange={this.onchange.bind(this,'name')}/>
-                        </Row>
-                        <Row className="marginTop">
-                            <div className="flexStyle">
-                                <span></span>
-                                <span style={{fontSize:'14px',marginTop:'7px'}}>结算费率(‰)：</span>
-                            </div>
-                            <Dropdown trigger={<Input placeholder="结算费率(‰)" className="textClsName"   style={{width:'180px'}} onChange={this.onchange.bind(this,'id')}/>}
-                                      triggerType="click"
-                                      visible={this.state.visibles3}
-                                      onVisibleChange={this.onVisibleChange}
-                                      safeNode={() => this.refs.button}>
-                                {menu}
-                            </Dropdown>
-                            <div className="flexStyle">
-                                <span></span>
-                                <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>代付费(分)：</span>
-                            </div>
-                            <Input placeholder="代付费(分)" className="textClsName"   style={{width:'180px'}} onChange={this.onchange.bind(this,'name')}/>
-                        </Row>
-                    </Dialog>
+                </Row>
+                <div style={{marginTop:'20px'}}>
+                    <Table dataSource={dataSource} onRowClick={onRowClick} fixedHeader maxBodyHeight={containerHeight}>
+                        <Table.Column title="编号" dataIndex="id"/>
+                        <Table.Column title="创建时间" dataIndex="createTime"/>
+                        <Table.Column title="服务商编号" dataIndex="appid"/>
+                        <Table.Column title="服务商名称" dataIndex="agentName"/>
+                        <Table.Column title="业务类型" dataIndex="code" cell={this.cellRender}/>
+                        <Table.Column title="上游渠道" dataIndex="upstream" cell={this.cellUpstream}/>
+                        <Table.Column title="交易类型" dataIndex="pointType" cell={this.cellPointType}/>
+                        <Table.Column title="结算类型" dataIndex="type" cell={this.cellType}/>
+                        <Table.Column title="鉴权费" dataIndex="mode"/>
+                        <Table.Column title="结算费率" dataIndex="fee0"/>
+                        <Table.Column title="代付费" dataIndex="d0fee"/>
+                    </Table>
                 </div>
-            );
-        // }else{
-        //     return <div style={{marginTop:'20px',float:'right'}}>111</div>
-        // }
+                <div style={{marginTop:'20px',float:'right'}}>
+                    <Pagination defaultCurrent={1} size="large" onChange={this.handleChange.bind(this)} pageSize={20} total={total}/>
+                </div>
+
+                <Dialog visible={this.state.visible}
+                        onOk={this.onClose}
+                        closable="esc,mask,close"
+                        onCancel={this.onClose}
+                        onClose={this.onClose} title="添加">
+                    <Row>
+                        <div className="flexStyle">
+                            <span></span>
+                            <span style={{fontSize:'14px',marginTop:'7px'}}>渠道编号：</span>
+                        </div>
+                        
+                        <Dropdown trigger={<Input placeholder="渠道编号" className="textClsName"   style={{width:'180px'}} onChange={this.onchange.bind(this,'id')}/>}
+                                  triggerType="click"
+                                  visible={this.state.visibles}
+                                  onVisibleChange={this.onVisibleChange}
+                                  safeNode={() => this.refs.button}>
+                            {menu}
+                        </Dropdown>
+                        <div className="flexStyle">
+                            <span></span>
+                            <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>业务类型：</span>
+                        </div>
+                        <Input placeholder="业务类型" className="textClsName"   style={{width:'180px'}} onChange={this.onchange.bind(this,'name')}/>
+                    </Row>
+                    <Row className="marginTop">
+                        <div className="flexStyle">
+                            <span></span>
+                            <span style={{fontSize:'14px',marginTop:'7px'}}>上游渠道：</span>
+                        </div>
+                        <Dropdown trigger={<Input placeholder="上游渠道" className="textClsName"   style={{width:'180px'}} onChange={this.onchange.bind(this,'id')}/>}
+                                  triggerType="click"
+                                  visible={this.state.visibles1}
+                                  onVisibleChange={this.onVisibleChange}
+                                  safeNode={() => this.refs.button}>
+                            {menu}
+                        </Dropdown>
+                        <div className="flexStyle">
+                            <span></span>
+                            <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>交易类型：</span>
+                        </div>
+                        <Input placeholder="交易类型" className="textClsName"   style={{width:'180px'}} onChange={this.onchange.bind(this,'name')}/>
+                    </Row>
+                    <Row className="marginTop">
+                        <div className="flexStyle">
+                            <span></span>
+                            <span style={{fontSize:'14px',marginTop:'7px'}}>结算类型：</span>
+                        </div>
+                        <Dropdown trigger={<Input placeholder="结算类型" className="textClsName"   style={{width:'180px'}} onChange={this.onchange.bind(this,'id')}/>}
+                                  triggerType="click"
+                                  visible={this.state.visibles2}
+                                  onVisibleChange={this.onVisibleChange}
+                                  safeNode={() => this.refs.button}>
+                            {menu}
+                        </Dropdown>
+                        <div className="flexStyle">
+                            <span></span>
+                            <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>鉴权费：</span>
+                        </div>
+                        <Input placeholder="鉴权费" className="textClsName"   style={{width:'180px'}} onChange={this.onchange.bind(this,'name')}/>
+                    </Row>
+                    <Row className="marginTop">
+                        <div className="flexStyle">
+                            <span></span>
+                            <span style={{fontSize:'14px',marginTop:'7px'}}>结算费率(‰)：</span>
+                        </div>
+                        <Dropdown trigger={<Input placeholder="结算费率(‰)" className="textClsName"   style={{width:'180px'}} onChange={this.onchange.bind(this,'id')}/>}
+                                  triggerType="click"
+                                  visible={this.state.visibles3}
+                                  onVisibleChange={this.onVisibleChange}
+                                  safeNode={() => this.refs.button}>
+                            {menu}
+                        </Dropdown>
+                        <div className="flexStyle">
+                            <span></span>
+                            <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>代付费(分)：</span>
+                        </div>
+                        <Input placeholder="代付费(分)" className="textClsName"   style={{width:'180px'}} onChange={this.onchange.bind(this,'name')}/>
+                    </Row>
+                </Dialog>
+            </div>
+        );
     }
 }
 

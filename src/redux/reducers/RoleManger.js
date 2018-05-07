@@ -1,29 +1,31 @@
 /**
  @author wp
 **/
-import { INITDATA,GETDATA } from '../actions/ServiceRate'
 
 //初始化状态
 const initialState = {
     'allData':[],
     'dataSource':[],
     'isLoad':true,
-    'total':0
+    'total':0,
+    chooseDatas:[],
+    chooseIndex:[]
 }
 export default function PrintDialog(state = initialState, action){
     switch (action.type) {
-        case INITDATA:
+        case 'INITGUNSDATA':
                 return Object.assign({},state,{
-                    'dataSource':action.dataSource.slice(0,20),
+                    'dataSource':action.dataSource,
                     'isLoad':false,
-                    'allData':action.dataSource,
-                    'total':action.dataSource.length,
+                    'total':action.total,
+                    chooseDatas:[]
                 });
             break;
 
-        case GETDATA:
+        case 'CHOOSEDATA':
                 return Object.assign({},state,{
-                    'dataSource':state.allData.slice((action.pageno-1)*20,(action.pageno-1)*20+20),
+                    chooseDatas:action.chooseDatas,
+                    chooseIndex:action.chooseIndex,
                 });
             break;
         default:

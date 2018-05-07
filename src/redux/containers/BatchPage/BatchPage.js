@@ -1,36 +1,21 @@
 import React,{Component,PropTypes} from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import Checkbox from 'qnui/lib/checkbox';
 import DatePicker, { RangePicker } from 'qnui/lib/date-picker';
-import Search from 'qnui/lib/search';
-import Tab from 'qnui/lib/tab';
 import Button from 'qnui/lib/button';
 import Table from 'qnui/lib/table';
-import * as ServiceRate from '../../actions/ServiceRate'
-// import {getInitData} from '../../actions/ServiceRate';
+import * as BatchPageAction from '../../actions/BatchPageAction'
 import { Row, Col } from 'qnui/lib/grid';
 import Input from 'qnui/lib/input';
 import Pagination from 'qnui/lib/pagination';
 import Dimensions from 'react-dimensions';
 import TradeDetailDialog from '../../components/TradeDetailDialog/index.js'
+import {FormatDateTime} from "static/utils.js"
+import Menu from 'qnui/lib/menu';
+import Config from 'static/config.js'
+import Dropdown from 'qnui/lib/dropdown';
 
 
-
-const   getData = (length) => {
-        let result = [];
-        for (let i = 0; i < length; i++) {
-            result.push({
-                title: {name: `2000`},
-                id: 100306660940 + i,
-                time: 2000 + i
-            });
-        }
-        return result;
-    },
-    render = (value, index, record) => {
-        return <a>Remove({record.id})</a>;
-    };
 
 
 class BatchPage extends Component {
@@ -38,135 +23,195 @@ class BatchPage extends Component {
         super(props);
 
         this.state = {
-            dataSource: getData(30),
-            detailvisible:false
+            detailvisible:false,
+            orderdata:{},
+            visibles:false
         };
+
+        this.startDate='';
+        this.endDate='';
+        this.merchantName='';
+        this.mchId='';
+        this.orderNo='';
+        this.agentName='';
+        this.filterAppId='';
+        this.orderState='';
+        this.result='';
+        this.agentOrderNo='';
+        this.orderSta=''
 
     }
 
-  onSearch(value) {
-      console.log(value);
-  }
+    onSearch(value) {
+        const {getInitData} = (this.props);
+        getInitData(1,this.startDate,this.endDate,this.orderNo,this.agentOrderNo,this.agentName,this.filterAppId,this.merchantName,this.mchId,this.orderState,this.result);
+    }
 
-  loadTradeList(){
-    let self = this;
-    let list = [];
-    //gettbtime();
+    onExport(){
+        const {exportData} = (this.props);
+        exportData(1,this.startDate,this.endDate,this.orderNo,this.agentOrderNo,this.agentName,this.filterAppId,this.merchantName,this.mchId,this.orderState,this.result); 
+    }
 
-    const {getTradeList} = this.props;
-    getTradeList();
 
-  }
-  componentWillMount() {
-      console.log('Component WILL MOUNT!');
-  }
+    componentWillMount() {
+    }
 
-  componentDidMount(){
-    console.log("首次渲染页面")
-    console.log(this.props)
-    const {getInitData} = (this.props);
-    getInitData();
-  }
+    componentDidMount(){
+        const {getInitData,emptyData} = (this.props);
+        emptyData();
+        getInitData();
+    }
 
     onRowClick(record, index, e) {
         console.log(record, index, e);
-        this.setState({detailvisible:true})
+        this.setState({detailvisible:true,orderdata:record})
     }
-  // showDetail(value){
-  //       alert(value);
-  // }
+ 
+    cellRender = (value, index, record, context) => {
+        return (value/100).toFixed(2);
+    }
 
-  //  cellRender = (value, index, record, context) => {
-  //       return <span onClick={this.showDetail.bind(this,value)}>{value+'c'}</span>;
-  //  }
 
-  render() {
-        const {containerHeight} = (this.props);
-        
-        
+    cellTime = (value, index, record, context) => {
+        return FormatDateTime(value);
+    }
 
+
+    cellState = (value, index, record, context) => {
+        switch (value) {
+            case "A":
+                return "支付中";
+            case "B":
+                return "支付失败";
+            case "C":
+                return "支付完成";
+            case "D":
+                return "结算中";
+            case "E":
+                return "结算成功";
+            case "F":
+                return "预支付";
+            default:
+                return "";
+        }
+    }
+
+
+    handleChange(current) {
+        console.log(this.props);
+        const {getInitData} = this.props;
+        getInitData(current);
+    }
+
+
+    onVisibleChange = (visibles,type,e) => {
+        this.setState({
+            visibles:visibles
+        })
+    };
+    
+
+    render() {
+        const {containerHeight,dataSource,total,countMerchantNum,countOrderNum,totalMoney,totalProfit} = (this.props);
+        let PayStatement = Config.PayState.map((item,index)=>{
+            return <Menu.Item onClick={()=>{this.orderState = item.value;this.orderSta = item.name}}>{item.name}</Menu.Item>
+        })
         return (
             <div>
                 <Row>
                     <div style={{width:'25%'}}>
                         <span style={{fontSize:'14px',marginTop:'7px',width:'80px'}}>总商户数:</span>
-                        <span style={{fontSize:'14px',marginTop:'7px',width:'80px'}}>0</span>
+                        <span style={{fontSize:'14px',marginTop:'7px',width:'80px'}}>{countMerchantNum}</span>
                     </div>
                     <div style={{width:'25%'}}>
                         <span style={{fontSize:'14px',marginTop:'7px',width:'80px'}}>总订单数:</span>
-                        <span style={{fontSize:'14px',marginTop:'7px',width:'80px'}}>0</span>
+                        <span style={{fontSize:'14px',marginTop:'7px',width:'80px'}}>{countOrderNum}</span>
                     </div>
                     <div style={{width:'25%'}}>
                         <span style={{fontSize:'14px',marginTop:'7px',width:'80px'}}>总金额:</span>
-                        <span style={{fontSize:'14px',marginTop:'7px',width:'80px'}}>0</span>
+                        <span style={{fontSize:'14px',marginTop:'7px',width:'80px'}}>{totalMoney}</span>
                     </div>
                     <div style={{width:'25%'}}>
                         <span style={{fontSize:'14px',marginTop:'7px',width:'80px'}}>总分润:</span>
-                        <span style={{fontSize:'14px',marginTop:'7px',width:'80px'}}>0</span>
+                        <span style={{fontSize:'14px',marginTop:'7px',width:'80px'}}>{totalProfit}</span>
                     </div>
                 </Row>
                 <Row style={{marginTop:'20px'}}>
                     <span style={{fontSize:'14px',marginTop:'7px',width:'80px'}}>查询条件：</span>
-                    <Input placeholder="订单号" className="textClsName"   style={{width:'120px'}}/>
-                    <Input placeholder="渠道订单号" className="textClsName"  style={{width:'120px',marginLeft:'12px'}}/>
-                    <Input placeholder="渠道名称" className="textClsName"  style={{width:'120px',marginLeft:'12px'}}/>
-                    <Input placeholder="渠道编号" className="textClsName"  style={{width:'120px',marginLeft:'12px'}}/>
-                    <Input placeholder="商户名称" className="textClsName"  style={{width:'120px',marginLeft:'12px'}}/>
-                    <Input placeholder="商户号" className="textClsName"  style={{width:'120px',marginLeft:'12px'}}/>
-                    <Input placeholder="订单状态" className="textClsName"  style={{width:'120px',marginLeft:'12px'}}/>
-                    <Input placeholder="交易结果" className="textClsName"  style={{width:'120px',marginLeft:'12px'}}/>
+                    <Input placeholder="订单号" className="textClsName"   style={{width:'120px'}} onChange={(e)=>{this.orderNo = e}}/>
+                    <Input placeholder="渠道订单号" className="textClsName"  style={{width:'120px',marginLeft:'12px'}} onChange={(e)=>{this.agentOrderNo = e}}/>
+                    <Input placeholder="渠道名称" className="textClsName"  style={{width:'120px',marginLeft:'12px'}} onChange={(e)=>{this.agentName = e}}/>
+                    <Input placeholder="渠道编号" className="textClsName"  style={{width:'120px',marginLeft:'12px'}} onChange={(e)=>{this.filterAppId = e}}/>
+                    <Input placeholder="商户名称" className="textClsName"  style={{width:'120px',marginLeft:'12px'}} onChange={(e)=>{this.merchantName = e}}/>
+                    <Input placeholder="商户号" className="textClsName"  style={{width:'120px',marginLeft:'12px'}} onChange={(e)=>{this.mchId = e}}/>
+
+                    <Dropdown trigger={<Input placeholder="订单状态" className="textClsName"  style={{width:'120px',marginLeft:'12px'}} value={this.orderSta}/>}
+                              triggerType="click"
+                              visible={this.state.visibles}
+                              onVisibleChange={this.onVisibleChange}
+                              safeNode={() => this.refs.button}>
+                        <Menu>
+                            {PayStatement}
+                        </Menu>
+                    </Dropdown>
+                    <Input placeholder="交易结果" className="textClsName"  style={{width:'120px',marginLeft:'12px'}} onChange={(e)=>{this.result = e}}/>
                 </Row>
                 <Row style={{marginTop:'20px'}}>
                         <span style={{fontSize:'14px',marginTop:'7px',width:'80px'}}>时间选择：</span>
-                        <RangePicker />
-                        <Button type="primary" style={{width:'80px',marginLeft:'10px'}} >搜索</Button>
-                        <Button type="normal" style={{width:'80px',marginLeft:'10px'}} >导出</Button>
+                        <RangePicker onChange={(a, b) => {
+                            this.startDate = b[0];
+                            this.endDate = b[1];
+                        }} />
+                        <Button type="primary" style={{width:'80px',marginLeft:'10px'}} onClick={this.onSearch.bind(this)}>搜索</Button>
+                        <Button type="normal" style={{width:'80px',marginLeft:'10px'}} onClick={this.onExport.bind(this)}>导出</Button>
                 </Row>
                 <div style={{marginTop:'20px'}}>
-                    <Table dataSource={this.state.dataSource} onRowClick={this.onRowClick.bind(this)} fixedHeader maxBodyHeight={containerHeight}>
-                        <Table.Column title="订单号" dataIndex="id" width={100}/>
-                        <Table.Column title="渠道订单号" dataIndex="title.name" width={120}/>
-                        <Table.Column title="商户号" dataIndex="time"  width={100}/>
-                        <Table.Column title="商户名称" dataIndex="time"  width={100}/>
-                        <Table.Column title="交易时间" dataIndex="time"  width={100}/>
-                        {/*<Table.Column title="所属渠道" dataIndex="time"  width={100}/>*/}
-                        <Table.Column title="渠道编号" dataIndex="time"  width={100}/>
-                        <Table.Column title="交易金额" dataIndex="time"  width={100}/>
-                        <Table.Column title="费率（‰）" dataIndex="time"  width={120}/>
-                        <Table.Column title="代付费" dataIndex="time"  width={100}/>
-                        <Table.Column title="交易手续费" dataIndex="time"  width={120}/>
-                        <Table.Column title="交易状态" dataIndex="time"  width={100}/>
-                        {/*<Table.Column title="银行名称" dataIndex="time"  width={100}/>*/}
-                        <Table.Column title="交易结果" dataIndex="time"  width={100}/>
+                    <Table dataSource={dataSource} onRowClick={this.onRowClick.bind(this)} fixedHeader maxBodyHeight={containerHeight}>
+                        <Table.Column title="订单号" dataIndex="orderNo" width={100}/>
+                        <Table.Column title="渠道订单号" dataIndex="agentOrderNo" width={120}/>
+                        <Table.Column title="商户号" dataIndex="merchantId"  width={100}/>
+                        <Table.Column title="商户名称" dataIndex="name"  width={100}/>
+                        <Table.Column title="交易时间" dataIndex="createTime"  width={100} cell={this.cellTime}/>
+                        {/*<Table.Column title="所属渠道" dataIndex="channelAgent.name"  width={100}/>*/}
+                        <Table.Column title="渠道编号" dataIndex="channelAgent.appId"  width={100}/>
+                        <Table.Column title="交易金额" dataIndex="totalFee"  width={100}/>
+                        <Table.Column title="费率（‰）" dataIndex="fee0"  width={120}/>
+                        <Table.Column title="代付费" dataIndex="d0fee"  width={100} cell={this.cellRender}/>
+                        <Table.Column title="交易手续费" dataIndex="totalProfit"  width={120} cell={this.cellRender}/>
+                        <Table.Column title="交易状态" dataIndex="orderState"  width={100} cell={this.cellState}/>
+                        {/*<Table.Column title="银行名称" dataIndex="bankName"  width={100}/>*/}
+                        <Table.Column title="交易结果" dataIndex="result"  width={100} />
                         {/*<Table.Column title="上游渠道" dataIndex="time"  width={100}/>
                         <Table.Column title="交易卡号" dataIndex="time"  width={100}/>
                         <Table.Column title="交易类型" dataIndex="time"  width={100}/>
-                        <Table.Column title="结算卡号" dataIndex="time"  width={100}/>*/}
+                        <Table.Column title="结算卡号" dataIndex="merchant.cardNumber"  width={100}/>*/}
                     </Table>
                 </div>
                 <div style={{marginTop:'20px',float:'right'}}>
-                    <Pagination defaultCurrent={2} size="large" />
+
+                    <Pagination defaultCurrent={1} size="large" total={total} pageSize={20} onChange={this.handleChange.bind(this)} />
                 </div>
-                <TradeDetailDialog visible={this.state.detailvisible} index={this} title="交易流水详情"/>
+                <TradeDetailDialog visible={this.state.detailvisible} index={this} title="交易流水详情" dataSource={this.state.orderdata}/>
             </div>
         );
     }
-    reduceContent() {
-        this.setState({
-            dataSource: getData(10)
-        });
-    }
+
 }
 
 function mapStateToProps(state, ownProps){
     return {
-        data:state.ServiceRate.isupdate
+        dataSource:state.BatchPage.dataSource,
+        total:state.BatchPage.total,
+        countMerchantNum:state.BatchPage.countMerchantNum,
+        countOrderNum:state.BatchPage.countOrderNum,
+        totalMoney:state.BatchPage.totalMoney,
+        totalProfit:state.BatchPage.totalProfit,
     }
 }
 
 
 function mapDispatchToProps(dispatch,ownProps){
-    return  bindActionCreators( ServiceRate , dispatch )
+    return  bindActionCreators( BatchPageAction , dispatch )
 }
 
 export default Dimensions({

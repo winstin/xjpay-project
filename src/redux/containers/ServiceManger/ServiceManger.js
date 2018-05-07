@@ -1,10 +1,7 @@
 import React,{Component,PropTypes} from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import Checkbox from 'qnui/lib/checkbox';
 import DatePicker, { RangePicker } from 'qnui/lib/date-picker';
-import Search from 'qnui/lib/search';
-import Tab from 'qnui/lib/tab';
 import Button from 'qnui/lib/button';
 import Table from 'qnui/lib/table';
 import * as ServiceManger from '../../actions/ServiceManger'
@@ -12,33 +9,19 @@ import { Row, Col } from 'qnui/lib/grid';
 import Input from 'qnui/lib/input';
 import Pagination from 'qnui/lib/pagination';
 import Dimensions from 'react-dimensions';
-import Dialog from 'qnui/lib/dialog';
-import Dropdown from 'qnui/lib/dropdown';
-import Menu from 'qnui/lib/menu';
 
 import ServiceMangerDialog from '../../components/ServiceMangerDialog/index.js'
 
 import {errorToast} from "static/utils.js"
 
-
-
-// import {showLoading,hideLoading,isEmpty} from "static/utils.js"
-
-const onRowClick = function(record, index, e) {
-        console.log(record, index, e);
-    }
-const rowSelection = {
-        onChange: onRowClick,
-    };
-
-const menu = (
-    <Menu>
-        <Menu.Item>Option 1</Menu.Item>
-        <Menu.Item>Option 2</Menu.Item>
-        <Menu.Item>Option 3</Menu.Item>
-        <Menu.Item>Option 4</Menu.Item>
-    </Menu>
-);
+/**
+ * @Author   Winstin
+ * @DateTime 2018-05-04
+ * @param    string
+ * @license  服务商管理页面
+ * @version  [version]
+ * @return   {[type]}        [description]
+ */
 class ServiceMangers extends Component {
     constructor(props) {
         super(props);
@@ -47,11 +30,38 @@ class ServiceMangers extends Component {
             visibles:false,
             tip:''
         };
+        this.appId="";
+        this.appName="";
+
+
+        this.id = "";
+        this.name='';
+        this.signdate='';
+        this.expiredate='';
+        this.principal='';
+        this.phone='';
+        this.province='';
+        this.city='';
+        this.address='';
+        this.accountname='';
+        this.account='';
+        this.bank='';
+        this.accounttype='';
+        this.accountprovince='';
+        this.accountcity='';
+        this.accountaddress='';
+        this.idtype='';
+        this.linkman='';
+        this.linkmantel='';
+        this.appname='';
+        this.website
+
 
     }
 
-    onSearch(value) {
-        console.log(value);
+    onSearch(appId,appName) {
+        const {SearchData} = (this.props);
+        SearchData(this.appId,this.appName);
     }
 
 
@@ -64,21 +74,27 @@ class ServiceMangers extends Component {
         getInitData();
     }
 
-
-   onOpen(type){
-        const {chooseDatas} = (this.props);
-
-        if(chooseDatas.length == 0){
-            errorToast('请选择一条记录！');
-            return;
-        }
-
+    /**
+     * @Author   Winstin
+     * @DateTime 2018-05-04
+     * @param    string
+     * @license  添加修改
+     * @version  [version]
+     * @param    {[type]}   type [description]
+     * @return   {[type]}        [description]
+     */
+    onOpen(type){
+        const {chooseDatas,updateData} = (this.props);
         if(type == "add"){
             this.setState({
                 visible: true,
                 tip:'添加'
             });
         }else{
+            if(chooseDatas.length == 0){
+                errorToast('请选择一条记录！');
+                return;
+            }
             this.setState({
                 visible: true,
                 tip:'修改'
@@ -105,11 +121,22 @@ class ServiceMangers extends Component {
     };
 
 
+
     onRowClick = (index,record)=>{
         const {setData} = this.props;
         setData(index,record);
     }
 
+
+    /**
+     * @Author   Winstin
+     * @DateTime 2018-05-04
+     * @param    string
+     * @license  翻页
+     * @version  [version]
+     * @param    {[type]}   e [description]
+     * @return   {[type]}     [description]
+     */
     changePageno(e){
         const {getInitData} = (this.props);
         getInitData(e);
@@ -140,6 +167,16 @@ class ServiceMangers extends Component {
         }
     }
 
+    updateData(newData){
+        const {updateData,chooseDatas} = this.props;
+        updateData(chooseDatas,newData);
+    }
+
+    addData(newData){
+        const {addData} = this.props;
+        addData(newData)
+    }
+
     render() {
         const {containerHeight,dataSource,total,chooseDatas} = (this.props);
 
@@ -148,9 +185,11 @@ class ServiceMangers extends Component {
                 <Row >
                     <span style={{fontSize:'14px',marginTop:'7px',width:'80px'}}>查询条件：</span>
                      <Row>
-                        <Input placeholder="渠道名称" className="textClsName"  style={{width:'120px',marginLeft:'0px'}}/>
-                        <Input placeholder="渠道编号" className="textClsName"  style={{width:'120px',marginLeft:'12px'}}/>
-                        <Button type="primary" style={{width:'100px',marginLeft:'10px'}} >搜索</Button>
+                        <Input placeholder="渠道编号" className="textClsName"  style={{width:'120px'}} onChange={(e)=>{this.appId = e}}/>
+                        
+                        <Input placeholder="渠道名称" className="textClsName"  style={{width:'120px',marginLeft:'12px'}} onChange={(e)=>{this.appName = e}}/>
+                        
+                        <Button type="primary" style={{width:'100px',marginLeft:'10px'}} onClick={this.onSearch.bind(this)}>搜索</Button>
                     </Row>
                 </Row>
                 <div style={{marginTop:'20px'}}>
@@ -192,7 +231,7 @@ class ServiceMangers extends Component {
                     <Pagination defaultCurrent={1} size="large" total={total} pageSize={20} onChange={this.changePageno.bind(this)} />
                 </div>
 
-                {chooseDatas.length==1 && <ServiceMangerDialog  visible={this.state.visible} index={this} title={this.state.tip} dataSource={chooseDatas[0]}/>}
+                <ServiceMangerDialog  visible={this.state.visible} index={this} title={this.state.tip} dataSource={chooseDatas[0]}/>
                 
             </div>
         );

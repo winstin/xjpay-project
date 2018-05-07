@@ -7,7 +7,7 @@ import Search from 'qnui/lib/search';
 import Tab from 'qnui/lib/tab';
 import Button from 'qnui/lib/button';
 import Table from 'qnui/lib/table';
-import * as ServiceRate from '../../actions/ServiceRate'
+import * as OrderManger from '../../actions/OrderManger'
 import { Row, Col } from 'qnui/lib/grid';
 import Input from 'qnui/lib/input';
 import Pagination from 'qnui/lib/pagination';
@@ -52,10 +52,10 @@ const menu = (
         <Menu.Item>Option 4</Menu.Item>
     </Menu>
 );
-class OrderManger extends Component {
+class OrderMangers extends Component {
   constructor(props) {
         super(props);
-        this.id = "";
+        this.level = "";
         this.name = "";
         this.state = {
             data: getData(30),
@@ -72,20 +72,20 @@ class OrderManger extends Component {
 
     handleChange(current) {
         console.log(this.props);
-        const {getData} = this.props;
-        getData(current);
+        const {getInitData} = this.props;
+        getInitData(current,this.name,this.level);
     }
 
 
     searchData(){
-        const{SearchData} = this.props;
-        SearchData(this.id,this.name);
+       const {getInitData} = this.props;
+       getInitData(1,this.name,this.level);
     }
 
     onchange(type,value){
         // alert(type+'==='+value);
-        if(type == "id"){
-            this.id = value;
+        if(type == "level"){
+            this.level = value;
         }else{
             this.name = value;
         }
@@ -114,64 +114,81 @@ class OrderManger extends Component {
             visibles
         });
     };
+
+    cellRender = (value, index, record, context) => {
+        switch(value){
+            case 1:
+                return "是";
+                break;
+            case 0:
+                return "不是";
+                break;
+            
+
+        }
+    }
+
+    cellState = (value, index, record, context) => {
+        switch(value){
+            case 1:
+                return "启用";
+                break;
+            case 0:
+                return "不启用";
+                break;
+        }
+    }
     render() {
         const {dataSource,isLoad,total,containerHeight} = this.props;
         const {data} = this.state;
         
-       
-        // if(!isLoad){
-            console.log('服务商')
-            console.log(dataSource);
-            return (
+       console.log(dataSource)
+        return (
                 <div>
                     <Row>
-                        <span style={{fontSize:'14px',marginTop:'7px',width:'80px'}}>渠道编号：</span>
+                        <span style={{fontSize:'14px',marginTop:'7px',width:'80px'}}>菜单名称：</span>
                          <Row>
-                            <Input placeholder="渠道编号" className="textClsName"   style={{width:'120px'}} onChange={this.onchange.bind(this,'id')}/>
-                            <span style={{fontSize:'14px',marginTop:'7px',width:'70px',marginLeft:'12px'}}>渠道名称：</span>
-                            <Input placeholder="渠道名称" className="textClsName"   style={{width:'120px',marginLeft:'6px'}} onChange={this.onchange.bind(this,'name')}/>
+                            <Input placeholder="菜单名称" className="textClsName"   style={{width:'120px'}} onChange={this.onchange.bind(this,'name')}/>
+                            <span style={{fontSize:'14px',marginTop:'7px',width:'70px',marginLeft:'12px'}}>层级：</span>
+                            <Input placeholder="层级" className="textClsName"   style={{width:'120px',marginLeft:'6px'}} onChange={this.onchange.bind(this,'level')}/>
                             <Button type="primary" style={{width:'100px',marginLeft:'10px'}} onClick={this.searchData.bind(this)}>搜索</Button>
-                            <Button type="normal" style={{width:'100px',marginLeft:'10px'}} onClick={this.onOpen}>添加</Button>
+                            {/*<Button type="normal" style={{width:'100px',marginLeft:'10px'}} onClick={this.onOpen}>添加</Button>*/}
                         </Row>
                     </Row>
                     <div style={{marginTop:'20px'}}>
-                        <Table dataSource={data} onRowClick={onRowClick} fixedHeader maxBodyHeight={containerHeight} rowSelection={rowSelection}>
+                        <Table dataSource={dataSource} onRowClick={onRowClick} fixedHeader maxBodyHeight={containerHeight} rowSelection={rowSelection}>
                             <Table.Column title="id" dataIndex="id"/>
-                            <Table.Column title="菜单名称" dataIndex="createTime"/>
-                            <Table.Column title="菜单编号" dataIndex="appid"/>
-                            <Table.Column title="菜单父编号" dataIndex="agentName"/>
-                            <Table.Column title="请求地址" dataIndex="time"/>
-                            <Table.Column title="排序" dataIndex="time"/>
-                            <Table.Column title="层级" dataIndex="time"/>
-                            <Table.Column title="是否是菜单" dataIndex="time"/>
-                            <Table.Column title="状态" dataIndex="d0fee"/>
+                            <Table.Column title="菜单名称" dataIndex="name"/>
+                            <Table.Column title="菜单编号" dataIndex="code"/>
+                            <Table.Column title="菜单父编号" dataIndex="pcode"/>
+                            <Table.Column title="请求地址" dataIndex="url"/>
+                            <Table.Column title="排序" dataIndex="num"/>
+                            <Table.Column title="层级" dataIndex="levels"/>
+                            <Table.Column title="是否是菜单" dataIndex="ismenu" cell={this.cellRender}/>
+                            <Table.Column title="状态" dataIndex="status" cell={this.cellState}/>
                         </Table>
                     </div>
                     <div style={{marginTop:'20px',float:'right'}}>
-                        <Pagination defaultCurrent={1} size="large" onChange={this.handleChange.bind(this)} pageSize={15} total={total}/>
+                        <Pagination defaultCurrent={1} size="large" onChange={this.handleChange.bind(this)} pageSize={20} total={total}/>
                     </div>
                     
                     <OrderSetDialog visible={this.state.visible} index={this} title="角色分配"/>
                     
                 </div>
             );
-        // }else{
-        //     return <div style={{marginTop:'20px',float:'right'}}>111</div>
-        // }
     }
 }
 
 function mapStateToProps(state, ownProps){
     return {
-        dataSource:state.ServiceRate.dataSource,
-        isLoad:state.ServiceRate.isLoad,
-        total:state.ServiceRate.total,
+        dataSource:state.OrderManger.dataSource,
+        total:state.OrderManger.total,
     }
 }
 
 
 function mapDispatchToProps(dispatch,ownProps){
-    return  bindActionCreators( ServiceRate , dispatch )
+    return  bindActionCreators( OrderManger , dispatch )
 }
 
 export default Dimensions({
@@ -181,5 +198,5 @@ export default Dimensions({
   getWidth: function() { //element
     return window.innerWidth - 24;
   }
-})(connect(mapStateToProps, mapDispatchToProps)(OrderManger))
+})(connect(mapStateToProps, mapDispatchToProps)(OrderMangers))
 

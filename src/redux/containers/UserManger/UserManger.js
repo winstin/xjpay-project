@@ -19,6 +19,7 @@ import CustomDialog from '../../components/CustomDialog/index.js'
 import RoleDialog from '../../components/RoleDialog/index.js'
 
 import './UserManger.css';
+import * as UserManger from '../../actions/UserManger'
 
 
 const onRowClick = function(record, index, e) {
@@ -55,7 +56,7 @@ const menu = (
         <Menu.Item>Option 4</Menu.Item>
     </Menu>
 );
-class UserManger extends Component {
+class UserMangers extends Component {
   constructor(props) {
         super(props);
         this.id = "";
@@ -66,11 +67,14 @@ class UserManger extends Component {
             visibles:false,
             rolevisible:false
         };
+        this.startDate='';
+        this.endDate=''
     }
 
 
     componentDidMount(){
-        const {getInitData} = this.props;
+        const {getInitData,emptyData} = (this.props);
+        emptyData();
         getInitData();
     }
 
@@ -82,18 +86,12 @@ class UserManger extends Component {
 
 
     searchData(){
-        const{SearchData} = this.props;
-        SearchData(this.id,this.name);
+        const{getInitData} = this.props;
+        getInitData(1,this.startDate,this.endDate,this.name);
     }
 
     onchange(type,value){
-        // alert(type+'==='+value);
-        if(type == "id"){
-            this.id = value;
-        }else{
-            this.name = value;
-        }
-
+        this.name = value;
     }
     onOpen = () => {
         this.setState({
@@ -122,7 +120,7 @@ class UserManger extends Component {
         const {dataSource,isLoad,total,containerHeight} = this.props;
         const {data} = this.state;
         
-       
+       console.log(dataSource)
         // if(!isLoad){
             console.log('服务商')
             console.log(dataSource);
@@ -130,9 +128,13 @@ class UserManger extends Component {
                 <div>
                     <Row>
                         <span style={{fontSize:'14px',marginTop:'7px',width:'80px'}}>用户名称：</span>
-                        <Input placeholder="帐号/姓名/手机号" className="textClsName"   className='marginRight' onChange={this.onchange.bind(this,'id')}/>
+                        <Input placeholder="帐号/姓名/手机号" className="textClsName"   className='marginRight' onChange={this.onchange.bind(this,'name')}/>
                         <span style={{fontSize:'14px',marginTop:'7px',width:'80px'}}>注册时间：</span>
-                        <RangePicker />
+                        <RangePicker onChange={(a, b) => {
+                            console.log(b[0]);
+                            this.startDate = b[0];
+                            this.endDate = b[1];
+                        }} />
                         
                     </Row>
                     <Row className='marginTop-larger'>
@@ -146,24 +148,24 @@ class UserManger extends Component {
                         <Button type="primary" className='top-btn' onClick={()=>{this.setState({rolevisible:true})}}>角色分配</Button>
                     </Row>
                     <div style={{marginTop:'20px'}}>
-                        <Table dataSource={data} onRowClick={onRowClick} fixedHeader maxBodyHeight={containerHeight} rowSelection={rowSelection}>
-                            <Table.Column title="账号" dataIndex="id"/>
-                            <Table.Column title="姓名" dataIndex="createTime"/>
-                            <Table.Column title="性别" dataIndex="appid"/>
-                            <Table.Column title="角色" dataIndex="agentName"/>
-                            <Table.Column title="部门" dataIndex="time"/>
-                            <Table.Column title="邮箱" dataIndex="time"/>
-                            <Table.Column title="电话" dataIndex="time"/>
-                            <Table.Column title="创建时间" dataIndex="time"/>
-                            <Table.Column title="状态" dataIndex="d0fee"/>
+                        <Table dataSource={dataSource} onRowClick={onRowClick} fixedHeader maxBodyHeight={containerHeight} rowSelection={rowSelection}>
+                            <Table.Column title="账号" dataIndex="account"/>
+                            <Table.Column title="姓名" dataIndex="name"/>
+                            <Table.Column title="性别" dataIndex="sexName"/>
+                            <Table.Column title="角色" dataIndex="roleName"/>
+                            <Table.Column title="部门" dataIndex="deptName"/>
+                            {/*<Table.Column title="邮箱" dataIndex="time"/>
+                            <Table.Column title="电话" dataIndex="time"/>*/}
+                            <Table.Column title="创建时间" dataIndex="createtime"/>
+                            <Table.Column title="状态" dataIndex="statusName"/>
                         </Table>
                     </div>
                     <div style={{marginTop:'20px',float:'right'}}>
-                        <Pagination defaultCurrent={1} size="large" onChange={this.handleChange.bind(this)} pageSize={15} total={total}/>
+                        <Pagination defaultCurrent={1} size="large" onChange={this.handleChange.bind(this)} pageSize={20} total={total}/>
                     </div>
 
                     <CustomDialog visible={this.state.visible} index={this} title="添加"/>
-                    <RoleDialog visible={this.state.rolevisible} index={this} title="角色分配"/>
+                    <RoleDialog visible={this.state.rolevisible} index={this} title="角色分配" />
                 </div>
             );
         // }else{
@@ -174,15 +176,15 @@ class UserManger extends Component {
 
 function mapStateToProps(state, ownProps){
     return {
-        dataSource:state.ServiceRate.dataSource,
-        isLoad:state.ServiceRate.isLoad,
-        total:state.ServiceRate.total,
+        dataSource:state.UserManger.dataSource,
+        isLoad:state.UserManger.isLoad,
+        total:state.UserManger.total,
     }
 }
 
 
 function mapDispatchToProps(dispatch,ownProps){
-    return  bindActionCreators( ServiceRate , dispatch )
+    return  bindActionCreators( UserManger , dispatch )
 }
 
 export default Dimensions({
@@ -192,5 +194,5 @@ export default Dimensions({
   getWidth: function() { //element
     return window.innerWidth - 24;
   }
-})(connect(mapStateToProps, mapDispatchToProps)(UserManger))
+})(connect(mapStateToProps, mapDispatchToProps)(UserMangers))
 

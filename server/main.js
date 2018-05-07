@@ -8,7 +8,8 @@ const config = require('../config')
 const app = express()
 const paths = config.utils_paths
 const proxy = require('http-proxy-middleware')
-const context = [`/rest/agents/list`,`/rest/login`]
+const context = [`/rest/agents/list`,`/rest/login`,`/agentrate/list`,`/agents/*`,
+`/merchants/*`,`/agent/*`,`/orders/*`,`/merchantProfit/*`,`/agentProfit/*`,`/profit/*`,`/mgr/*`,`/profits/*`,`/roles/*`,`/role/*`,`/menus/*`]
 const cookieParser = require('cookie-parser');
 
 //options可选的配置参数请自行看readme.md文档，通常只需要配置target，也就是你的api所属的域名。

@@ -13,7 +13,9 @@ import { Row, Col } from 'qnui/lib/grid';
 import Input from 'qnui/lib/input';
 import DatePicker, { RangePicker } from 'qnui/lib/date-picker';
 import Dimensions from 'react-dimensions';
+import * as GetManger from '../../actions/GetManger'
 
+import {FormatDateTime} from "static/utils.js"
 
 // import MySettings from './MySettings/MySettings';
 // import MyBlackList from './MyBlackList/MyBlackList';
@@ -40,24 +42,10 @@ const onRowClick = function(record, index, e){
             })
         }
         return result;
-    },
-    renderOrder = (value, index, record) => {
-        return <div style={{display: 'inline-flex',flexDirection:'row'}}>
-                   <img style={{width:'60px',height:'60px',minHeight:'60px',minWidth:'60px'}} alt="商品图片" src="https://img.alicdn.com/bao/uploaded/i1/TB1znGQNXXXXXbEXpXXXXXXXXXX_!!0-item_pic.jpg_80x80.jpg"/>&nbsp;&nbsp;
-                   <a className="orange-text a-href" style={{color:"#4990E2",marginLeft:'10px'}}>不锈钢盖帽 圆头六角螺冒 盖型螺母 装饰螺母 M4~M20 盖帽螺母</a>
-               </div>;
-    },
-    renderOper = (value, index, record) => {
-        return <div><a style={{color:"#4990E2"}} className="a-href">评价</a></div>;
-    },
-    renderNum = (value, index, record) => {
-        return <div><span>共3笔</span><br /><span className="orange-text">198.6元</span><br /><span>(快递：6.00元)</span></div>;
-    },
-    renderWw = (value, index, record) => {
-        return <div><span>Img</span>&nbsp;&nbsp;<span className="orange-text" style={{color:"#4990E2"}}>顾超js</span></div>;
-    };
+    }
+    
 
-class GetManger extends Component {
+class GetMangers extends Component {
     constructor(props){
         super(props);
         this.state = {
@@ -70,6 +58,16 @@ class GetManger extends Component {
             dataSource: getData(0, 5),
             rateState: '所有'
         }
+        this.startDate='';
+        this.endDate='';
+    }
+
+    componentDidMount(){
+        // console.log("首次渲染页面")
+        // console.log(this.props)
+        const {getInitData,emptyData} = (this.props);
+        emptyData();
+        getInitData();
     }
     onSelect(value){
         this.setState({
@@ -87,30 +85,43 @@ class GetManger extends Component {
           dataSource: getData(9, 14)
         })
     }
+
+    cellTime = (value, index, record, context) => {
+        return FormatDateTime(value);
+    }
+
+    onSearch() {
+        const {getInitData} = (this.props);
+        getInitData(1,this.startDate,this.endDate);
+    }
     render(){
-        const {add, value, switchState ,changeSwitchState,containerHeight} = this.props;
+        const {add, value, switchState ,changeSwitchState,containerHeight,dataSource} = this.props;
         const TabPane = Tab.TabPane;
-        const extraContent = <div className="radio-state"><div className='text-radio-state'>中差评电台提醒：</div><Switch className="radio-switch" checked={switchState} size="small" onChange={()=>{changeSwitchState(switchState)}} /></div>;
         return(
             <div>
-                <Row>
-                    <span style={{fontSize:'14px',marginTop:'7px',width:'70px',marginLeft:'12px'}}>时间选择：</span>
-                    <RangePicker /><Button type="primary" style={{width:'100px',marginLeft:'10px'}} >搜索</Button>
-                </Row>
+                <div>
+                    <span style={{fontSize:'14px',marginTop:'7px',width:'70px'}}>时间选择：</span>
+                    <RangePicker onChange={(a, b) => {
+                        console.log(b[0]);
+                        this.startDate = b[0];
+                        this.endDate = b[1];
+                    }} />
+                    <Button type="primary" style={{width:'100px',marginLeft:'10px'}} onClick={this.onSearch.bind(this)}>搜索</Button>
+                </div>
                 <div style={{marginTop:'10px',marginBottom:'10px'}}>
-                    <Table dataSource={this.state.dataSource} onRowClick={onRowClick} rowSelection={this.state.rowSelection} hasBorder={false} fixedHeader maxBodyHeight={containerHeight}>
-                        <Table.Column title={<b>交易日期</b>} dataIndex="id" cell={renderOrder}/>
-                        <Table.Column title={<b>交易金额</b>} dataIndex="title.name" width={200}/>
-                        <Table.Column title={<b>交易笔数</b>} dataIndex="time" width={150}/>
-                        <Table.Column title={<b>交易手续费分成</b>} dataIndex="time" cell={renderNum} width={150}/>
-                        <Table.Column title={<b>D0手续费</b>} dataIndex="id" cell={renderWw} width={150}/>
-                        <Table.Column title={<b>应结分润</b>} dataIndex="title.name" cell={renderOper} width={100}/>
-                        <Table.Column title={<b>收益</b>} dataIndex="title.name" cell={renderOper} width={100}/>
+                    <Table dataSource={dataSource} onRowClick={onRowClick} fixedHeader maxBodyHeight={containerHeight}>
+                        <Table.Column title='交易日期' dataIndex="sumDate" />
+                        <Table.Column title='交易金额' dataIndex="sumTotalFee" width={200}/>
+                        <Table.Column title='交易笔数' dataIndex="sumOrderNum" width={150}/>
+                        <Table.Column title='交易手续费分成' dataIndex="sumProfit" width={150}/>
+                        <Table.Column title='D0手续费' dataIndex="sumD0fee"  width={150}/>
+                        <Table.Column title='应结分润' dataIndex="sumProfit"  width={100}/>
+                        <Table.Column title='收益' dataIndex="sumTotalProfit"  width={100}/>
                     </Table>
                 </div>
-                <div style={{marginTop:'20px',float:'right'}}>
+                {/*<div style={{marginTop:'20px',float:'right'}}>
                     <Pagination pageSizeSelector={false} total={2} onChange={change}/>
-                </div>
+                </div>*/}
                 
             </div>
         );
@@ -121,13 +132,14 @@ class GetManger extends Component {
 
 function mapStateToProps(state, ownProps){
     return {
-        data:state.ServiceRate.isupdate
+        dataSource:state.GetManger.dataSource,
+        total:state.GetManger.total
     }
 }
 
 
 function mapDispatchToProps(dispatch,ownProps){
-    return  bindActionCreators( ServiceRate , dispatch )
+    return  bindActionCreators( GetManger , dispatch )
 }
 
 export default Dimensions({
@@ -137,5 +149,5 @@ export default Dimensions({
   getWidth: function() { //element
     return window.innerWidth - 24;
   }
-})(GetManger)
+})(connect(mapStateToProps, mapDispatchToProps)(GetMangers))
 

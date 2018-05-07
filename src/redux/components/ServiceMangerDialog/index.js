@@ -18,6 +18,7 @@ import Menu from 'qnui/lib/menu';
 
 import Config from '../../../config/config.js'
 import '../components.scss';
+import {api,isEmpty} from "static/utils.js"
 
 
 const onRowClick = function(record, index, e) {
@@ -45,26 +46,41 @@ const rowSelection = {
             };
         }
     };
+
+const accountprovince=[
+    {
+        name:'平台服务商',
+        value:1
+    },{
+        name:'渠道服务商',
+        value:2
+    }
+]
+
+const accountaddress=[
+    {
+        name:'企业代理',
+        value:1
+    },{
+        name:'个人代理',
+        value:2
+    }
+]
+
+const accounttype=[
+    {
+        name:'对公',
+        value:1
+    },{
+        name:'对私',
+        value:2
+    }
+]
     
-const menu = (
-    <Menu>
-        <Menu.Item>Option 1</Menu.Item>
-        <Menu.Item>Option 2</Menu.Item>
-        <Menu.Item>Option 3</Menu.Item>
-        <Menu.Item>Option 4</Menu.Item>
-    </Menu>
-);
 
-let department = Config.Department.map((item,index)=>{
-    return <Menu.Item>{item.name}</Menu.Item>
-})
 
-const sexCard = (
-    <Menu>
-        <Menu.Item>男</Menu.Item>
-        <Menu.Item>女</Menu.Item>
-    </Menu>
-);
+
+
 class CustomDialog extends Component {
   constructor(props) {
         super(props);
@@ -75,13 +91,37 @@ class CustomDialog extends Component {
             visible: false,
             visibles:false,
             visiblesex:false,
-            visiblesdepartment:false
+            visiblesdepartment:false,
+            newData:{},
+            visibles1:false,
+            visibles2:false,
+            visibles3:false
         };
     }
 
 
     
-
+    // id: 1
+    // name: 江苏星洁科技有限公司
+    // signdate: 2013-11-08
+    // expiredate: 2033-11-08
+    // principal: 陈晓峰
+    // phone: 13365203333
+    // province: 江苏省
+    // city: 泰州
+    // address: 泰州市海陵区青年南路37号402
+    // accountname: 江苏星洁科技有限公司
+    // account: 3210200091010000074188 
+    // bank: 江苏泰州农村商业银行鲍徐支行
+    // accounttype: 1
+    // accountprovince: 1
+    // accountcity: 91321291081599974H
+    // accountaddress: 1
+    // idtype: 
+    // linkman: 792282@qq.com
+    // linkmantel: 792282@qq.com
+    // appname: 星洁科技
+    // website: 
 
     
     onOpen = () => {
@@ -97,14 +137,39 @@ class CustomDialog extends Component {
         });
     }
 
+    onChangeInfo = () =>{
+        this.props.index.setState({
+            visible: false
+        });
+        this.props.index.updateData(this.state.newData);
+        this.state.newData={};
+    }
+
+    addData = () => {
+        this.props.index.setState({
+            visible: false
+        });
+        this.props.index.addData(this.state.newData);
+        this.state.newData={};
+    }
+
     toggleVisible = () => {
         this.setState({visiblesex:false})
     };
 
-    onVisibleChange = visibles => {
+    onVisibleChange1 = visibles => {
         this.setState({
-            // visiblesex:visibles,
-            visiblesdepartment:visibles
+            visibles1:visibles
+        })
+    };
+    onVisibleChange2 = visibles => {
+        this.setState({
+            visibles2:visibles
+        })
+    };
+    onVisibleChange3 = visibles => {
+        this.setState({
+            visibles3:visibles
         })
     };
 
@@ -114,11 +179,34 @@ class CustomDialog extends Component {
 
     render() {
         const {dataSource,visible,title} = this.props;
-
+        let province = accountprovince.map((item,index)=>{
+            return  <Menu.Item onClick={
+                        ()=>{
+                            this.state.newData.accountprovince = item.value;
+                            this.accountprovince=item.name}}>{item.name
+                        }
+                    </Menu.Item>
+        })
+        let address = accountaddress.map((item,index)=>{
+            return <Menu.Item onClick={
+                ()=>{
+                    this.state.newData.accountaddress = item.value;
+                    this.accountaddress=item.name
+                }
+            }>{item.name}</Menu.Item>
+        })
+        let type = accounttype.map((item,index)=>{
+            return <Menu.Item onClick={
+                ()=>{
+                    this.state.newData.accounttype = item.value;
+                    this.accounttype=item.name
+                }
+            }>{item.name}</Menu.Item>
+        })
         if(title == '修改'){
             return (
                 <Dialog visible={visible}
-                        onOk={this.onClose}
+                        onOk={this.onChangeInfo}
                         closable="esc,mask,close"
                         onCancel={this.onClose}
                         onClose={this.onClose} title={title}>
@@ -130,90 +218,88 @@ class CustomDialog extends Component {
                                 <span style={{fontSize:'14px',marginTop:'7px'}}>公司名称：</span>
                             </div>
                             
-                            <Input placeholder="公司名称" className='classWidth'    value={dataSource.name}/>
+                            <Input placeholder="公司名称" className='classWidth'    defaultValue={dataSource.name} onChange={(e)=>{this.state.newData.name = e}}/>
                             <div className="flexStyle">
                                 <span></span>
                                 <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>执照编号：</span>
                             </div>
-                            <Input value={dataSource.accountcity} placeholder="执照编号" className='classWidth'    />
+                            <Input defaultValue={dataSource.accountcity} placeholder="执照编号" className='classWidth'   onChange={(e)=>{this.state.newData.accountcity = e}} />
                         </Row>
                         <Row className="marginTop">
                             <div className="flexStyle">
                                 <span></span>
                                 <span style={{fontSize:'14px',marginTop:'7px'}}>渠道类型：</span>
                             </div>
-                            <Input value={dataSource.accountprovince} placeholder="渠道类型" className='classWidth'    />
+                            <Dropdown trigger={<Input  placeholder="渠道类型" className='classWidth'  defaultValue={dataSource.accountprovince ==1 ? "平台服务商" :"渠道服务商"}  />}
+                                      triggerType="click"
+                                      visible={this.state.visibles1}
+                                      onVisibleChange={this.onVisibleChange1}
+                                      safeNode={() => this.refs.button}>
+                                <Menu>
+                                    {province}
+                                </Menu>
+                            </Dropdown>
                             <div className="flexStyle">
                                 <span></span>
                                 <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>渠道级别：</span>
                             </div>
-                            <Input value={dataSource.accountaddress} placeholder="渠道级别" className='classWidth'    />
+                            <Dropdown trigger={<Input  placeholder="渠道级别" className='classWidth'   defaultValue={dataSource.accountaddress == 1 ?'企业代理':'个人代理'}/>}
+                                      triggerType="click"
+                                      visible={this.state.visibles2}
+                                      onVisibleChange={this.onVisibleChange2}
+                                      safeNode={() => this.refs.button}>
+                                <Menu>
+                                    {address}
+                                </Menu>
+                            </Dropdown>
                         </Row>
                         <Row className="marginTop">
                             <div className="flexStyle">
                                 <span></span>
                                 <span style={{fontSize:'14px',marginTop:'7px'}}>签约时间：</span>
                             </div>
-                            <Input value={dataSource.signdate} placeholder="签约时间" className='classWidth'    />
+                            <Input defaultValue={dataSource.signdate} htmlType='date' placeholder="签约时间" className='classWidth'   onChange={(e)=>{this.state.newData.signdate = e}} />
                             <div className="flexStyle">
                                 <span></span>
                                 <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>到期时间：</span>
                             </div>
-                            <Input value={dataSource.expiredate} placeholder="到期时间" className='classWidth'    />
+                            <Input defaultValue={dataSource.expiredate} htmlType='date' placeholder="到期时间" className='classWidth'   onChange={(e)=>{this.state.newData.expiredate = e}} />
                         </Row>
                         <Row className="marginTop">
                             <div className="flexStyle">
                                 <span></span>
                                 <span style={{fontSize:'14px',marginTop:'7px'}}>法人姓名：</span>
                             </div>
-                            <Dropdown trigger={<Input value={dataSource.name} placeholder="法人姓名" className='classWidth'    />}
-                                      triggerType="click"
-                                      visible={this.state.visibles3}
-                                      onVisibleChange={this.onVisibleChange}
-                                      safeNode={() => this.refs.button}>
-                                {menu}
-                            </Dropdown>
+                            <Input defaultValue={dataSource.principal} placeholder="法人姓名" className='classWidth'  onChange={(e)=>{this.state.newData.principal = e}}  />
                             <div className="flexStyle">
                                 <span></span>
-                                <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>法人姓名：</span>
+                                <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>法人电话：</span>
                             </div>
-                            <Input value={dataSource.principal} placeholder="法人姓名" className='classWidth'    />
+                            <Input defaultValue={dataSource.phone} placeholder="法人姓名" className='classWidth'  onChange={(e)=>{this.state.newData.phone = e}}  />
                         </Row>
                         <Row className="marginTop">
                             <div className="flexStyle">
                                 <span></span>
                                 <span style={{fontSize:'14px',marginTop:'7px'}}>所在省份：</span>
                             </div>
-                            <Dropdown trigger={<Input value={dataSource.province} placeholder="所在省份" className='classWidth'    />}
-                                      triggerType="click"
-                                      visible={this.state.visibles2}
-                                      onVisibleChange={this.onVisibleChange}
-                                      safeNode={() => this.refs.button}>
-                                {menu}
-                            </Dropdown>
+                            <Input defaultValue={dataSource.province} placeholder="所在省份" className='classWidth'  onChange={(e)=>{this.state.newData.province = e}}  />
                             <div className="flexStyle">
                                 <span></span>
                                 <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>所在城市：</span>
                             </div>
-                            <Input value={dataSource.city} placeholder="所在城市" className='classWidth'    />
+                            <Input defaultValue={dataSource.city} placeholder="所在城市" className='classWidth'   onChange={(e)=>{this.state.newData.city = e}} />
                         </Row>
                         <Row className="marginTop">
                             <div className="flexStyle">
                                 <span></span>
                                 <span style={{fontSize:'14px',marginTop:'7px'}}>详细地址：</span>
                             </div>
-                            <Dropdown trigger={<Input value={dataSource.address} placeholder="详细地址" className='classWidth'    />}
-                                      triggerType="click"
-                                      visible={this.state.visibles3}
-                                      onVisibleChange={this.onVisibleChange}
-                                      safeNode={() => this.refs.button}>
-                                {menu}
-                            </Dropdown>
+                            <Input defaultValue={dataSource.address} placeholder="详细地址" className='classWidth'  onChange={(e)=>{this.state.newData.address = e}}  />
                             <div className="flexStyle">
                                 <span></span>
                                 <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>法人邮箱：</span>
                             </div>
-                            <Input value={dataSource.linkman} placeholder="法人邮箱" className='classWidth'    />
+                            <Input defaultValue={dataSource.linkman} placeholder="法人邮箱" className='classWidth'     onChange={(e)=>{this.state.newData.linkman = e}}/>
                         </Row>
 
                         <Row className="marginTop">
@@ -221,12 +307,12 @@ class CustomDialog extends Component {
                                 <span></span>
                                 <span style={{fontSize:'14px',marginTop:'7px'}}>商务邮箱：</span>
                             </div>
-                            <Input value={dataSource.linkmantel} placeholder="商务邮箱" className='classWidth'    />
+                            <Input defaultValue={dataSource.linkmantel} placeholder="商务邮箱" className='classWidth'   onChange={(e)=>{this.state.newData.linkmantel = e}} />
                             <div className="flexStyle">
                                 <span></span>
                                 <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>财务邮箱：</span>
                             </div>
-                            <Input value={dataSource.idtype} placeholder="财务邮箱" className='classWidth'    />
+                            <Input defaultValue={dataSource.idtype} placeholder="财务邮箱" className='classWidth'    onChange={(e)=>{this.state.newData.idtype = e}}/>
                         </Row>
 
                         <Row className="marginTop">
@@ -234,12 +320,12 @@ class CustomDialog extends Component {
                                 <span></span>
                                 <span style={{fontSize:'14px',marginTop:'7px'}}>APP名称：</span>
                             </div>
-                            <Input value={dataSource.appname} placeholder="APP名称" className='classWidth'    />
+                            <Input defaultValue={dataSource.appname} placeholder="APP名称" className='classWidth'   onChange={(e)=>{this.state.newData.appname = e}} />
                             <div className="flexStyle">
                                 <span></span>
                                 <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>官网地址：</span>
                             </div>
-                            <Input value={dataSource.website} placeholder="官网地址" className='classWidth'    />
+                            <Input defaultValue={dataSource.website} placeholder="官网地址" className='classWidth'   onChange={(e)=>{this.state.newData.website = e}} />
                         </Row>
 
                         <span style={{fontSize:'24px',lineHeight:'60px'}}>结算信息</span>
@@ -249,24 +335,32 @@ class CustomDialog extends Component {
                                 <span style={{fontSize:'14px',marginTop:'7px'}}>账户类型：</span>
                             </div>
                             
-                            <Input value={dataSource.accounttype} placeholder="账户类型" className='classWidth'    />
+                            <Dropdown trigger={<Input  placeholder="账户类型" className='classWidth'   defaultValue={dataSource.accounttype==1?'对公':'对私'} />}
+                                      triggerType="click"
+                                      visible={this.state.visibles3}
+                                      onVisibleChange={this.onVisibleChange3}
+                                      safeNode={() => this.refs.button}>
+                                <Menu>
+                                    {type}
+                                </Menu>
+                            </Dropdown>
                             <div className="flexStyle">
                                 <span></span>
                                 <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>收款户名：</span>
                             </div>
-                            <Input value={dataSource.accountname} placeholder="收款户名" className='classWidth'    />
+                            <Input defaultValue={dataSource.accountname} placeholder="收款户名" className='classWidth'    onChange={(e)=>{this.state.newData.accountname = e}}/>
                         </Row>
                         <Row className="marginTop">
                             <div className="flexStyle">
                                 <span></span>
                                 <span style={{fontSize:'14px',marginTop:'7px'}}>开户行：</span>
                             </div>
-                            <Input value={dataSource.bank} placeholder="开户行" className='classWidth'    />
+                            <Input defaultValue={dataSource.bank} placeholder="开户行" className='classWidth'   onChange={(e)=>{this.state.newData.bank = e}} />
                             <div className="flexStyle">
                                 <span></span>
                                 <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>收款账户：</span>
                             </div>
-                            <Input value={dataSource.bank} placeholder="收款账户" className='classWidth'    />
+                            <Input defaultValue={dataSource.account} placeholder="收款账户" className='classWidth'   onChange={(e)=>{this.state.newData.account = e}} />
                         </Row>
 
                 </Dialog>
@@ -274,7 +368,7 @@ class CustomDialog extends Component {
         }else{
              return (
                 <Dialog visible={visible}
-                        onOk={this.onClose}
+                        onOk={this.addData}
                         closable="esc,mask,close"
                         onCancel={this.onClose}
                         onClose={this.onClose} title={title}>
@@ -286,72 +380,90 @@ class CustomDialog extends Component {
                                 <span style={{fontSize:'14px',marginTop:'7px'}}>公司名称：</span>
                             </div>
                             
-                            <Input placeholder="公司名称" className='classWidth' />
+                            <Input placeholder="公司名称" className='classWidth' onChange={(e)=>{this.state.newData.name = e}}/>
                             <div className="flexStyle">
                                 <span></span>
                                 <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>执照编号：</span>
                             </div>
-                            <Input  placeholder="执照编号" className='classWidth'    />
+                            <Input  placeholder="执照编号" className='classWidth'    onChange={(e)=>{this.state.newData.accountcity = e}}/>
                         </Row>
                         <Row className="marginTop">
                             <div className="flexStyle">
                                 <span></span>
                                 <span style={{fontSize:'14px',marginTop:'7px'}}>渠道类型：</span>
                             </div>
-                            <Input  placeholder="渠道类型" className='classWidth'    />
+                            <Dropdown trigger={<Input  placeholder="渠道类型" className='classWidth'  value={this.accountprovince}  />}
+                                      triggerType="click"
+                                      visible={this.state.visibles1}
+                                      onVisibleChange={this.onVisibleChange1}
+                                      safeNode={() => this.refs.button}>
+                                <Menu>
+                                    {province}
+                                </Menu>
+                            </Dropdown>
+                            
                             <div className="flexStyle">
                                 <span></span>
                                 <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>渠道级别：</span>
                             </div>
-                            <Input  placeholder="渠道级别" className='classWidth'    />
+                            <Dropdown trigger={<Input  placeholder="渠道级别" className='classWidth'   value={this.accountaddress}/>}
+                                      triggerType="click"
+                                      visible={this.state.visibles2}
+                                      onVisibleChange={this.onVisibleChange2}
+                                      safeNode={() => this.refs.button}>
+                                <Menu>
+                                    {address}
+                                </Menu>
+                            </Dropdown>
+                            
                         </Row>
                         <Row className="marginTop">
                             <div className="flexStyle">
                                 <span></span>
                                 <span style={{fontSize:'14px',marginTop:'7px'}}>签约时间：</span>
                             </div>
-                            <Input  placeholder="签约时间" className='classWidth'    />
+                            <Input  placeholder="签约时间" className='classWidth'  htmlType='date'  onChange={(e)=>{this.state.newData.signdate = e}}/>
                             <div className="flexStyle">
                                 <span></span>
                                 <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>到期时间：</span>
                             </div>
-                            <Input  placeholder="到期时间" className='classWidth'    />
+                            <Input  placeholder="到期时间" className='classWidth'  htmlType='date' onChange={(e)=>{this.state.newData.expiredate = e}}  />
                         </Row>
                         <Row className="marginTop">
                             <div className="flexStyle">
                                 <span></span>
                                 <span style={{fontSize:'14px',marginTop:'7px'}}>法人姓名：</span>
                             </div>
-                            <Input placeholder="法人姓名" className='classWidth'    />
+                            <Input placeholder="法人姓名" className='classWidth'   onChange={(e)=>{this.state.newData.principal = e}}  />
                             <div className="flexStyle">
                                 <span></span>
-                                <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>法人姓名：</span>
+                                <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>法人电话：</span>
                             </div>
-                            <Input placeholder="法人姓名" className='classWidth'    />
+                            <Input placeholder="法人电话" className='classWidth'   onChange={(e)=>{this.state.newData.phone = e}} />
                         </Row>
                         <Row className="marginTop">
                             <div className="flexStyle">
                                 <span></span>
                                 <span style={{fontSize:'14px',marginTop:'7px'}}>所在省份：</span>
                             </div>
-                            <Input  placeholder="所在省份" className='classWidth'    />
+                            <Input  placeholder="所在省份" className='classWidth'    onChange={(e)=>{this.state.newData.province = e}} />
                             <div className="flexStyle">
                                 <span></span>
                                 <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>所在城市：</span>
                             </div>
-                            <Input  placeholder="所在城市" className='classWidth'    />
+                            <Input  placeholder="所在城市" className='classWidth'   onChange={(e)=>{this.state.newData.city = e}} />
                         </Row>
                         <Row className="marginTop">
                             <div className="flexStyle">
                                 <span></span>
                                 <span style={{fontSize:'14px',marginTop:'7px'}}>详细地址：</span>
                             </div>
-                            <Input  placeholder="详细地址" className='classWidth'    />
+                            <Input  placeholder="详细地址" className='classWidth'    onChange={(e)=>{this.state.newData.address = e}}/>
                             <div className="flexStyle">
                                 <span></span>
                                 <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>法人邮箱：</span>
                             </div>
-                            <Input  placeholder="法人邮箱" className='classWidth'    />
+                            <Input  placeholder="法人邮箱" className='classWidth'   onChange={(e)=>{this.state.newData.linkman = e}} />
                         </Row>
 
                         <Row className="marginTop">
@@ -359,12 +471,12 @@ class CustomDialog extends Component {
                                 <span></span>
                                 <span style={{fontSize:'14px',marginTop:'7px'}}>商务邮箱：</span>
                             </div>
-                            <Input  placeholder="商务邮箱" className='classWidth'    />
+                            <Input  placeholder="商务邮箱" className='classWidth'    onChange={(e)=>{this.state.newData.linkmantel = e}}/>
                             <div className="flexStyle">
                                 <span></span>
                                 <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>财务邮箱：</span>
                             </div>
-                            <Input  placeholder="财务邮箱" className='classWidth'    />
+                            <Input  placeholder="财务邮箱" className='classWidth'    onChange={(e)=>{this.state.newData.idtype = e}}/>
                         </Row>
 
                         <Row className="marginTop">
@@ -372,12 +484,12 @@ class CustomDialog extends Component {
                                 <span></span>
                                 <span style={{fontSize:'14px',marginTop:'7px'}}>APP名称：</span>
                             </div>
-                            <Input placeholder="APP名称" className='classWidth'    />
+                            <Input placeholder="APP名称" className='classWidth'   onChange={(e)=>{this.state.newData.appname = e}} />
                             <div className="flexStyle">
                                 <span></span>
                                 <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>官网地址：</span>
                             </div>
-                            <Input placeholder="官网地址" className='classWidth'    />
+                            <Input placeholder="官网地址" className='classWidth'   onChange={(e)=>{this.state.newData.website = e}} />
                         </Row>
 
                         <span style={{fontSize:'24px',lineHeight:'60px'}}>结算信息</span>
@@ -386,25 +498,32 @@ class CustomDialog extends Component {
                                 <span></span>
                                 <span style={{fontSize:'14px',marginTop:'7px'}}>账户类型：</span>
                             </div>
-                            
-                            <Input  placeholder="账户类型" className='classWidth'    />
+                            <Dropdown trigger={<Input  placeholder="账户类型" className='classWidth'   value={this.accounttype} />}
+                                      triggerType="click"
+                                      visible={this.state.visibles3}
+                                      onVisibleChange={this.onVisibleChange3}
+                                      safeNode={() => this.refs.button}>
+                                <Menu>
+                                    {type}
+                                </Menu>
+                            </Dropdown>
                             <div className="flexStyle">
                                 <span></span>
                                 <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>收款户名：</span>
                             </div>
-                            <Input placeholder="收款户名" className='classWidth'    />
+                            <Input placeholder="收款户名" className='classWidth'    onChange={(e)=>{this.state.newData.accountname = e}}/>
                         </Row>
                         <Row className="marginTop">
                             <div className="flexStyle">
                                 <span></span>
                                 <span style={{fontSize:'14px',marginTop:'7px'}}>开户行：</span>
                             </div>
-                            <Input  placeholder="开户行" className='classWidth'    />
+                            <Input  placeholder="开户行" className='classWidth'    onChange={(e)=>{this.state.newData.bank = e}} />
                             <div className="flexStyle">
                                 <span></span>
                                 <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>收款账户：</span>
                             </div>
-                            <Input  placeholder="收款账户" className='classWidth'    />
+                            <Input  placeholder="收款账户" className='classWidth'   onChange={(e)=>{this.state.newData.account = e}} />
                         </Row>
 
                 </Dialog>

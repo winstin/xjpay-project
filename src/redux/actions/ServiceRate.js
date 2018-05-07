@@ -10,24 +10,15 @@ import {api,ajax,compareTime,isEmpty} from "static/utils.js"
 
 export function getInitData(){
     return (dispatch)=>{
-        // ajax("/rest/agentrate/list","","GET",function(e){
-        //     // console.log("GoodsListTable：", e);
-        //     dispatch({
-        //         type:INITDATA,
-        //         dataSource: e
-        //     });
-        // });
-
         api({
-            method:'/rest/agents/list',
+            method:'/agentrate/list',
             mode:'jsonp',
             // args:{},
             callback:(rsp)=>{
-                console.log(rsp);
-
+                // console.log(rsp);
                 dispatch({
                     type:INITDATA,
-                    dataSource: e
+                    dataSource: rsp
                 });
             },
             errCallback:(msg)=>{
@@ -36,23 +27,7 @@ export function getInitData(){
                 // console.log(msg)
             }
         });
-        // ajax({
-        //     method:'/rest/agents/list',
-        //     mode:'json',
-        //     callback:(rsp)=>{
-        //         console.log(rsp);
-
-        //         dispatch({
-        //             type:INITDATA,
-        //             dataSource: e
-        //         });
-        //     },
-        //     errCallback:(msg)=>{
-        //         // self.setState({msg:'账号密码错误！'});
-        //         // clearAllCookie();
-        //         // console.log(msg)
-        //     }
-        // });
+       
     }
 }
 
@@ -66,18 +41,46 @@ export function getData(pageno){
     }
 }
 
-
-export function SearchData(appId,appName){
+export function SearchData(appId='',appName=''){
     return (dispatch)=>{
-        ajax("/agentrate/list",{
-            appId:appId,
-            appName:appName
-        },"GET",function(e){
-            // console.log("GoodsListTable：", e);
-            dispatch({
-                type:INITDATA,
-                dataSource: e
-            });
+        api({
+            method:'/agentrate/list',
+            mode:'jsonp',
+            args:{
+                appId:appId.trim(),
+                appName:appName.trim()
+            },
+            callback:(e)=>{
+                dispatch({
+                    type:INITDATA,
+                    dataSource: e,
+                });
+            },
+            errCallback:(msg)=>{
+                // console.log(msg)
+            }
         });
+       
     }
 }
+// export function SearchData(appId,appName){
+//     return (dispatch)=>{
+//         api({
+//             method:'/agentrate/list',
+//             mode:'jsonp',
+//             args:{},
+//             callback:(rsp)=>{
+//                 // console.log(rsp);
+//                 dispatch({
+//                     type:INITDATA,
+//                     dataSource: rsp
+//                 });
+//             },
+//             errCallback:(msg)=>{
+//                 // self.setState({msg:'账号密码错误！'});
+//                 // clearAllCookie();
+//                 // console.log(msg)
+//             }
+//         });
+//     }
+// }

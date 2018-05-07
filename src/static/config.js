@@ -94,10 +94,37 @@ const Orderment = [
 
 ]
 
+//支付账号
+const PayState = [
+	{
+		name:'全部',
+		value:''
+	},
+	{
+		name:'支付中',
+		value:'A'
+	},{
+		name:'支付失败',
+		value:'B'
+	},{
+		name:'支付完成',
+		value:'C'
+	},{
+		name:'结算中',
+		value:'D'
+	},{
+		name:'结算成功',
+		value:'E'
+	},{
+		name:'预支付',
+		value:'F'
+	}
+]
 
 
 
-export default {Appconfig,Department,RolePlayer,Orderment}
+
+export default {Appconfig,Department,RolePlayer,Orderment,PayState}
 /**
 项目常理存放地址
 **/

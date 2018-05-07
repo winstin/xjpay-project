@@ -1,24 +1,19 @@
 /**
  @author wp
 **/
+import { INITGUNSDATA,GETDATA } from '../actions/GunsIndex'
 
 //初始化状态
 const initialState = {
-    'allData':[],
-    'dataSource':[],
-    'isLoad':true,
-    'total':0,
-    chooseDatas:[],
-    chooseIndex:[]
+    dataSources:[],
+    total:0,
 }
 export default function PrintDialog(state = initialState, action){
     switch (action.type) {
-        case 'INITDATA':
+        case 'INITGUNSDATA':
                 return Object.assign({},state,{
-                    'dataSource':action.dataSource,
-                    'isLoad':false,
-                    'total':action.total,
-                    chooseDatas:[]
+                    dataSources:action.dataSource,
+                    total:action.total,
                 });
             break;
 

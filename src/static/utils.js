@@ -341,6 +341,37 @@ var Tools = {
 
   successToast: function(text,){
       Toast.success({content: text,hasMask:true,duration: 500});
+  },
+
+  promptToast:function(text,){
+      Toast.prompt({content: text,hasMask:true,duration: 500});
+  },
+  /**
+ * @Author   Winstin
+ * @DateTime 2018-05-05
+ * @param    string
+ * @license  时间转换
+ * @version  [version]
+ * @param    {[type]}   UnixTime [description]
+ */
+  FormatDateTime: function (UnixTime) {  
+      if(UnixTime== undefined){
+          return;
+      }
+      var a = UnixTime.replace("/Date(", "").replace(")/", "");  
+      var date = new Date(parseInt(a));  
+      var y = date.getFullYear();  
+      var m = date.getMonth() + 1;  
+      m = m < 10 ? ('0' + m) : m;  
+      var d = date.getDate();  
+      d = d < 10 ? ('0' + d) : d;  
+      var h = date.getHours();  
+      h = h < 10 ? ('0' + h) : h;  
+      var minute = date.getMinutes();  
+      var second = date.getSeconds();  
+      minute = minute < 10 ? ('0' + minute) : minute;  
+      second = second < 10 ? ('0' + second) : second;  
+      return y + '-' + m + '-' + d + ' ' + h + ':' + minute + ':' + second;  
   }
 
 };
@@ -353,5 +384,8 @@ export const showLoading = Tools.showLoading.bind(Tools);
 export const compareTime = Tools.compareTime.bind(Tools);
 export const errorToast = Tools.errorToast.bind(Tools);
 export const successToast = Tools.successToast.bind(Tools);
+export const FormatDateTime = Tools.FormatDateTime.bind(Tools);
+export const promptToast = Tools.promptToast.bind(Tools);
+
 
 export default Tools;

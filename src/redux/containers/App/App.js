@@ -34,6 +34,7 @@ function clearAllCookie() {
     }  
 }  
 
+let context = '';
 class App extends Component {
     constructor(props) {
         super(props);
@@ -42,7 +43,8 @@ class App extends Component {
           isLogin:false,
           password:'',
           username:'',
-          msg:''
+          msg:'',
+          context:[]
         }
     }
 
@@ -60,62 +62,46 @@ class App extends Component {
           }
         }
 
+        setTimeout(function(){
+          api({
+              method:'/menus/roleMenu',
+              mode:'jsonp',
+              args:{},
+              callback:(rsp)=>{
+                  if(rsp.data){
+                      for(let i =0;i<rsp.data.length;i++){
+                          if(rsp.data[i].children.length>=1){
+                              for(let m in rsp.data[i].children){
+                                context = context+' '+(rsp.data[i].children[m].name)
+                              }
+                          }else{
+                              context = context+' '+(rsp.data[i].name)
+                          }
+                      }
+                  }
+                  self.setState({context:rsp.data})
+              },
+              errCallback:(msg)=>{
+                
+              }
+          });
+        },500)
+        
+
     }
 
     handleSubmit() {
         let self = this;
-       
-        // ajax({
-        //     method:'/rest/auth',
-        //     mode:'json',
-        //     type:'POST',
-        //     args:{userName:this.state.username,password:this.state.password},
-        //     callback:(rsp)=>{
-        //        // console.log(rsp);
-        //        // 
-        //        document.cookie = rsp.randomKey +"="+ rsp.token;
-        //        self.setState({isLogin:true})
-        //     },
-        //     errCallback:(msg)=>{
-        //         // MsgToast('error','初始化获取数据失败！',2000);
-        //     }
-        // });
-
-        // api({
-        //     method:'/rest/auth',
-        //     mode:'json',
-        //     args:{userName:this.state.username,password:this.state.password},
-        //     callback:(rsp)=>{
-        //         console.log(rsp);
-
-        //         let now = new Date();
-        //         console.log(now)
-                
-        //         localStorage.setItem("randomKey",rsp.randomKey);
-        //         localStorage.setItem("token",rsp.token);
-        //         localStorage.setItem("loginTime",now);
-
-        //         clearAllCookie();
-        //         document.cookie = rsp.randomKey +"="+ rsp.token;
-        //         self.setState({isLogin:true})
-        //     },
-        //     errCallback:(msg)=>{
-        //         self.setState({msg:'账号密码错误！'});
-        //         clearAllCookie();
-        //         console.log(msg)
-        //     }
-        // });
-
 
         api({
             method:'/rest/login',
             mode:'json',
             args:{username:this.state.username,password:this.state.password},
             callback:(rsp)=>{
-                console.log(rsp);
                 let now = new Date();
                 localStorage.setItem("loginTime",now);
                 self.setState({isLogin:true,msg:''});
+
             },
             errCallback:(msg)=>{
                 self.setState({msg:'账号密码错误！'});
@@ -145,10 +131,109 @@ class App extends Component {
         }else{
             this.setState({password:value})
         }
-    }  
+    }
+
+    //自动生成菜单
+    checkInfo(value){
+        switch(value){
+            case"商户管理":
+              return {icon:'account',link:'/'}
+              break;
+            case"交易流水查询":
+              return {icon:'store',link:'/BatchPage'}
+              break;
+            case"商户手续费统计":
+              return {icon:'box',link:'/CommodityStatistics'}
+              break;
+            case"渠道分润统计":
+              return {icon:'box',link:'/ChannelStatistics'}
+              break;
+            case"收益管理":
+              return {icon:'account',link:'/GetManger'}
+              break;
+            case"服务商管理":
+              return {icon:'account',link:'/ServiceManger'}
+              break;
+            case"服务商费率":
+              return {icon:'account',link:'/ServiceRate'}
+              break;
+            case"用户管理":
+              return {icon:'account',link:'/UserManger'}
+              break;
+
+            case"交易管理":
+              return {icon:'store',link:''}
+              break;
+            case"结算管理":
+              return {icon:'box',link:''}
+              break;
+            case"系统管理":
+              return {icon:'account',link:''}
+              break;
+
+
+            case"角色管理":
+              return {icon:'account',link:'/RoleManger'}
+              break;
+            case"菜单管理":
+              return {icon:'account',link:'/OrderManger'}
+              break;
+             default:
+              return  {icon:'account',link:''}
+
+        }
+    }
+
     render(){
         const init = this.field.init;
-        const {isLogin,username,password,msg} = this.state;
+        const {isLogin,username,password,msg,context} = this.state;
+        let self = this;
+        let jsx = '';
+        if(context){
+          jsx = context.map((item,index)=>{
+              // if(self.checkInfo(item.name) == undefined){
+              //   return;
+              // }
+              if(item.children.length>=1){
+                let card = item.children.map((content,i)=>{
+                  // if(self.checkInfo(content.name) == undefined){
+                  //   return;
+                  // }
+                  return <Myitem
+                            itemId={item.id}
+                            kind = "navigation_max"
+                            icon=""
+                            link={self.checkInfo(content.name).link}
+                            text={content.name}
+                        ></Myitem>
+                })
+
+                return  <Myitem
+                            itemId={item.id}
+                            kind = "navigation_max"
+                            icon={self.checkInfo(item.name).icon}
+                            link=''
+                            text={item.name}
+                        >
+                        <Navigation>
+                          {card}
+                        </Navigation>
+                        </Myitem>
+              }else{
+                // if(self.checkInfo(item.name) == undefined){
+                //   return;
+                // }
+                return  <Myitem
+                            itemId={item.id}
+                            kind = "navigation_max"
+                            icon={self.checkInfo(item.name).icon}
+                            link={self.checkInfo(item.name).link}
+                            text={item.name}
+                        ></Myitem>
+              }
+          })
+        }
+
         if(!isLogin){
           return(
             <div id="login">
@@ -195,66 +280,67 @@ class App extends Component {
                             <Icon type ="account" />
                             <span>星洁科技</span>
                           </div>
-                          <Myitem
-                              kind = "navigation_max"
-                              itemId="Trade"
-                              icon="account"
-                              link="/"
-                              text="商户管理"
-                          >
-                              <Navigation>
-                                    <Myitem
-                                        itemId="Trade"
-                                        kind = "navigation_max"
-                                        link="/"
-                                        text="商户管理"
-                                        ></Myitem>
+                          {jsx}
+{/*                            <Myitem
+                                kind = "navigation_max"
+                                itemId="Trade"
+                                icon="account"
+                                link="/"
+                                text="商户管理"
+                            >
+                                <Navigation>
+                                      <Myitem
+                                          itemId="Trade"
+                                          kind = "navigation_max"
+                                          link="/"
+                                          text="商户管理"
+                                          ></Myitem>
+                                  </Navigation>
+                            </Myitem>
+                            <Myitem
+                                kind = "navigation_max"
+                                itemId="Item"
+                                icon="store"
+                                link="/SendError"
+                                text="交易管理"
+                            >
+                                <Navigation>
+                                      <Myitem
+                                          itemId="Item"
+                                          kind = "navigation_max"
+                                          link="/BatchPage"
+                                          text="交易流水查询"
+                                          ></Myitem>
                                 </Navigation>
-                          </Myitem>
-                          <Myitem
-                              kind = "navigation_max"
-                              itemId="Item"
-                              icon="store"
-                              link="/SendError"
-                              text="交易管理"
-                          >
-                              <Navigation>
-                                    <Myitem
-                                        itemId="Item"
-                                        kind = "navigation_max"
-                                        link="/BatchPage"
-                                        text="交易流水查询"
-                                        ></Myitem>
-                              </Navigation>
-                          </Myitem>
-                          <Myitem
-                              kind = "navigation_max"
-                              itemId="Box"
-                              icon="box"
-                              link="/Interceptor"
-                              text="结算管理"
-                          >
-                              <Navigation>
-                                    <Myitem
-                                        itemId="Box"
-                                        kind = "navigation_max"
-                                        link="/CommodityStatistics"
-                                        text="商品手续统计"
-                                        ></Myitem>
-                                    <Myitem
-                                        itemId="Box"
-                                        kind = "navigation_max"
-                                        link="/ChannelStatistics"
-                                        text="渠道分润统计"
-                                        ></Myitem>
-                                    <Myitem
-                                        itemId="Box"
-                                        kind = "navigation_max"
-                                        link="/GetManger"
-                                        text="收益管理"
-                                        ></Myitem>
-                              </Navigation>
-                          </Myitem>
+                            </Myitem>
+                            <Myitem
+                                kind = "navigation_max"
+                                itemId="Box"
+                                icon="box"
+                                link="/Interceptor"
+                                text="结算管理"
+                            >
+                                <Navigation>
+                                        <Myitem
+                                            itemId="Box"
+                                            kind = "navigation_max"
+                                            link="/CommodityStatistics"
+                                            text="商品手续统计"
+                                            ></Myitem>
+                                      <Myitem
+                                          itemId="Box"
+                                          kind = "navigation_max"
+                                          link="/ChannelStatistics"
+                                          text="渠道分润统计"
+                                          ></Myitem>
+                                      <Myitem
+                                          itemId="Box"
+                                          kind = "navigation_max"
+                                          link="/GetManger"
+                                          text="收益管理"
+                                          ></Myitem>
+                                </Navigation>
+                            </Myitem>
                           <Myitem
                               kind = "navigation_max"
                               itemId="User"
@@ -309,7 +395,7 @@ class App extends Component {
                           <Myitem
                               kind = "navigation_max"
                               itemId="Settings"
-                              icon="set"
+                              icon=""
                               link="/Login"
                               text="修改密码"
                           >
@@ -322,7 +408,7 @@ class App extends Component {
                               onClick = {this.loginOut.bind(this)}
                               text="退出"
                           >
-                          </Myitem>
+                          </Myitem>*/}
                       </Navigation>
                   </div>
                   <div id="module_data"  style={{backgroundColor:"white"}}>
