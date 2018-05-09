@@ -309,3 +309,8 @@
     margin-bottom: 10px
 }
 
+.Dialog-height{
+    height: 1000px;
+    overflow: hidden;
+}
+

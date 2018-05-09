@@ -95,14 +95,39 @@ class GetMangers extends Component {
         getInitData(1,this.startDate,this.endDate);
     }
     render(){
-        const {add, value, switchState ,changeSwitchState,containerHeight,dataSource} = this.props;
+        const {add, value, switchState ,changeSwitchState,containerHeight,dataSource,sumTotalFee,sumOrderNum,sumD0fee,sumProfit,sumTotalProfit} = this.props;
         const TabPane = Tab.TabPane;
         return(
             <div>
-                <div>
+                <div style={{display:'flex',width:'100%'}}>
+                    <div style={{width:'25%'}}>
+                        <span style={{fontSize:'14px',marginTop:'7px',width:'80px'}}>总交易金额:</span>
+                        <span style={{fontSize:'14px',marginTop:'7px',width:'80px'}}>{sumTotalFee}</span>
+                    </div>
+                    <div style={{width:'25%'}}>
+                        <span style={{fontSize:'14px',marginTop:'7px',width:'80px'}}>总交易笔数:</span>
+                        <span style={{fontSize:'14px',marginTop:'7px',width:'80px'}}>{sumOrderNum}</span>
+                    </div>
+                    <div style={{width:'25%'}}>
+                        <span style={{fontSize:'14px',marginTop:'7px',width:'80px'}}>总交易手续费分成:</span>
+                        <span style={{fontSize:'14px',marginTop:'7px',width:'80px'}}>{sumD0fee}</span>
+                    </div>
+                    <div style={{width:'25%'}}>
+                        <span style={{fontSize:'14px',marginTop:'7px',width:'80px'}}>总D0手续费:</span>
+                        <span style={{fontSize:'14px',marginTop:'7px',width:'80px'}}>{sumProfit}</span>
+                    </div>
+                    <div style={{width:'25%'}}>
+                        <span style={{fontSize:'14px',marginTop:'7px',width:'80px'}}>总应结分润:</span>
+                        <span style={{fontSize:'14px',marginTop:'7px',width:'80px'}}>{sumProfit}</span>
+                    </div>
+                    <div style={{width:'25%'}}>
+                        <span style={{fontSize:'14px',marginTop:'7px',width:'80px'}}>总收益:</span>
+                        <span style={{fontSize:'14px',marginTop:'7px',width:'80px'}}>{sumTotalProfit}</span>
+                    </div>
+                </div>
+                <div className="marginTop">
                     <span style={{fontSize:'14px',marginTop:'7px',width:'70px'}}>时间选择：</span>
                     <RangePicker onChange={(a, b) => {
-                        console.log(b[0]);
                         this.startDate = b[0];
                         this.endDate = b[1];
                     }} />
@@ -132,8 +157,13 @@ class GetMangers extends Component {
 
 function mapStateToProps(state, ownProps){
     return {
-        dataSource:state.GetManger.dataSource,
-        total:state.GetManger.total
+        dataSource:state.GetManger.dataSource|| [],
+        total:state.GetManger.total,
+        sumTotalFee:state.GetManger.sumTotalFee,
+        sumOrderNum:state.GetManger.sumOrderNum,
+        sumProfit:state.GetManger.sumProfit,
+        sumD0fee:state.GetManger.sumD0fee,
+        sumTotalProfit:state.GetManger.sumTotalProfit,
     }
 }
 

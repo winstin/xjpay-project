@@ -30,11 +30,20 @@ export function getInitData(pageno = 1,startDate='',endDate='',agentName='',filt
                 pageSize:20
             },
             callback:(rsp)=>{
-                dispatch({
-                    type:INITGUNSDATA,
-                    dataSource: rsp.data.data,
-                    total:Number(rsp.data.total)
-                });
+                if(rsp.data.data == ""){
+                    dispatch({
+                        type:INITGUNSDATA,
+                        dataSource: [],
+                        total:0
+                    });
+                }else{
+                    dispatch({
+                        type:INITGUNSDATA,
+                        dataSource: rsp.data.data,
+                        total:Number(rsp.data.total)
+                    });
+                }
+                
             },
             errCallback:(msg)=>{
                 // console.log(msg)

@@ -144,28 +144,28 @@ class App extends Component {
     checkInfo(value){
         switch(value){
             case"商户管理":
-              return {icon:'account',link:'/'}
+              return {icon:'account',link:'/dist/'}
               break;
             case"交易流水查询":
-              return {icon:'store',link:'/BatchPage'}
+              return {icon:'store',link:'/dist/BatchPage'}
               break;
             case"商户手续费统计":
-              return {icon:'box',link:'/CommodityStatistics'}
+              return {icon:'box',link:'/dist/CommodityStatistics'}
               break;
             case"渠道分润统计":
-              return {icon:'box',link:'/ChannelStatistics'}
+              return {icon:'box',link:'/dist/ChannelStatistics'}
               break;
             case"收益管理":
-              return {icon:'account',link:'/GetManger'}
+              return {icon:'account',link:'/dist/GetManger'}
               break;
             case"服务商管理":
-              return {icon:'account',link:'/ServiceManger'}
+              return {icon:'account',link:'/dist/ServiceManger'}
               break;
             case"服务商费率":
-              return {icon:'account',link:'/ServiceRate'}
+              return {icon:'account',link:'/dist/ServiceRate'}
               break;
             case"用户管理":
-              return {icon:'account',link:'/UserManger'}
+              return {icon:'account',link:'/dist/UserManger'}
               break;
 
             case"交易管理":
@@ -180,10 +180,10 @@ class App extends Component {
 
 
             case"角色管理":
-              return {icon:'account',link:'/RoleManger'}
+              return {icon:'account',link:'/dist/RoleManger'}
               break;
             case"菜单管理":
-              return {icon:'account',link:'/OrderManger'}
+              return {icon:'account',link:'/dist/OrderManger'}
               break;
              default:
               return  {icon:'minus',link:''}

@@ -1,10 +1,9 @@
 import React,{Component,PropTypes} from 'react'
-import Checkbox from 'qnui/lib/checkbox';
 import { Row, Col } from 'qnui/lib/grid';
 import Dialog from 'qnui/lib/dialog';
-const { Group: CheckboxGroup } = Checkbox;
 
-import Config from '../../../config/config.js'
+import Config from 'static/config.js'
+import Radio, { Group as RadioGroup } from 'qnui/lib/radio';
 
 
 class RoleDialog extends Component {
@@ -32,22 +31,28 @@ class RoleDialog extends Component {
 
 
     onChange(value) {
-        console.log(value)
         this.setState({
             value: value
         });
+        this.props.index.roleIds = value;
     }
 
     renderCheckbox(){
         let jsx = Config.RolePlayer.map((item,index)=>{
             return  <div>
-                        <Checkbox  value={item.value}>
-                        {Config.RolePlayer[index].name}
-                        </Checkbox>
+                        <Radio  value={item.id}>
+                            {Config.RolePlayer[index].name}
+                        </Radio>
                         <br/><br/>
                     </div>
         })
         return jsx;
+    }
+    setRoleid = () =>{
+        this.props.index.setState({
+            rolevisible: false
+        });
+        this.props.index.setRoleid();
     }
 
     render() {
@@ -55,13 +60,13 @@ class RoleDialog extends Component {
         
         return (
             <Dialog visible={visible}
-                    onOk={this.onClose}
+                    onOk={this.setRoleid}
                     closable="esc,mask,close"
                     onCancel={this.onClose}
                     onClose={this.onClose} title={title}>
-                <CheckboxGroup value={this.state.value} onChange={this.onChange.bind(this)}>
+                <RadioGroup value={this.state.value} onChange={this.onChange.bind(this)}>
                     {this.renderCheckbox()}
-                </CheckboxGroup>
+                </RadioGroup>
             </Dialog>
         );
     }

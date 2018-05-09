@@ -26,23 +26,23 @@ import {PersonalCenter,OrderManger,RoleManger,UserManger,Login,CommodityStatisti
 // ];
 
 export const createRoutes = () => ({
-    path: '/',
+    path: '/dist',
     component: App,
     indexRoute: {component: GunsIndex},
     childRoutes: [
-        {path:'/',component:GunsIndex},
-        {path:'/autoeva',component:AutoEva},
-        {path:'/ServiceRate',component:ServiceRate},
-        {path:'/BatchPage',component:BatchPage},
-        {path:'/ServiceManger',component:ServiceManger},
-        {path:'/GetManger',component:GetManger},
-        {path:'/ChannelStatistics',component:ChannelStatistics},
-        {path:'/CommodityStatistics',component:CommodityStatistics},
-        {path:'/Login',component:Login},
-        {path:'/UserManger',component:UserManger},
-        {path:'/RoleManger',component:RoleManger},
-        {path:'/OrderManger',component:OrderManger},
-        {path:'/Personal',component:PersonalCenter},
+        {path:'/dist',component:GunsIndex},
+        {path:'/dist/autoeva',component:AutoEva},
+        {path:'/dist/ServiceRate',component:ServiceRate},
+        {path:'/dist/BatchPage',component:BatchPage},
+        {path:'/dist/ServiceManger',component:ServiceManger},
+        {path:'/dist/GetManger',component:GetManger},
+        {path:'/dist/ChannelStatistics',component:ChannelStatistics},
+        {path:'/dist/CommodityStatistics',component:CommodityStatistics},
+        {path:'/dist/Login',component:Login},
+        {path:'/dist/UserManger',component:UserManger},
+        {path:'/dist/RoleManger',component:RoleManger},
+        {path:'/dist/OrderManger',component:OrderManger},
+        {path:'/dist/Personal',component:PersonalCenter},
     // PageNotFound(),
     // Redirect
   ]

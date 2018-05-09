@@ -167,7 +167,7 @@ class GunsIndex extends Component {
 
 function mapStateToProps(state, ownProps){
     return {
-        dataSources:state.GunIndex.dataSources,
+        dataSources:state.GunIndex.dataSources|| [],
         total:state.GunIndex.total
     }
 }

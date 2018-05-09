@@ -28,11 +28,32 @@ export function getInitData(pageno = 1,startDate='',endDate=''){
                 pageSize:20
             },
             callback:(rsp)=>{
-               
+                
+                let profitsData = rsp.data.data;
+                let sumTotalFee = 0;
+                let sumOrderNum = 0;
+                let sumProfit = 0;
+                let sumD0fee = 0;
+                let sumTotalProfit = 0;
+                for(let i in profitsData){
+
+
+                    sumTotalFee = sumTotalFee + Number(profitsData[i].sumTotalFee.replace(/\,/g,""));
+                    sumOrderNum = sumOrderNum + Number(profitsData[i].sumOrderNum);
+                    sumProfit = sumProfit + Number(profitsData[i].sumProfit.replace(/\,/g,""));
+                    sumD0fee = sumD0fee + Number(profitsData[i].sumD0fee.replace(/\,/g,""));
+                    sumTotalProfit = sumTotalProfit + Number(profitsData[i].sumTotalProfit.replace(/\,/g,""));
+                }
+
                 dispatch({
                     type:INITGUNSDATA,
                     dataSource: rsp.data.data,
-                    total:rsp.data.total
+                    total:rsp.data.total,
+                    sumTotalFee:sumTotalFee.toFixed(2),
+                    sumOrderNum:sumOrderNum,
+                    sumProfit:sumProfit.toFixed(2),
+                    sumD0fee:sumD0fee.toFixed(2),
+                    sumTotalProfit:sumTotalProfit.toFixed(2),
                 });
             },
             errCallback:(msg)=>{

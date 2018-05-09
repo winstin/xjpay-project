@@ -11,6 +11,7 @@ import Pagination from 'qnui/lib/pagination';
 import Dimensions from 'react-dimensions';
 
 import ServiceMangerDialog from '../../components/ServiceMangerDialog/index.js'
+import DetailsDialog from '../../components/DetailsDialog/index.js'
 
 import {errorToast} from "static/utils.js"
 
@@ -28,6 +29,7 @@ class ServiceMangers extends Component {
         this.state = {
             visible:false,
             visibles:false,
+            visible0:false,
             tip:''
         };
         this.appId="";
@@ -55,12 +57,13 @@ class ServiceMangers extends Component {
         this.linkmantel='';
         this.appname='';
         this.website
-
+        this.current = 1;
 
     }
 
     onSearch(appId,appName) {
-        const {SearchData} = (this.props);
+        const {getInitData,SearchData} = (this.props);
+        // getInitData(1,this.appId,this.appName);
         SearchData(this.appId,this.appName);
     }
 
@@ -72,6 +75,16 @@ class ServiceMangers extends Component {
     componentDidMount(){
         const {getInitData} = (this.props);
         getInitData();
+    }
+
+    reLoad(){
+        let self = this;
+        const{getInitData} = this.props;
+        setTimeout(
+            function(){
+                getInitData(self.current,self.appId,self.appName);
+            }
+        ,500)
     }
 
     /**
@@ -104,7 +117,8 @@ class ServiceMangers extends Component {
 
     onClose = () => {
         this.setState({
-            visible: false
+            visible: false,
+            visible0:false
         });
     }
 
@@ -138,8 +152,16 @@ class ServiceMangers extends Component {
      * @return   {[type]}     [description]
      */
     changePageno(e){
+        this.current = e;
         const {getInitData} = (this.props);
         getInitData(e);
+    }
+
+
+    showDeatil(value){
+        const {getDetailData} = (this.props);
+        getDetailData(value)
+        this.setState({visible0:true})
     }
 
 
@@ -167,18 +189,24 @@ class ServiceMangers extends Component {
         }
     }
 
+    cellAppId = (value, index, record, context) => {
+        return <div onClick={this.showDeatil.bind(this,value)}>{value}</div>
+    }
+
     updateData(newData){
         const {updateData,chooseDatas} = this.props;
         updateData(chooseDatas,newData);
+        this.reLoad();
     }
 
     addData(newData){
         const {addData} = this.props;
-        addData(newData)
+        addData(newData);
+        this.reLoad();
     }
 
     render() {
-        const {containerHeight,dataSource,total,chooseDatas} = (this.props);
+        const {containerHeight,dataSource,total,chooseDatas,downDetails,upDetail} = (this.props);
 
         return (
             <div>
@@ -199,7 +227,7 @@ class ServiceMangers extends Component {
                 </div>
                 <div style={{marginTop:'20px'}}>
                     <Table dataSource={dataSource} fixedHeader maxBodyHeight={containerHeight} rowSelection={{onChange: this.onRowClick,mode:'single'}}>
-                        <Table.Column title="渠道编号" dataIndex="appId" width={100}/>
+                        <Table.Column title="渠道编号" dataIndex="appId" width={100} cell={this.cellAppId}/>
                         <Table.Column title="公司名称" dataIndex="name" width={100}/>
                         <Table.Column title="执照编号" dataIndex="accountcity" width={200}/>
                         <Table.Column title="渠道类型" dataIndex="accountprovince" cell={this.cellAccountprovince} width={100}/>
@@ -231,6 +259,9 @@ class ServiceMangers extends Component {
                     <Pagination defaultCurrent={1} size="large" total={total} pageSize={20} onChange={this.changePageno.bind(this)} />
                 </div>
 
+
+                <DetailsDialog  visible={this.state.visible0} index={this} downDetails={downDetails} upDetail={upDetail}/>
+
                 <ServiceMangerDialog  visible={this.state.visible} index={this} title={this.state.tip} dataSource={chooseDatas[0]}/>
                 
             </div>
@@ -243,7 +274,9 @@ function mapStateToProps(state, ownProps){
     return {
         dataSource:state.ServiceManger.dataSource,
         total:state.ServiceManger.total,
-        chooseDatas:state.ServiceManger.chooseDatas
+        chooseDatas:state.ServiceManger.chooseDatas,
+        downDetails:state.ServiceManger.downDetails,
+        upDetail:state.ServiceManger.upDetail,
     }
 }
 

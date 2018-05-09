@@ -15,10 +15,10 @@ export default function PrintDialog(state = initialState, action){
     switch (action.type) {
         case INITDATA:
                 return Object.assign({},state,{
-                    'dataSource':action.dataSource.slice(0,20),
+                    'dataSource':action.dataSource,
                     'isLoad':false,
                     'allData':action.dataSource,
-                    'total':action.dataSource.length,
+                    'total':action.total,
                 });
             break;
 

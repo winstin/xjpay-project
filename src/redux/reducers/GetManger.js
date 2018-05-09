@@ -8,7 +8,12 @@ const initialState = {
     'allData':[],
     'dataSource':[],
     'isLoad':true,
-    'total':0
+    'total':0,
+    sumTotalFee:0,
+    sumOrderNum:0,
+    sumProfit:0,
+    sumD0fee:0,
+    sumTotalProfit:0,
 }
 export default function PrintDialog(state = initialState, action){
     switch (action.type) {
@@ -17,6 +22,11 @@ export default function PrintDialog(state = initialState, action){
                 return Object.assign({},state,{
                     dataSource:action.dataSource,
                     total:action.total,
+                    sumTotalFee:action.sumTotalFee,
+                    sumOrderNum:action.sumOrderNum,
+                    sumProfit:action.sumProfit,
+                    sumD0fee:action.sumD0fee,
+                    sumTotalProfit:action.sumTotalProfit,
                 });
             break;
 

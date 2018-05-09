@@ -30,7 +30,7 @@ const upstreamMent = [{
     value:'HF_SERVICE'
 },{
     name:'Q2',
-    value:1
+    value:'CONGYU_SERVICE'
 },{
     name:'Q3',
     value:'KFT_SERVICE'
@@ -75,6 +75,7 @@ class ServiceRates extends Component {
             }
         };
         this.oldData = {};
+        this.current = 1;
     }
 
 
@@ -83,22 +84,31 @@ class ServiceRates extends Component {
         getInitData();
     }
 
+
+    reLoad(){
+        let self = this;
+        const{getInitData} = this.props;
+        setTimeout(
+            function(){
+                getInitData(self.current,self.id,self.name);
+            }
+        ,500)
+    }
+
     handleChange(current) {
+        this.current = current;
         console.log(this.props);
         const {getInitData} = this.props;
-        getInitData(getInitData,this.id,this.name);
-        // getData(current);
+        getInitData(current,this.id,this.name);
     }
 
 
     searchData(){
         const{getInitData,SearchData} = this.props;
         getInitData(1,this.id,this.name);
-        // SearchData(this.id,this.name)
     }
 
     onchange(type,value){
-        // alert(type+'==='+value);
         if(type == "id"){
             this.id = value;
         }else{
@@ -107,8 +117,6 @@ class ServiceRates extends Component {
 
     }
     onOpen = () => {
-        // const {getServiceData} = this.props;
-        // getServiceData();
         this.setState({
             visible: true
         });
@@ -152,7 +160,7 @@ class ServiceRates extends Component {
         });
         const {getInitData,addData} = this.props;
         addData(this.state.newData);
-        setTimeout(function(){getInitData()},500);
+        this.reLoad();
 
     }
 
@@ -162,8 +170,11 @@ class ServiceRates extends Component {
         this.setState({
             visible0: false
         });
-        // const {getInitData,addData} = this.props;
-        // addData(this.state.newData);
+        console.log(this.oldData)
+        const {updateData} = this.props;
+        updateData(this.oldData);
+
+        this.reLoad();
         // setTimeout(function(){getInitData()},500);
     }
 
@@ -208,9 +219,10 @@ class ServiceRates extends Component {
             return 'Q3';
         }else if(value == 'HF_SERVICE'){
             return 'Q1';
-        }else{
-            return value;
+        }else if(value == 'CONGYU_SERVICE'){
+            return 'Q2';
         }
+
     }
 
     cellPointType = (value, index, record, context) => {
@@ -453,13 +465,13 @@ class ServiceRates extends Component {
                             <span style={{fontSize:'14px',marginTop:'7px'}}>渠道编号：</span>
                         </div>
                         
-                        <Input placeholder="渠道编号" className="textClsName"   style={{width:'180px'}} value={this.oldData.appid} onChange={(e)=>{this.oldData.appid = e}}/>
+                        <Input placeholder="渠道编号" className="textClsName"   style={{width:'180px'}} value={this.oldData.appid} disabled/>
                         <div className="flexStyle">
                             <span></span>
                             <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>业务类型：</span>
                         </div>
 
-                        <Dropdown trigger={<Input placeholder="业务类型" className="textClsName"   style={{width:'180px'}} value={this.oldData.codeName}/>}
+                        <Dropdown trigger={<Input placeholder="业务类型" className="textClsName"   style={{width:'180px'}} value={this.oldData.codeName} />}
                                   triggerType="click"
                                   visible={this.state.visible1}
                                   onVisibleChange={this.onVisibleChange1}
@@ -474,7 +486,7 @@ class ServiceRates extends Component {
                             <span></span>
                             <span style={{fontSize:'14px',marginTop:'7px'}}>上游渠道：</span>
                         </div>
-                        <Dropdown trigger={<Input placeholder="上游渠道" className="textClsName"   style={{width:'180px'}} value={this.oldData.upstreamName}/>}
+                        {/*<Dropdown trigger={<Input placeholder="上游渠道" className="textClsName"   style={{width:'180px'}} value={this.oldData.upstreamName} disabled/>}
                                   triggerType="click"
                                   visible={this.state.visible2}
                                   onVisibleChange={this.onVisibleChange2}
@@ -482,13 +494,14 @@ class ServiceRates extends Component {
                             <Menu>
                                 {upstream0}
                             </Menu>
-                        </Dropdown>
+                        </Dropdown>*/}
+                        <Input placeholder="上游渠道" className="textClsName"   style={{width:'180px'}} value={this.oldData.upstreamName} disabled/>
                         <div className="flexStyle">
                             <span></span>
                             <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>交易类型：</span>
                         </div>
 
-                        <Dropdown trigger={<Input placeholder="交易类型" className="textClsName"   style={{width:'180px'}} value={this.oldData.pointTypeName}/>}
+                        {/*<Dropdown trigger={<Input placeholder="交易类型" className="textClsName"   style={{width:'180px'}} value={this.oldData.pointTypeName}/>}
                                   triggerType="click"
                                   visible={this.state.visible4}
                                   onVisibleChange={this.onVisibleChange4}
@@ -496,7 +509,8 @@ class ServiceRates extends Component {
                             <Menu>
                                 {pointType0}
                             </Menu>
-                        </Dropdown>
+                        </Dropdown>*/}
+                        <Input placeholder="交易类型" className="textClsName"   style={{width:'180px'}} value={this.oldData.pointTypeName} disabled/>
                     </Row>
                     <Row className="marginTop">
                         <div className="flexStyle">
@@ -516,19 +530,19 @@ class ServiceRates extends Component {
                             <span></span>
                             <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>鉴权费：</span>
                         </div>
-                        <Input placeholder="鉴权费" className="textClsName"   style={{width:'180px'}} value={this.oldData.mode} onChange={(e)=>{this.oldData.mode = e}}/>
+                        <Input placeholder="鉴权费" className="textClsName"   style={{width:'180px'}} defaultValue={this.oldData.mode} onChange={(e)=>{this.oldData.mode = e}}/>
                     </Row>
                     <Row className="marginTop">
                         <div className="flexStyle">
                             <span></span>
                             <span style={{fontSize:'14px',marginTop:'7px'}}>结算费率(‰)：</span>
                         </div>
-                        <Input placeholder="结算费率(‰)" className="textClsName"   style={{width:'180px'}} value={this.oldData.fee0} onChange={(e)=>{this.oldData.fee0 = e}}/>
+                        <Input placeholder="结算费率(‰)" className="textClsName"   style={{width:'180px'}} defaultValue={this.oldData.fee0} onChange={(e)=>{this.oldData.fee0 = e}}/>
                         <div className="flexStyle">
                             <span></span>
                             <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>代付费(分)：</span>
                         </div>
-                        <Input placeholder="代付费(分)" className="textClsName"   style={{width:'180px'}} value={this.oldData.d0fee} onChange={(e)=>{this.oldData.d0fee = e}}/>
+                        <Input placeholder="代付费(分)" className="textClsName"   style={{width:'180px'}} defaultValue={this.oldData.d0fee} onChange={(e)=>{this.oldData.d0fee = e}}/>
                     </Row>
                 </Dialog>
             </div>

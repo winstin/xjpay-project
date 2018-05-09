@@ -32,6 +32,9 @@ export function getInitData(pageno = 1,startDate='',endDate='',agentName='',merc
                 pageSize:20
             },
             callback:(rsp)=>{
+                if(rsp.data.data == ""){
+                    return;
+                }
                 dispatch({
                     type:INITGUNSDATA,
                     dataSource: rsp.data.data,

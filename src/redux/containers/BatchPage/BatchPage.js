@@ -78,17 +78,18 @@ class BatchPage extends Component {
 
 
     cellState = (value, index, record, context) => {
+
         switch (value) {
             case "A":
-                return "支付中";
+                return <span style={{color:'orange'}}>支付中</span>;
             case "B":
-                return "支付失败";
+                return <span style={{color:'red'}}>支付失败</span>;
             case "C":
-                return "支付完成";
+                return <span style={{color:'green'}}>支付完成</span>;
             case "D":
-                return "结算中";
+                return <span style={{color:'orange'}}>结算中</span>;
             case "E":
-                return "结算成功";
+                return <span style={{color:'green'}}>结算成功</span>;
             case "F":
                 return "预支付";
             default:
@@ -200,7 +201,7 @@ class BatchPage extends Component {
 
 function mapStateToProps(state, ownProps){
     return {
-        dataSource:state.BatchPage.dataSource,
+        dataSource:state.BatchPage.dataSource|| [],
         total:state.BatchPage.total,
         countMerchantNum:state.BatchPage.countMerchantNum,
         countOrderNum:state.BatchPage.countOrderNum,

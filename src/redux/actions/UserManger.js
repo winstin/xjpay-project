@@ -30,7 +30,9 @@ export function getInitData(pageno = 1,beginTime='',endTime='',name=''){
                 pageSize:20
             },
             callback:(rsp)=>{
-               
+                if(rsp.data.records == ""){
+                    return;
+                }
                 dispatch({
                     type:INITGUNSDATA,
                     dataSource: rsp.records,
@@ -129,10 +131,9 @@ export function addData(newData){
 
 
 export function removeData(userId){
-
     return (dispatch)=>{
         api({
-            method:'/mgr/delete',
+            method:'/users/delete',
             mode:'jsonp',
             args:{userId:userId},
             callback:(rsp)=>{
@@ -146,6 +147,25 @@ export function removeData(userId){
     }
 }
 
+export function setRoleId(userId,roleIds){
+    return (dispatch)=>{
+        api({
+            method:'/users/setRole',
+            mode:'jsonp',
+            args:{
+                userId:userId,
+                roleIds:roleIds
+            },
+            callback:(rsp)=>{
+                successToast('操作成功！');
+            },
+            errCallback:(msg)=>{
+                errorToast('操作失败！');
+            }
+        });
+      
+    }
+}
 
 
 
@@ -161,8 +181,11 @@ export function updateData(newData,oldData){
     let birthday = "";
     if(newData.birthday!=undefined){
         birthday = newData.birthday.split(' ')[0];
+    }else{
+        if(oldData.birthday!=undefined){
+            birthday = oldData.birthday.split(' ')[0];
+        }
     }
-    
     return (dispatch)=>{
         api({
             method:'/users/edit',
@@ -173,7 +196,7 @@ export function updateData(newData,oldData){
                 sex: newData.sex == undefined ? oldData.sex : newData.sex,
                 email: newData.email == undefined ? oldData.email : newData.email,
                 name: newData.name == undefined ? oldData.name : newData.name,
-                birthday: newData.birthday == undefined ? oldData.birthday : birthday,
+                birthday: birthday,
                 deptid: newData.deptid == undefined ? oldData.deptid : newData.deptid,
                 phone: newData.phone == undefined ? oldData.phone : newData.phone
             },

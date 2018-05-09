@@ -52,15 +52,28 @@ export function getInitData(pageno = 1,startDate='',endDate='',orderNo='',agentO
                         pageSize:20
                     },
                     callback:(rsp)=>{
-                        dispatch({
-                            type:INITGUNSDATA,
-                            dataSource: rsp.data.data,
-                            total:Number(rsp.data.total),
-                            countMerchantNum:e.data.countMerchantNum,
-                            countOrderNum:e.data.countOrderNum,
-                            totalMoney:e.data.totalMoney,
-                            totalProfit:e.data.totalProfit,
-                        });
+                        if(rsp.data.data == ""){
+                            dispatch({
+                                type:INITGUNSDATA,
+                                dataSource: [],
+                                total:0,
+                                countMerchantNum:e.data.countMerchantNum,
+                                countOrderNum:e.data.countOrderNum,
+                                totalMoney:e.data.totalMoney,
+                                totalProfit:e.data.totalProfit,
+                            });
+                        }else{
+                            dispatch({
+                                type:INITGUNSDATA,
+                                dataSource: rsp.data.data,
+                                total:Number(rsp.data.total),
+                                countMerchantNum:e.data.countMerchantNum,
+                                countOrderNum:e.data.countOrderNum,
+                                totalMoney:e.data.totalMoney,
+                                totalProfit:e.data.totalProfit,
+                            });
+                        }
+                        
                     },
                     errCallback:(msg)=>{
                         // console.log(msg)

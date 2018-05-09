@@ -3,8 +3,9 @@
 **/
 export const INITDATA = "INITDATA";
 export const CHOOSEDATA = "CHOOSEDATA";
+export const DetailDATA = "DetailDATA";
 
-import {api,isEmpty,successToast,errorToast} from "static/utils.js"
+import {api,ajax,isEmpty,successToast,errorToast} from "static/utils.js"
 
 /**
  * @Author   Winstin
@@ -15,16 +16,21 @@ import {api,isEmpty,successToast,errorToast} from "static/utils.js"
  * @param    {Number}   pageno [description]
  * @return   {[type]}          [description]
  */
-export function getInitData(pageno = 1){
-    
+export function getInitData(pageno = 1,appId='',appName=''){
     return (dispatch)=>{
         api({
             method:'/agents/page',
             mode:'jsonp',
             args:{
+                appId:appId,
+                appName:appName,
                 pageIndex:pageno,
+                pageSize:20
             },
             callback:(rsp)=>{
+                if(rsp.data.records == ""){
+                    return;
+                }
                 dispatch({
                     type:INITDATA,
                     dataSource: rsp.data.records,
@@ -38,6 +44,41 @@ export function getInitData(pageno = 1){
       
     }
 }
+
+/**
+ * @Author   Winstin
+ * @DateTime 2018-05-09
+ * @param    string
+ * @license  获取上下游信息
+ * @version  [version]
+ * @param    {[type]}   appId [description]
+ * @return   {[type]}         [description]
+ */
+export function getDetailData(appId){
+    return (dispatch)=>{
+        ajax({
+            method:'/agents/levelAll',
+            mode:'json',
+            args:{
+                url:"/"+appId,
+            },
+            callback:(rsp)=>{
+                dispatch({
+                    type:DetailDATA,
+                    downDetails: rsp.data.downDetails,
+                    upDetail:rsp.data.upDetail
+                });
+            },
+            errCallback:(msg)=>{
+                // console.log(msg)
+            }
+        });
+      
+    }
+}
+
+
+
 
 // id: 1
 // name: 江苏星洁科技有限公司
@@ -61,7 +102,16 @@ export function getInitData(pageno = 1){
 // appname: 星洁科技
 // website: 
 
-
+/**
+ * @Author   Winstin
+ * @DateTime 2018-05-09
+ * @param    string
+ * @license  修改数据
+ * @version  [version]
+ * @param    {[type]}   oldData [description]
+ * @param    {[type]}   newData [description]
+ * @return   {[type]}           [description]
+ */
 export function updateData(oldData,newData){
     return (dispatch)=>{
         api({
@@ -100,7 +150,14 @@ export function updateData(oldData,newData){
     }
 }
 
-
+/**
+ * @Author   Winstin
+ * @DateTime 2018-05-09
+ * @param    string
+ * @license  添加数据
+ * @version  [version]
+ * @param    {[type]}   newData [description]
+ */
 export function addData(newData){
     return (dispatch)=>{
         api({

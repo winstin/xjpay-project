@@ -8,7 +8,7 @@ export const SERVICEDATA = "SERVICEDATA";
 
 
 // import {ajax} from "./AY_API"
-import {api,ajax,compareTime,isEmpty} from "static/utils.js"
+import {api,ajax,compareTime,isEmpty,successToast,errorToast} from "static/utils.js"
 
 // export function getInitData(){
 //     return (dispatch)=>{
@@ -17,7 +17,7 @@ import {api,ajax,compareTime,isEmpty} from "static/utils.js"
 //             mode:'jsonp',
 //             // args:{},
 //             callback:(rsp)=>{
-//                 // console.log(rsp);
+//                 
 //                 dispatch({
 //                     type:INITDATA,
 //                     dataSource: rsp
@@ -44,7 +44,7 @@ export function getInitData(pageno=1,appId='',appName=''){
                 pageSize:20
             },
             callback:(rsp)=>{
-                // console.log(rsp);
+             
                 dispatch({
                     type:INITDATA,
                     dataSource: rsp.data.records,
@@ -69,7 +69,7 @@ export function getServiceData(){
             mode:'jsonp',
             // args:{},
             callback:(rsp)=>{
-                console.log(rsp);
+             
                 dispatch({
                     type:SERVICEDATA,
                     dataSource: rsp
@@ -96,23 +96,17 @@ export function addData(data = {}){
                 code:data.code,
                 mode:data.mode,
                 appid:data.appid,
-                pointTpye:data.pointType,
+                pointType:data.pointType,
                 type:data.type,
                 fee0:data.fee0,
                 d0fee:data.d0fee,
                 upstream:data.upstream,
             },
             callback:(rsp)=>{
-                console.log(rsp);
-                // dispatch({
-                //     type:SERVICEDATA,
-                //     dataSource: rsp
-                // });
+                successToast('添加成功！')
             },
             errCallback:(msg)=>{
-                // self.setState({msg:'账号密码错误！'});
-                // clearAllCookie();
-                // console.log(msg)
+                errorToast('添加失败！')
             }
         });
        
@@ -120,33 +114,17 @@ export function addData(data = {}){
 }
 
 
-export function updateData(oldData,newData){
+export function updateData(oldData){
     return (dispatch)=>{
         api({
-            method:'/agentrate/add',
+            method:'/agentrate/update',
             mode:'jsonp',
-            args:{
-                id:'',
-                code:data.code,
-                mode:data.mode,
-                appid:data.appid,
-                pointTpye:data.pointType,
-                type:data.type,
-                fee0:data.fee0,
-                d0fee:data.d0fee,
-                upstream:data.upstream,
-            },
+            args:oldData,
             callback:(rsp)=>{
-                console.log(rsp);
-                // dispatch({
-                //     type:SERVICEDATA,
-                //     dataSource: rsp
-                // });
+                successToast('修改成功！')
             },
             errCallback:(msg)=>{
-                // self.setState({msg:'账号密码错误！'});
-                // clearAllCookie();
-                // console.log(msg)
+                errorToast('修改失败！')
             }
         });
        
@@ -184,24 +162,4 @@ export function SearchData(appId='',appName=''){
        
     }
 }
-// export function SearchData(appId,appName){
-//     return (dispatch)=>{
-//         api({
-//             method:'/agentrate/list',
-//             mode:'jsonp',
-//             args:{},
-//             callback:(rsp)=>{
-//                 // console.log(rsp);
-//                 dispatch({
-//                     type:INITDATA,
-//                     dataSource: rsp
-//                 });
-//             },
-//             errCallback:(msg)=>{
-//                 // self.setState({msg:'账号密码错误！'});
-//                 // clearAllCookie();
-//                 // console.log(msg)
-//             }
-//         });
-//     }
-// }
+

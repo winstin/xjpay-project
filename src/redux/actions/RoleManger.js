@@ -27,7 +27,9 @@ export function getInitData(pageno = 1,name=''){
                 pageSize: 20
             },
             callback:(rsp)=>{
-               
+                if(rsp.data.records == ""){
+                    return;
+                }
                 dispatch({
                     type:INITGUNSDATA,
                     dataSource: rsp.data.records,

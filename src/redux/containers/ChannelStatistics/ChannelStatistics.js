@@ -17,30 +17,12 @@ import {FormatDateTime} from "static/utils.js"
 
 const onRowClick = function(record, index, e) {
         console.log(record, index, e);
-    },
-    getData = (length) => {
-        let result = [];
-        for (let i = 0; i < length; i++) {
-            result.push({
-                title: {name: `Quotation for 1PCS Nano ${3 + i}.0 controller compatible`},
-                id: 100306660940 + i,
-                time: 2000 + i
-            });
-        }
-        return result;
-    },
-    render = (value, index, record) => {
-        return <a>Remove({record.id})</a>;
-    };
+    }
 
 
 class GunsIndex extends Component {
   constructor(props) {
         super(props);
-
-        this.state = {
-            dataSource: getData(30)
-        };
         this.startDate = '';
         this.endDate = '';
         this.agentName = '';
@@ -48,7 +30,6 @@ class GunsIndex extends Component {
     }
 
   onSearch(value) {
-      console.log(value);
       const {getInitData} = (this.props);
       getInitData(1,this.startDate,this.endDate,this.agentName,this.filterAppId);
   }
@@ -77,6 +58,7 @@ class GunsIndex extends Component {
   render() {
         const {containerHeight,dataSource,total} = (this.props);
         console.log(dataSource)
+
         return (
             <div>
                 <Row>
@@ -111,16 +93,11 @@ class GunsIndex extends Component {
             </div>
         );
     }
-    reduceContent() {
-        this.setState({
-            dataSource: getData(10)
-        });
-    }
 }
 
 function mapStateToProps(state, ownProps){
     return {
-        dataSource:state.ChannelStatistics.dataSource,
+        dataSource:state.ChannelStatistics.dataSource || [],
         total:state.ChannelStatistics.total
     }
 }

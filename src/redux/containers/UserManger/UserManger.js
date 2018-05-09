@@ -38,6 +38,8 @@ class UserMangers extends Component {
         this.startDate='';
         this.endDate='';
         this.OldData = {};
+        this.roleIds = "";
+        this.current = 1;
     }
 
 
@@ -48,8 +50,17 @@ class UserMangers extends Component {
     }
 
     handleChange(current) {
+        this.current = current;
         const {getInitData} = this.props;
         getInitData(current,this.startDate,this.endDate,this.name);
+        // this.initState();
+    }
+
+
+    initState(){
+        // this.removeid = "";
+        // this.OldData = {};
+        // this.roleIds = ""
     }
 
 
@@ -82,14 +93,27 @@ class UserMangers extends Component {
         });
     }
 
+    reLoad(){
+        let self = this;
+        const{getInitData} = this.props;
+        setTimeout(
+            function(){
+                getInitData(self.current,self.startDate,self.endDate,self.name);
+            }
+        ,500)
+    }
+
     addData(data){
         const{addData} = this.props;
         addData(data);
+        this.reLoad();
     }
 
     updateData(newData,oldData){
-        const{updateData} = this.props;
+        let self = this;
+        const{updateData,getInitData} = this.props;
         updateData(newData,oldData);
+        this.reLoad();
     }
 
     freezeData(userId){
@@ -97,13 +121,15 @@ class UserMangers extends Component {
             promptToast('请选择操作项！');
             return;
         }
-        const{freezeData} = this.props;
+        let self = this;
+        const{freezeData,getInitData} = this.props;
 
         Dialog.confirm({
-            content: '是否冻结当前帐号？',
+            content: '是否冻结'+this.OldData.name+'帐号？',
             title: '退出',
             onOk:()=>{
-              freezeData(this.removeid);
+                freezeData(this.removeid);
+                this.reLoad();
             }
         });
         
@@ -114,8 +140,10 @@ class UserMangers extends Component {
             promptToast('请选择操作项！');
             return;
         }
-        const{unfreezeData} = this.props;
+        let self = this;
+        const{unfreezeData,getInitData} = this.props;
         unfreezeData(this.removeid);
+        this.reLoad();
     }
 
 
@@ -126,10 +154,11 @@ class UserMangers extends Component {
         }
         const{removeData} = this.props;
         Dialog.confirm({
-            content: '是否删除当前帐号？',
+            content: '是否删除'+this.OldData.name+'帐号？',
             title: '退出',
             onOk:()=>{
               removeData(this.removeid);
+              this.reLoad();
             }
         });
         
@@ -143,6 +172,18 @@ class UserMangers extends Component {
         }
         const{resetData} = this.props;
         resetData(this.removeid);
+        this.reLoad();
+    }
+
+
+    setRoleid(){
+        if(this.roleIds == ""){
+            promptToast('请为'+this.OldData.name+'选择角色类型！');
+            return;
+        }
+        const{setRoleId} = this.props;
+        setRoleId(this.removeid,this.roleIds);
+        this.reLoad();
     }
 
     toggleVisible = () => {
@@ -184,7 +225,15 @@ class UserMangers extends Component {
                     {window.userType == "超级管理员" &&<Button type="normal" className='top-btn' onClick={this.onOpen.bind(this,"修改")}>修改</Button>}
                     {window.userType == "超级管理员" &&<Button type="primary" className='top-btn' onClick={this.removeData.bind(this)}>删除</Button>}
                     {window.userType == "超级管理员" &&<Button type="normal" className='top-btn' onClick={this.resetData.bind(this)}>重置密码</Button>}
-                    {window.userType == "超级管理员" &&<Button type="primary" className='top-btn' onClick={()=>{this.setState({rolevisible:true})}}>角色分配</Button>}
+                    {window.userType == "超级管理员" &&<Button type="primary" className='top-btn' onClick={
+                        ()=>{
+                            if(this.removeid == ""){
+                                promptToast('请选择操作项！');
+                                return;
+                            }
+                            this.setState({rolevisible:true})
+                        }}
+                    >角色分配</Button>}
 
                     <Button type="secondary" className='top-btn' onClick={this.freezeData.bind(this)}>冻结</Button>
                     <Button type="normal" className='top-btn' onClick={this.unfreezeData.bind(this)}>解除冻结</Button>

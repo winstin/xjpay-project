@@ -9,7 +9,9 @@ const initialState = {
     'isLoad':true,
     'total':0,
     chooseDatas:[],
-    chooseIndex:[]
+    chooseIndex:[],
+    'downDetails':[],
+    'upDetail':[],
 }
 export default function PrintDialog(state = initialState, action){
     switch (action.type) {
@@ -19,6 +21,14 @@ export default function PrintDialog(state = initialState, action){
                     'isLoad':false,
                     'total':action.total,
                     chooseDatas:[]
+                });
+            break;
+
+        case 'DetailDATA':
+                return Object.assign({},state,{
+                    'downDetails':action.downDetails==""?[]:action.downDetails,
+                    'upDetail':action.upDetail==""?[]:action.upDetail,
+                    
                 });
             break;
 

@@ -31,7 +31,9 @@ export function getInitData(pageno = 1,merchantName='',mchId='',startDate='',end
                 pageSize:20
             },
             callback:(rsp)=>{
-                console.log(rsp)
+                if(rsp.data.data == ""){
+                    return;
+                }
                 dispatch({
                     type:INITGUNSDATA,
                     dataSource: rsp.data.data,

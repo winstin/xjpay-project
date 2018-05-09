@@ -69,7 +69,8 @@ class CustomDialog extends Component {
     }
 
     updateData(){
-        this.props.index.updateData(this.props.oldData,this.state.newData);
+
+        this.props.index.updateData(this.state.newData,this.props.oldData);
         this.state.newData={};
         this.props.index.setState({
             visible: false

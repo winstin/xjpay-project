@@ -183,7 +183,10 @@ class CustomDialog extends Component {
             return  <Menu.Item onClick={
                         ()=>{
                             this.state.newData.accountprovince = item.value;
-                            this.accountprovince=item.name}}>{item.name
+                            this.accountprovince=item.name
+                            dataSource.accountprovince = item.value
+                            }}
+                            >{item.name
                         }
                     </Menu.Item>
         })
@@ -192,6 +195,7 @@ class CustomDialog extends Component {
                 ()=>{
                     this.state.newData.accountaddress = item.value;
                     this.accountaddress=item.name
+                    dataSource.accountaddress = item.value
                 }
             }>{item.name}</Menu.Item>
         })
@@ -200,6 +204,7 @@ class CustomDialog extends Component {
                 ()=>{
                     this.state.newData.accounttype = item.value;
                     this.accounttype=item.name
+                    dataSource.accounttype = item.value
                 }
             }>{item.name}</Menu.Item>
         })
@@ -230,7 +235,7 @@ class CustomDialog extends Component {
                                 <span></span>
                                 <span style={{fontSize:'14px',marginTop:'7px'}}>渠道类型：</span>
                             </div>
-                            <Dropdown trigger={<Input  placeholder="渠道类型" className='classWidth'  defaultValue={dataSource.accountprovince ==1 ? "平台服务商" :"渠道服务商"}  />}
+                            <Dropdown trigger={<Input  placeholder="渠道类型" className='classWidth'  value={dataSource.accountprovince ==1 ? "平台服务商" :"渠道服务商"}  />}
                                       triggerType="click"
                                       visible={this.state.visibles1}
                                       onVisibleChange={this.onVisibleChange1}
@@ -243,7 +248,7 @@ class CustomDialog extends Component {
                                 <span></span>
                                 <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>渠道级别：</span>
                             </div>
-                            <Dropdown trigger={<Input  placeholder="渠道级别" className='classWidth'   defaultValue={dataSource.accountaddress == 1 ?'企业代理':'个人代理'}/>}
+                            <Dropdown trigger={<Input  placeholder="渠道级别" className='classWidth'  value={dataSource.accountaddress == 1 ?'企业代理':'个人代理'}/>}
                                       triggerType="click"
                                       visible={this.state.visibles2}
                                       onVisibleChange={this.onVisibleChange2}
@@ -335,7 +340,7 @@ class CustomDialog extends Component {
                                 <span style={{fontSize:'14px',marginTop:'7px'}}>账户类型：</span>
                             </div>
                             
-                            <Dropdown trigger={<Input  placeholder="账户类型" className='classWidth'   defaultValue={dataSource.accounttype==1?'对公':'对私'} />}
+                            <Dropdown trigger={<Input  placeholder="账户类型" className='classWidth'   value={dataSource.accounttype==1?'对公':'对私'} />}
                                       triggerType="click"
                                       visible={this.state.visibles3}
                                       onVisibleChange={this.onVisibleChange3}

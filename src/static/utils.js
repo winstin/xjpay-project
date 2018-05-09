@@ -263,11 +263,8 @@ var Tools = {
    * @return   {[type]}                 [description]
    */
   ajax: function({method,args={},mode='jsonp',type="POST",callback,errCallback}){
-      args = this.buildStr(args);
-      if(args!=''){
-          args = '?'+args;
-      }
-      const uri = "https://web.xjpay.cc"+method+args;
+      
+      const uri = webUrl+method+args.url;
       let data = {};
       data.url = uri;
 
@@ -283,8 +280,8 @@ var Tools = {
       // data.contentType = "jsonp";
       // data.jsonp  = 'callback', //指定一个查询参数名称来覆盖默认的 jsonp 回调参数名 callback
       // data.callback = '', //设置回调函数名
-      $.ajax(data).done(function() {
-          // callback();
+      $.ajax(data).done(function(e) {
+          callback(e);
       }).fail(function(data,status,xhr) {
           console.error(data);
           // document.getElementById('app').innerHTML = data.responseText;
