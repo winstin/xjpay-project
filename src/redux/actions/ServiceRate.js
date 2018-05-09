@@ -163,3 +163,24 @@ export function SearchData(appId='',appName=''){
     }
 }
 
+
+
+export function autoSearch(appId='',callback){
+    return (dispatch)=>{
+        api({
+            method:'/agent/list',
+            mode:'jsonp',
+            args:{
+                appId:appId.trim(),
+            },
+            callback:(e)=>{
+                callback(e)
+            },
+            errCallback:(msg)=>{
+                // console.log(msg)
+            }
+        });
+       
+    }
+}
+

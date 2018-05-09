@@ -72,7 +72,8 @@ class ServiceRates extends Component {
                 upstream:'HF_SERVICE',upstreamName:'Q1',
                 pointType:0,pointTypeName:'商旅类',
                 type:0,typeName:'D0',
-            }
+            },
+            autoName:''
         };
         this.oldData = {};
         this.current = 1;
@@ -371,7 +372,27 @@ class ServiceRates extends Component {
                             <span style={{fontSize:'14px',marginTop:'7px'}}>渠道编号：</span>
                         </div>
                         
-                        <Input placeholder="渠道编号" className="textClsName"   style={{width:'180px'}} onChange={(e)=>{this.state.newData.appid = e}}/>
+                        <Input placeholder="渠道编号" className="textClsName"   style={{width:'180px'}} 
+                            value={this.state.autoName}
+                            onChange={(e)=>{
+                                this.state.newData.appid = e;
+                                this.setState({autoName:e})
+                            }}
+                            onBlur={(e)=>{
+                                if(this.state.newData.appid!=""){
+                                    const {autoSearch} = this.props;
+                                    autoSearch(this.state.newData.appid,(e)=>{
+                                        // console.log(e);
+                                        if(e.length){
+                                            this.setState({autoName:this.state.autoName+" - "+e[0].name})
+                                        }else{
+                                            this.setState({autoName:this.state.autoName+" - "+"没有匹配到服务商"})
+                                        }
+                                        
+                                    })
+                                }
+                            }}
+                        />
                         <div className="flexStyle">
                             <span></span>
                             <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>业务类型：</span>
