@@ -88,7 +88,6 @@ class RoleMangers extends Component {
     onRowClick = (index,record)=>{
         this.id = index[0];
         this.oldData = record[0]
-        console.log(this.id);
     }
 
 

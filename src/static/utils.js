@@ -145,7 +145,6 @@ var Tools = {
       // if(args!=''){
       //     args = '?'+args;
       // }
-      // console.log('111')
       // fetchJsonp('https://web.xjpay.cc' + method + args, {
       // // fetchJsonp(host + method + args, {
       //   jsonpCallback: 'callback'
@@ -178,8 +177,8 @@ var Tools = {
       if(isloading){
          showLoading('加载数据中...');
       }
-      var formData = new FormData();
-        formData = this.buildArgs(formData,args);
+      // var formData = new FormData();
+      //   formData = this.buildArgs(formData,args);
         args = this.buildStr(args);
         if(args!=''){
             args = '?'+args;
@@ -195,7 +194,6 @@ var Tools = {
             if(isloading){
                 hideLoading();
             }
-
             if(responseText == 'fail'){
                 //遇见错误时弹框提示   by Mothpro
                 //session获取失败登录失效
@@ -224,14 +222,9 @@ var Tools = {
         fetch(`${webUrl+method+args}`, {
         // fetch(`${host}${method}`, {
             method : 'GET',
-            mode : 'cors',
-            // credentials: 'include',//携带cookies
-            // headers: {
-            //     'Content-Type': 'application/json;charset=UTF-8',
-            // },     
+            mode : 'cors',    
             // body : formData,
         }).then((res)=>res.json()).then(function(responseText){
-
             if(responseText == 'fail'){
                 //遇见错误时弹框提示   by Mothpro
                 //session获取失败登录失效
@@ -277,14 +270,11 @@ var Tools = {
       },
       data.crossDomain = true,
       
-      // data.contentType = "jsonp";
-      // data.jsonp  = 'callback', //指定一个查询参数名称来覆盖默认的 jsonp 回调参数名 callback
-      // data.callback = '', //设置回调函数名
+
       $.ajax(data).done(function(e) {
           callback(e);
       }).fail(function(data,status,xhr) {
           console.error(data);
-          // document.getElementById('app').innerHTML = data.responseText;
           console.error(status);
           console.error(xhr);
       });
@@ -333,15 +323,15 @@ var Tools = {
   },
 
   errorToast: function(text,){
-      Toast.error({content: text,hasMask:true,duration: 500});
+      Toast.error({content: text,hasMask:true,duration: 1000});
   },
 
   successToast: function(text,){
-      Toast.success({content: text,hasMask:true,duration: 500});
+      Toast.success({content: text,hasMask:true,duration: 1000});
   },
 
   promptToast:function(text,){
-      Toast.prompt({content: text,hasMask:true,duration: 500});
+      Toast.prompt({content: text,hasMask:true,duration: 1000});
   },
   /**
  * @Author   Winstin

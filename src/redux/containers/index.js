@@ -16,7 +16,7 @@ import ServiceManger from './ServiceManger/ServiceManger';
 import GetManger from './GetManger/GetManger';
 import ChannelStatistics from './ChannelStatistics/ChannelStatistics';
 import CommodityStatistics from './CommodityStatistics/CommodityStatistics';
-import Login from './Login/Login';
+import SetPwd from './SetPwd/SetPwd';
 import UserManger from './UserManger/UserManger';
 import RoleManger from './RoleManger/RoleManger';
 import OrderManger from './OrderManger/OrderManger';
@@ -24,7 +24,7 @@ import PersonalCenter from './PersonalCenter/PersonalCenter';
 
 export  {
 	UserManger,
-	Login,
+	SetPwd,
 	ChannelStatistics,
 	CommodityStatistics,
 	GetManger,

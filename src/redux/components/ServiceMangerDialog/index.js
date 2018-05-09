@@ -16,7 +16,7 @@ import Dialog from 'qnui/lib/dialog';
 import Dropdown from 'qnui/lib/dropdown';
 import Menu from 'qnui/lib/menu';
 
-import Config from '../../../config/config.js'
+import Config from 'static/config.js'
 import '../components.scss';
 import {api,isEmpty} from "static/utils.js"
 

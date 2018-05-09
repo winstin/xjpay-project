@@ -30,7 +30,7 @@ export function getInitData(pageno = 1,beginTime='',endTime='',name=''){
                 pageSize:20
             },
             callback:(rsp)=>{
-                if(rsp.data.records == ""){
+                if(rsp.records == ""){
                     return;
                 }
                 dispatch({

@@ -63,7 +63,6 @@ class BatchPage extends Component {
     }
 
     onRowClick(record, index, e) {
-        console.log(record, index, e);
         this.setState({detailvisible:true,orderdata:record})
     }
  
@@ -99,7 +98,6 @@ class BatchPage extends Component {
 
 
     handleChange(current) {
-        console.log(this.props);
         const {getInitData} = this.props;
         getInitData(current);
     }

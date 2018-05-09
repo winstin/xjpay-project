@@ -12,8 +12,6 @@ const initialState = {
     chooseIndex:[]
 }
 export default function PrintDialog(state = initialState, action){
-
-    console.log(action)
     switch (action.type) {
         case 'INITGUNSDATA':
                 return Object.assign({},state,{

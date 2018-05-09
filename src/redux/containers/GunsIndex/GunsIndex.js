@@ -61,7 +61,7 @@ class GunsIndex extends Component {
 
 
     componentWillMount() {
-      console.log('Component WILL MOUNT!');
+      // console.log('Component WILL MOUNT!');
     }
 
     componentDidMount(){
@@ -118,7 +118,7 @@ class GunsIndex extends Component {
     }
 
     onRowClick = (index,record)=>{
-        console.log(record);
+        // console.log(record);
         this.lockId = record[0].mchId;
     }
 
@@ -133,7 +133,7 @@ class GunsIndex extends Component {
                     <Input placeholder="商户编号" className="textClsName"  style={{width:'160px',marginLeft:'12px'}} onChange={(e)=>{this.mchId = e}}/>
                     <span style={{fontSize:'14px',marginTop:'7px',width:'70px',marginLeft:'12px'}}>时间选择：</span>
                     <RangePicker  onChange={(a, b) => {
-                        console.log(b[0]);
+                        // console.log(b[0]);
                         this.startDate = b[0];
                         this.endDate = b[1];
                     }} />

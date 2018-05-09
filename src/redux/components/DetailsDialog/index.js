@@ -66,6 +66,43 @@ class RoleDialog extends Component {
         }
     }
 
+    renderPane(upData,downDetails){
+        if(window.userType == "管理员"){
+            return <Tab style={{height:600}}>
+                    <TabPane tab="上游信息" key="1" >
+                        <Table dataSource={upData} onRowClick={onRowClick} fixedHeader maxBodyHeight={600}>
+                            <Table.Column title="渠道编号" dataIndex="appId" />
+                            <Table.Column title="渠道名称" dataIndex="appName" />
+                            <Table.Column title="代付费" dataIndex="rates" cell={this.cellDee}/>
+                            <Table.Column title="鉴权费" dataIndex="rates" cell={this.cellMode}/>
+                            <Table.Column title="结算费率" dataIndex="rates" cell={this.cellFee}/>
+                        </Table>
+                    </TabPane>
+                    <TabPane tab="下游信息" key="2">
+                        <Table dataSource={downDetails} onRowClick={onRowClick} maxBodyHeight={600}>
+                            <Table.Column title="渠道编号" dataIndex="appId" />
+                            <Table.Column title="渠道名称" dataIndex="appName" />
+                            <Table.Column title="代付费" dataIndex="rates" cell={this.cellDee}/>
+                            <Table.Column title="鉴权费" dataIndex="rates" cell={this.cellMode}/>
+                            <Table.Column title="结算费率" dataIndex="rates" cell={this.cellFee}/>
+                        </Table>
+                    </TabPane>
+                </Tab>
+        }else{
+            return <Tab style={{height:600}}>
+                    <TabPane tab="下游信息" key="2">
+                        <Table dataSource={downDetails} onRowClick={onRowClick} maxBodyHeight={600}>
+                            <Table.Column title="渠道编号" dataIndex="appId" />
+                            <Table.Column title="渠道名称" dataIndex="appName" />
+                            <Table.Column title="代付费" dataIndex="rates" cell={this.cellDee}/>
+                            <Table.Column title="鉴权费" dataIndex="rates" cell={this.cellMode}/>
+                            <Table.Column title="结算费率" dataIndex="rates" cell={this.cellFee}/>
+                        </Table>
+                    </TabPane>
+                </Tab>
+        }
+    }
+
     render() {
         const {visible,downDetails,upDetail} = this.props;
         let upData = [];
@@ -83,26 +120,7 @@ class RoleDialog extends Component {
                     className="Dialog-height"
                     footer={false}
                     >
-                <Tab style={{height:600}}>
-                    {window.userType == "管理员" &&<TabPane tab="上游信息" key="1" >
-                        <Table dataSource={upData} onRowClick={onRowClick} fixedHeader maxBodyHeight={600}>
-                            <Table.Column title="渠道编号" dataIndex="appId" />
-                            <Table.Column title="渠道名称" dataIndex="appName" />
-                            <Table.Column title="代付费" dataIndex="rates" cell={this.cellDee}/>
-                            <Table.Column title="鉴权费" dataIndex="rates" cell={this.cellMode}/>
-                            <Table.Column title="结算费率" dataIndex="rates" cell={this.cellFee}/>
-                        </Table>
-                    </TabPane>}
-                    <TabPane tab="下游信息" key="2">
-                        <Table dataSource={downDetails} onRowClick={onRowClick} maxBodyHeight={600}>
-                            <Table.Column title="渠道编号" dataIndex="appId" />
-                            <Table.Column title="渠道名称" dataIndex="appName" />
-                            <Table.Column title="代付费" dataIndex="rates" cell={this.cellDee}/>
-                            <Table.Column title="鉴权费" dataIndex="rates" cell={this.cellMode}/>
-                            <Table.Column title="结算费率" dataIndex="rates" cell={this.cellFee}/>
-                        </Table>
-                    </TabPane>
-                </Tab>
+                {this.renderPane(upData,downDetails)}
             </Dialog>
         );
     }

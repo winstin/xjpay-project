@@ -291,6 +291,14 @@ class App extends Component {
                           <Myitem
                               kind = "navigation_max"
                               itemId="Settings"
+                              icon="survey"
+                              link="/dist/reSetPassword"
+                              text="修改密码"
+                          >
+                          </Myitem>
+                          <Myitem
+                              kind = "navigation_max"
+                              itemId="Settings"
                               icon="set"
                               onClick = {this.loginOut.bind(this)}
                               text="退出"

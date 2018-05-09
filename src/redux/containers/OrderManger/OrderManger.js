@@ -71,7 +71,6 @@ class OrderMangers extends Component {
     }
 
     handleChange(current) {
-        console.log(this.props);
         const {getInitData} = this.props;
         getInitData(current,this.name,this.level);
     }
@@ -142,7 +141,6 @@ class OrderMangers extends Component {
         const {dataSource,isLoad,total,containerHeight} = this.props;
         const {data} = this.state;
         
-       console.log(dataSource)
         return (
                 <div>
                     <Row>

@@ -4,7 +4,7 @@ import {Router, Route, IndexRoute} from 'react-router'
 //从src/containers/index.js导入
 
 
-import {PersonalCenter,OrderManger,RoleManger,UserManger,Login,CommodityStatistics,ChannelStatistics,GetManger,ServiceManger,BatchPage,GunsIndex,ServiceRate,AutoEva, App} from './redux/containers/'
+import {PersonalCenter,OrderManger,RoleManger,UserManger,SetPwd,CommodityStatistics,ChannelStatistics,GetManger,ServiceManger,BatchPage,GunsIndex,ServiceRate, App} from './redux/containers/'
 
 // import ErrorOrder from './redux/components/ErrorOrder'
 
@@ -31,14 +31,13 @@ export const createRoutes = () => ({
     indexRoute: {component: GunsIndex},
     childRoutes: [
         {path:'/dist',component:GunsIndex},
-        {path:'/dist/autoeva',component:AutoEva},
         {path:'/dist/ServiceRate',component:ServiceRate},
         {path:'/dist/BatchPage',component:BatchPage},
         {path:'/dist/ServiceManger',component:ServiceManger},
         {path:'/dist/GetManger',component:GetManger},
         {path:'/dist/ChannelStatistics',component:ChannelStatistics},
         {path:'/dist/CommodityStatistics',component:CommodityStatistics},
-        {path:'/dist/Login',component:Login},
+        {path:'/dist/reSetPassword',component:SetPwd},
         {path:'/dist/UserManger',component:UserManger},
         {path:'/dist/RoleManger',component:RoleManger},
         {path:'/dist/OrderManger',component:OrderManger},

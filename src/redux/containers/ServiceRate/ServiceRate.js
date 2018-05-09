@@ -97,7 +97,6 @@ class ServiceRates extends Component {
 
     handleChange(current) {
         this.current = current;
-        console.log(this.props);
         const {getInitData} = this.props;
         getInitData(current,this.id,this.name);
     }
@@ -170,7 +169,6 @@ class ServiceRates extends Component {
         this.setState({
             visible0: false
         });
-        console.log(this.oldData)
         const {updateData} = this.props;
         updateData(this.oldData);
 
@@ -247,7 +245,6 @@ class ServiceRates extends Component {
     render() {
         const {dataSource,isLoad,total,containerHeight} = this.props;
 
-        console.log(this.state.newData)
         let code = codeMent.map((item,index)=>{
             return  <Menu.Item onClick={
                         ()=>{
