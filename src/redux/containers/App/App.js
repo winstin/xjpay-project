@@ -80,6 +80,13 @@ class App extends Component {
                       }
                   }
                   self.setState({context:rsp.data})
+                  if(context.indexOf('接口文档')>-1){
+                      window.userType="超级管理员";
+                  }else if(context.indexOf('用户管理')>-1){
+                      window.userType="管理员";
+                  }else{
+                      window.userType="渠道商";
+                  }
               },
               errCallback:(msg)=>{
                 
@@ -179,7 +186,7 @@ class App extends Component {
               return {icon:'account',link:'/OrderManger'}
               break;
              default:
-              return  {icon:'account',link:''}
+              return  {icon:'minus',link:''}
 
         }
     }
@@ -281,7 +288,15 @@ class App extends Component {
                             <span>星洁科技</span>
                           </div>
                           {jsx}
-{/*                            <Myitem
+                          <Myitem
+                              kind = "navigation_max"
+                              itemId="Settings"
+                              icon="set"
+                              onClick = {this.loginOut.bind(this)}
+                              text="退出"
+                          >
+                          </Myitem>
+                          {/*<Myitem
                                 kind = "navigation_max"
                                 itemId="Trade"
                                 icon="account"

@@ -21,40 +21,6 @@ import * as RoleManger from '../../actions/RoleManger.js'
 import {promptToast} from "static/utils.js"
 
 
-const onRowClick = function(record, index, e) {
-        console.log(record, index, e);
-    },
-    getData = (length) => {
-        let result = [];
-        for (let i = 0; i < length; i++) {
-            result.push({
-                title: {name: `Quotation for 1PCS Nano ${3 + i}.0 controller compatible`},
-                id: 100306660940 + i,
-                time: 2000 + i
-            });
-        }
-        return result;
-    },
-    render = (value, index, record) => {
-        return <a>Remove({record.id})</a>;
-    };
-const rowSelection = {
-        onChange: onRowClick,
-        getProps: (record) => {
-            return {
-                disabled: record.id === 23324
-            };
-        }
-    };
-
-const menu = (
-    <Menu>
-        <Menu.Item>Option 1</Menu.Item>
-        <Menu.Item>Option 2</Menu.Item>
-        <Menu.Item>Option 3</Menu.Item>
-        <Menu.Item>Option 4</Menu.Item>
-    </Menu>
-);
 class RoleMangers extends Component {
   constructor(props) {
         super(props);
@@ -65,11 +31,13 @@ class RoleMangers extends Component {
         this.num = "";
         this.deptid = "";
         this.pName = "";
+        this.pid = "";
         this.state = {
-            data: getData(30),
             visible: false,
-            visibles:false
+            visibles:false,
+            title:""
         };
+        this.oldData = {}
     }
 
 
@@ -77,12 +45,6 @@ class RoleMangers extends Component {
         const {getInitData} = this.props;
         getInitData();
     }
-
-    // handleChange(current) {
-    //     console.log(this.props);
-    //     const {getData} = this.props;
-    //     getData(current);
-    // }
 
 
     searchData(){
@@ -93,9 +55,15 @@ class RoleMangers extends Component {
     onchange(type,value){
         this.name = value;
     }
-    onOpen = () => {
+    onOpen(title){
+        if(this.id == ""){
+            promptToast('请选择操作项！');
+            return
+        }
+
         this.setState({
-            visible: true
+            visible: true,
+            title:title
         });
     };
 
@@ -119,6 +87,7 @@ class RoleMangers extends Component {
 
     onRowClick = (index,record)=>{
         this.id = index[0];
+        this.oldData = record[0]
         console.log(this.id);
     }
 
@@ -147,7 +116,15 @@ class RoleMangers extends Component {
 
     onAdd(){
         const{addData,getInitData} = this.props;
-        addData(this.name,this.pName,this.deptid,this.num,this.tips);
+        addData(this.name,this.pid,this.deptid,this.num,this.tips);
+        setTimeout(function(){
+            getInitData();
+        },500)
+    }
+
+    onchange(oldData,newData){
+        const{changeData,getInitData} = this.props;
+        changeData(oldData,newData);
         setTimeout(function(){
             getInitData();
         },500)
@@ -170,6 +147,30 @@ class RoleMangers extends Component {
 
         }
     }
+
+    cellPid = (value, index, record, context) => {
+        switch(value){
+            case 0:
+                return "-";
+                break;
+            case 1:
+                return "超级管理员";
+                break;
+            case 5:
+                return "临时管理员";
+                break;
+            case 7:
+                return "管理员";
+                break;
+            case 6:
+                return "渠道服务商";
+                break;
+            default:
+                return "-";
+                break;
+
+        }
+    }
     render() {
         const {dataSource,isLoad,total,containerHeight} = this.props;
         const {data} = this.state;
@@ -184,15 +185,15 @@ class RoleMangers extends Component {
                     </Row>
                 </Row>
                 <div className="marginTop-larger">
-                    <Button type="normal" style={{width:'100px',marginLeft:'10px'}} onClick={this.onOpen}>添加</Button>
-                    <Button type="normal" style={{width:'100px',marginLeft:'10px'}} onClick={this.onOpen}>修改</Button>
+                    <Button type="normal" style={{width:'100px',marginLeft:'10px'}} onClick={this.onOpen.bind(this,'添加')}>添加</Button>
+                    <Button type="normal" style={{width:'100px',marginLeft:'10px'}} onClick={this.onOpen.bind(this,'修改')}>修改</Button>
                     <Button type="normal" style={{width:'100px',marginLeft:'10px'}} onClick={this.Remove} >删除</Button>
                     {/*<Button type="normal" style={{width:'100px',marginLeft:'10px'}} onClick={this.onOpen}>权限配置</Button>*/}
                 </div>
                 <div style={{marginTop:'20px'}}>
                     <Table dataSource={dataSource} rowSelection={{onChange: this.onRowClick,mode:'single'}} fixedHeader maxBodyHeight={containerHeight} >
                         <Table.Column title="名称" dataIndex="name"/>
-                        <Table.Column title="上级角色" dataIndex="pName"/>
+                        <Table.Column title="上级角色" dataIndex="pid" cell={this.cellPid}/>
                         <Table.Column title="所在部门" dataIndex="deptid" cell={this.cellRender}/>
                         <Table.Column title="别名" dataIndex="tips"/>
                         {/*<Table.Column title="业务类型" dataIndex="time"/>
@@ -207,7 +208,7 @@ class RoleMangers extends Component {
                 {/*<div style={{marginTop:'20px',float:'right'}}>
                     <Pagination defaultCurrent={1} size="large" onChange={this.handleChange.bind(this)} pageSize={} total={total}/>
                 </div>*/}
-                <RoleMangerDialog visible={this.state.visible} index={this} title="角色分配"/>
+                <RoleMangerDialog visible={this.state.visible} index={this} title={this.state.title} oldData = {this.oldData}/>
                 
             </div>
         );

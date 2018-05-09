@@ -5,7 +5,7 @@ import Input from 'qnui/lib/input';
 import Dialog from 'qnui/lib/dialog';
 import Dropdown from 'qnui/lib/dropdown';
 import Menu from 'qnui/lib/menu';
-import Config from '../../../config/config.js'
+import Config from 'static/config.js'
 
 
 
@@ -17,7 +17,8 @@ class CustomDialog extends Component {
         super(props);
         this.state = {
             visible: false,
-            visibles:false
+            visibles:false,
+            newData:{}
         };
     }
 
@@ -46,6 +47,15 @@ class CustomDialog extends Component {
         this.props.index.onAdd();
     }
 
+
+    changeInfo = () =>{
+        this.props.index.setState({
+            visible: false
+        });
+        this.props.index.onchange(this.props.oldData,this.state.newData);
+    }
+
+
     toggleVisible = () => {
         this.props.index.setState({
             visibles: !this.state.visibles
@@ -69,19 +79,69 @@ class CustomDialog extends Component {
         
     }
 
+    deptid(value){
+       switch(value){
+            case 24:
+                return "总公司"
+            case 25:
+                return "开发部"
+            case 26:
+                return "运营部"
+            case 27:
+                return "战略部"
+            case 28:
+                return "服务商"
+
+        }
+    }
+
+    pid(value){
+        switch(value){
+            case 0:
+                return "-";
+                break;
+            case 1:
+                return "超级管理员";
+                break;
+            case 5:
+                return "临时管理员";
+                break;
+            case 7:
+                return "管理员";
+                break;
+            case 6:
+                return "渠道服务商";
+                break;
+            default:
+                return "-";
+                break;
+        }
+    }
+
     render() {
-        const {visible,title} = this.props;
+        const {visible,title,oldData} = this.props;
         let department = Config.Department.map((item,index)=>{
-            return <Menu.Item onClick={()=>{}}>{this.props.index.deptid = item.name}</Menu.Item>
+            return <Menu.Item onClick={()=>{this.props.index.deptid = item.name}}>{item.name}</Menu.Item>
         })
 
         let superment = Config.RolePlayer.map((item,index)=>{
-            return <Menu.Item onClick={()=>{this.props.index.pName = item.name}}>{item.name}</Menu.Item>
+            return <Menu.Item onClick={()=>{this.props.index.pName = item.name;this.props.index.pid = item.id;}}>{item.name}</Menu.Item>
         })
+
+
+         let department0 = Config.Department.map((item,index)=>{
+            return <Menu.Item onClick={()=>{oldData.deptid = item.value}}>{item.name}</Menu.Item>
+        })
+
+        let superment0 = Config.RolePlayer.map((item,index)=>{
+            return <Menu.Item onClick={()=>{oldData.pid = item.id;}}>{item.name}</Menu.Item>
+        })
+
+
         if(title == "修改"){       
             return (
                 <Dialog visible={visible}
-                        onOk={this.onClose}
+                        onOk={this.changeInfo}
                         closable="esc,mask,close"
                         onCancel={this.onClose}
                         onClose={this.onClose} title={title}>
@@ -91,46 +151,46 @@ class CustomDialog extends Component {
                             <span style={{fontSize:'14px',marginTop:'7px'}}>角色名称：</span>
                         </div>
 
-                        <Input placeholder="角色名称"    className='classWidth' onChange={this.onchange.bind(this,'id')}/>
+                        <Input placeholder="角色名称" className='classWidth' defaultValue = {oldData.name} onChange={(e)=>{this.state.newData.name = e}}/>
 
                         <div className="flexStyle">
                             <span></span>
                             <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>别名：</span>
                         </div>
-                        <Input placeholder="别名"    className='classWidth' onChange={this.onchange.bind(this,'name')}/>
+                        <Input placeholder="别名"    className='classWidth' defaultValue = {oldData.tips} onChange={(e)=>{this.state.newData.tips = e}}/>
                     </Row>
                     <Row className="marginTop">
                         <div className="flexStyle">
                             <span></span>
                             <span style={{fontSize:'14px',marginTop:'7px'}}>上级名称：</span>
                         </div>
-                        <Dropdown trigger={<Input placeholder="上级名称"    className='classWidth' onChange={this.onchange.bind(this,'id')}/>}
+                        <Dropdown trigger={<Input placeholder="上级名称"    className='classWidth' value={this.pid(oldData.pid)}/>}
                                   triggerType="click"
                                   visible={this.state.visibles1}
                                   onVisibleChange={this.onVisibleChange1}
                                   safeNode={() => this.refs.button}>
                             <Menu>
-                                {superment}
+                                {superment0}
                             </Menu>
                         </Dropdown>
                         <div className="flexStyle">
                             <span></span>
                             <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>排序：</span>
                         </div>
-                        <Input placeholder="排序"    className='classWidth' onChange={this.onchange.bind(this,'name')}/>
+                        <Input placeholder="排序"    className='classWidth' defaultValue={oldData.num} onChange={(e)=>{this.state.newData.num = e}}/>
                     </Row>
                     <Row className="marginTop">
                         <div className="flexStyle">
                             <span></span>
                             <span style={{fontSize:'14px',marginTop:'7px'}}>部门名称：</span>
                         </div>
-                        <Dropdown trigger={<Input placeholder="部门名称"    className='classWidth' onChange={this.onchange.bind(this,'id')}/>}
+                        <Dropdown trigger={<Input placeholder="部门名称"    className='classWidth' value={this.deptid(oldData.deptid)}/>}
                                   triggerType="click"
                                   visible={this.state.visibles2}
                                   onVisibleChange={this.onVisibleChange2}
                                   safeNode={() => this.refs.button}>
                             <Menu>
-                                {department}
+                                {department0}
                             </Menu>
                         </Dropdown>
                         <div className="flexStyle hide">

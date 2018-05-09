@@ -8,13 +8,17 @@ const Appconfig = {
 //部门
 const Department =[
 	{
-		name:'开发部'
+		name:'开发部',
+		value:25
 	},{
-		name:'运营部'
+		name:'运营部',
+		value:26
 	},{
-		name:'战略部'
+		name:'战略部',
+		value:27
 	},{
-		name:'服务商'
+		name:'服务商',
+		value:28
 	}
 ]
 
@@ -23,16 +27,20 @@ const Department =[
 const RolePlayer = [
 	{
 		name:'超级管理员',
-		value:'superManger'
+		value:'superManger',
+		id:1
 	},{
 		name:'临时超级管理员',
-		value:'tempManger'
+		value:'tempManger',
+		id:5
 	},{
 		name:'渠道服务商',
-		value:'channelManger'
+		value:'channelManger',
+		id:6
 	},{
 		name:'管理员',
-		value:'commonManger'
+		value:'commonManger',
+		id:7
 	}
 ]
 
@@ -120,6 +128,10 @@ const PayState = [
 		value:'F'
 	}
 ]
+
+
+
+
 
 
 

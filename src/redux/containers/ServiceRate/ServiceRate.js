@@ -15,47 +15,66 @@ import Dimensions from 'react-dimensions';
 import Dialog from 'qnui/lib/dialog';
 import Dropdown from 'qnui/lib/dropdown';
 import Menu from 'qnui/lib/menu';
+import {promptToast} from "static/utils.js"
 
 
 import './ServiceRate.css';
 
+const codeMent = [{
+    name:'银联快捷',
+    value:1
+}]
 
-const onRowClick = function(record, index, e) {
-        console.log(record, index, e);
-    },
-    getData = (length) => {
-        let result = [];
-        for (let i = 0; i < length; i++) {
-            result.push({
-                title: {name: `Quotation for 1PCS Nano ${3 + i}.0 controller compatible`},
-                id: 100306660940 + i,
-                time: 2000 + i
-            });
-        }
-        return result;
-    },
-    render = (value, index, record) => {
-        return <a>Remove({record.id})</a>;
-    };
+const upstreamMent = [{
+    name:'Q1',
+    value:'HF_SERVICE'
+},{
+    name:'Q2',
+    value:1
+},{
+    name:'Q3',
+    value:'KFT_SERVICE'
+}]
 
-const menu = (
-    <Menu>
-        <Menu.Item>Option 1</Menu.Item>
-        <Menu.Item>Option 2</Menu.Item>
-        <Menu.Item>Option 3</Menu.Item>
-        <Menu.Item>Option 4</Menu.Item>
-    </Menu>
-);
+const pointTypeMent = [{
+    name:'商旅类',
+    value:0
+},{
+    name:'一般类',
+    value:2
+}]
+
+const typeMent = [{
+    name:'D0',
+    value:0
+},{
+    name:'T1',
+    value:1
+}]
+
+
 class ServiceRates extends Component {
   constructor(props) {
         super(props);
         this.id = "";
         this.name = "";
+        this.appid = "";
         this.state = {
-            data: getData(30),
             visible: false,
-            visibles:false
+            visible0: false,
+            visible1: false,
+            visible2: false,
+            visible3: false,
+            visible4: false,
+            visibles:false,
+            newData:{
+                code:1,codeName:'银联快捷',
+                upstream:'HF_SERVICE',upstreamName:'Q1',
+                pointType:0,pointTypeName:'商旅类',
+                type:0,typeName:'D0',
+            }
         };
+        this.oldData = {};
     }
 
 
@@ -66,14 +85,16 @@ class ServiceRates extends Component {
 
     handleChange(current) {
         console.log(this.props);
-        const {getData} = this.props;
-        getData(current);
+        const {getInitData} = this.props;
+        getInitData(getInitData,this.id,this.name);
+        // getData(current);
     }
 
 
     searchData(){
-        const{SearchData} = this.props;
-        SearchData(this.id,this.name);
+        const{getInitData,SearchData} = this.props;
+        getInitData(1,this.id,this.name);
+        // SearchData(this.id,this.name)
     }
 
     onchange(type,value){
@@ -86,15 +107,64 @@ class ServiceRates extends Component {
 
     }
     onOpen = () => {
+        // const {getServiceData} = this.props;
+        // getServiceData();
         this.setState({
             visible: true
         });
     };
 
+    onOpenChange = () => {
+        if(this.appid == ""){            
+            promptToast('请选择操作项！');
+            return;
+        }
+        this.setState({
+            visible0: true
+        });
+    }
+
     onClose = () => {
         this.setState({
             visible: false
         });
+    }
+
+    onCloseChange = () => {
+        this.setState({
+            visible0: false
+        });
+    }
+
+
+    onRowClick = (index,record)=>{
+        this.appid = index[0];
+        this.oldData = record[0];
+        this.oldData.codeName = this.cellRender(this.oldData.code);
+        this.oldData.pointTypeName = this.cellPointType(this.oldData.pointType);
+        this.oldData.typeName = this.cellType(this.oldData.type);
+        this.oldData.upstreamName = this.cellUpstream(this.oldData.upstream);
+    }
+
+    addRates = () =>{
+        this.setState({
+            visible: false
+        });
+        const {getInitData,addData} = this.props;
+        addData(this.state.newData);
+        setTimeout(function(){getInitData()},500);
+
+    }
+
+
+
+    updateRates = () =>{
+        this.setState({
+            visible0: false
+        });
+        // const {getInitData,addData} = this.props;
+        // addData(this.state.newData);
+        // setTimeout(function(){getInitData()},500);
     }
 
     toggleVisible = () => {
@@ -103,9 +173,24 @@ class ServiceRates extends Component {
         });
     };
 
-    onVisibleChange = visibles => {
+    onVisibleChange1 = visibles => {
         this.setState({
-            visibles
+            visible1:visibles
+        });
+    };
+    onVisibleChange2 = visibles => {
+        this.setState({
+            visible2:visibles
+        });
+    };
+    onVisibleChange3 = visibles => {
+        this.setState({
+            visible3:visibles
+        });
+    };
+    onVisibleChange4 = visibles => {
+        this.setState({
+            visible4:visibles
         });
     };
 
@@ -144,11 +229,96 @@ class ServiceRates extends Component {
         if(value == 0){
             return 'D0';
         }else{
-            return value;
+            return 'T1';
         }
     }
     render() {
         const {dataSource,isLoad,total,containerHeight} = this.props;
+
+        console.log(this.state.newData)
+        let code = codeMent.map((item,index)=>{
+            return  <Menu.Item onClick={
+                        ()=>{
+                            this.state.newData.code = item.value;
+                            this.state.newData.codeName = item.name;
+                         }}>
+                        {item.name}
+                    </Menu.Item>
+        })
+
+        let upstream = upstreamMent.map((item,index)=>{
+            return  <Menu.Item onClick={
+                        ()=>{
+                            this.state.newData.upstream = item.value;
+                            this.state.newData.upstreamName = item.name;
+                        }}
+                            >{item.name}
+                    </Menu.Item>
+        })
+
+        let pointType = pointTypeMent.map((item,index)=>{
+            return  <Menu.Item onClick={
+                        ()=>{
+                            this.state.newData.pointType = item.value;
+                            this.state.newData.pointTypeName = item.name;
+                        }}
+                            >{item.name}
+                    </Menu.Item>
+        })
+
+        let type = typeMent.map((item,index)=>{
+            return  <Menu.Item onClick={
+                        ()=>{
+                            this.state.newData.type = item.value;
+                            this.state.newData.typeName = item.name;
+                        }}
+                            >{item.name}
+                    </Menu.Item>
+        })
+
+
+        let code0 = codeMent.map((item,index)=>{
+            return  <Menu.Item onClick={
+                        ()=>{
+                            this.oldData.code = item.value;
+                            this.oldData.codeName = item.name;
+                         }}>
+                        {item.name}
+                    </Menu.Item>
+        })
+
+        let upstream0 = upstreamMent.map((item,index)=>{
+            return  <Menu.Item onClick={
+                        ()=>{
+                            this.oldData.upstream = item.value;
+                            this.oldData.upstreamName = item.name;
+                        }}
+                            >{item.name}
+                    </Menu.Item>
+        })
+
+        let pointType0 = pointTypeMent.map((item,index)=>{
+            return  <Menu.Item onClick={
+                        ()=>{
+                            this.oldData.pointType = item.value;
+                            this.oldData.pointTypeName = item.name;
+                        }}
+                            >{item.name}
+                    </Menu.Item>
+        })
+
+        let type0 = typeMent.map((item,index)=>{
+            return  <Menu.Item onClick={
+                        ()=>{
+                            this.oldData.type = item.value;
+                            this.oldData.typeName = item.name;
+                        }}
+                            >{item.name}
+                    </Menu.Item>
+        })
+
+
+
         return (
             <div>
                 <Row>
@@ -159,10 +329,11 @@ class ServiceRates extends Component {
                         <Input placeholder="渠道名称" className="textClsName"   style={{width:'120px',marginLeft:'6px'}} onChange={this.onchange.bind(this,'name')}/>
                         <Button type="primary" style={{width:'100px',marginLeft:'10px'}} onClick={this.searchData.bind(this)}>搜索</Button>
                         <Button type="normal" style={{width:'100px',marginLeft:'10px'}} onClick={this.onOpen}>添加</Button>
+                        <Button type="secondary" style={{width:'100px',marginLeft:'10px'}} onClick={this.onOpenChange}>修改</Button>
                     </Row>
                 </Row>
                 <div style={{marginTop:'20px'}}>
-                    <Table dataSource={dataSource} onRowClick={onRowClick} fixedHeader maxBodyHeight={containerHeight}>
+                    <Table dataSource={dataSource} rowSelection={{onChange: this.onRowClick,mode:'single'}} fixedHeader maxBodyHeight={containerHeight}>
                         <Table.Column title="编号" dataIndex="id"/>
                         <Table.Column title="创建时间" dataIndex="createTime"/>
                         <Table.Column title="服务商编号" dataIndex="appid"/>
@@ -181,7 +352,7 @@ class ServiceRates extends Component {
                 </div>
 
                 <Dialog visible={this.state.visible}
-                        onOk={this.onClose}
+                        onOk={this.addRates}
                         closable="esc,mask,close"
                         onCancel={this.onClose}
                         onClose={this.onClose} title="添加">
@@ -191,72 +362,173 @@ class ServiceRates extends Component {
                             <span style={{fontSize:'14px',marginTop:'7px'}}>渠道编号：</span>
                         </div>
                         
-                        <Dropdown trigger={<Input placeholder="渠道编号" className="textClsName"   style={{width:'180px'}} onChange={this.onchange.bind(this,'id')}/>}
-                                  triggerType="click"
-                                  visible={this.state.visibles}
-                                  onVisibleChange={this.onVisibleChange}
-                                  safeNode={() => this.refs.button}>
-                            {menu}
-                        </Dropdown>
+                        <Input placeholder="渠道编号" className="textClsName"   style={{width:'180px'}} onChange={(e)=>{this.state.newData.appid = e}}/>
                         <div className="flexStyle">
                             <span></span>
                             <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>业务类型：</span>
                         </div>
-                        <Input placeholder="业务类型" className="textClsName"   style={{width:'180px'}} onChange={this.onchange.bind(this,'name')}/>
+
+                        <Dropdown trigger={<Input placeholder="业务类型" className="textClsName"   style={{width:'180px'}} value={this.state.newData.codeName}/>}
+                                  triggerType="click"
+                                  visible={this.state.visible1}
+                                  onVisibleChange={this.onVisibleChange1}
+                                  safeNode={() => this.refs.button}>
+                            <Menu>
+                                {code}
+                            </Menu>
+                        </Dropdown>
                     </Row>
                     <Row className="marginTop">
                         <div className="flexStyle">
                             <span></span>
                             <span style={{fontSize:'14px',marginTop:'7px'}}>上游渠道：</span>
                         </div>
-                        <Dropdown trigger={<Input placeholder="上游渠道" className="textClsName"   style={{width:'180px'}} onChange={this.onchange.bind(this,'id')}/>}
+                        <Dropdown trigger={<Input placeholder="上游渠道" className="textClsName"   style={{width:'180px'}} value={this.state.newData.upstreamName}/>}
                                   triggerType="click"
-                                  visible={this.state.visibles1}
-                                  onVisibleChange={this.onVisibleChange}
+                                  visible={this.state.visible2}
+                                  onVisibleChange={this.onVisibleChange2}
                                   safeNode={() => this.refs.button}>
-                            {menu}
+                            <Menu>
+                                {upstream}
+                            </Menu>
                         </Dropdown>
                         <div className="flexStyle">
                             <span></span>
                             <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>交易类型：</span>
                         </div>
-                        <Input placeholder="交易类型" className="textClsName"   style={{width:'180px'}} onChange={this.onchange.bind(this,'name')}/>
+
+                        <Dropdown trigger={<Input placeholder="交易类型" className="textClsName"   style={{width:'180px'}} value={this.state.newData.pointTypeName}/>}
+                                  triggerType="click"
+                                  visible={this.state.visible4}
+                                  onVisibleChange={this.onVisibleChange4}
+                                  safeNode={() => this.refs.button}>
+                            <Menu>
+                                {pointType}
+                            </Menu>
+                        </Dropdown>
                     </Row>
                     <Row className="marginTop">
                         <div className="flexStyle">
                             <span></span>
                             <span style={{fontSize:'14px',marginTop:'7px'}}>结算类型：</span>
                         </div>
-                        <Dropdown trigger={<Input placeholder="结算类型" className="textClsName"   style={{width:'180px'}} onChange={this.onchange.bind(this,'id')}/>}
+                        <Dropdown trigger={<Input placeholder="结算类型" className="textClsName"   style={{width:'180px'}} value={this.state.newData.typeName}/>}
                                   triggerType="click"
-                                  visible={this.state.visibles2}
-                                  onVisibleChange={this.onVisibleChange}
+                                  visible={this.state.visible3}
+                                  onVisibleChange={this.onVisibleChange3}
                                   safeNode={() => this.refs.button}>
-                            {menu}
+                            <Menu>
+                                {type}
+                            </Menu>
                         </Dropdown>
                         <div className="flexStyle">
                             <span></span>
                             <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>鉴权费：</span>
                         </div>
-                        <Input placeholder="鉴权费" className="textClsName"   style={{width:'180px'}} onChange={this.onchange.bind(this,'name')}/>
+                        <Input placeholder="鉴权费" className="textClsName"   style={{width:'180px'}} onChange={(e)=>{this.state.newData.mode = e}}/>
                     </Row>
                     <Row className="marginTop">
                         <div className="flexStyle">
                             <span></span>
                             <span style={{fontSize:'14px',marginTop:'7px'}}>结算费率(‰)：</span>
                         </div>
-                        <Dropdown trigger={<Input placeholder="结算费率(‰)" className="textClsName"   style={{width:'180px'}} onChange={this.onchange.bind(this,'id')}/>}
-                                  triggerType="click"
-                                  visible={this.state.visibles3}
-                                  onVisibleChange={this.onVisibleChange}
-                                  safeNode={() => this.refs.button}>
-                            {menu}
-                        </Dropdown>
+                        <Input placeholder="结算费率(‰)" className="textClsName"   style={{width:'180px'}} onChange={(e)=>{this.state.newData.fee0 = e}}/>
                         <div className="flexStyle">
                             <span></span>
                             <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>代付费(分)：</span>
                         </div>
-                        <Input placeholder="代付费(分)" className="textClsName"   style={{width:'180px'}} onChange={this.onchange.bind(this,'name')}/>
+                        <Input placeholder="代付费(分)" className="textClsName"   style={{width:'180px'}} onChange={(e)=>{this.state.newData.d0fee = e}}/>
+                    </Row>
+                </Dialog>
+
+
+                <Dialog visible={this.state.visible0}
+                        onOk={this.updateRates}
+                        closable="esc,mask,close"
+                        onCancel={this.onCloseChange}
+                        onClose={this.onCloseChange} title="修改">
+                    <Row>
+                        <div className="flexStyle">
+                            <span></span>
+                            <span style={{fontSize:'14px',marginTop:'7px'}}>渠道编号：</span>
+                        </div>
+                        
+                        <Input placeholder="渠道编号" className="textClsName"   style={{width:'180px'}} value={this.oldData.appid} onChange={(e)=>{this.oldData.appid = e}}/>
+                        <div className="flexStyle">
+                            <span></span>
+                            <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>业务类型：</span>
+                        </div>
+
+                        <Dropdown trigger={<Input placeholder="业务类型" className="textClsName"   style={{width:'180px'}} value={this.oldData.codeName}/>}
+                                  triggerType="click"
+                                  visible={this.state.visible1}
+                                  onVisibleChange={this.onVisibleChange1}
+                                  safeNode={() => this.refs.button}>
+                            <Menu>
+                                {code0}
+                            </Menu>
+                        </Dropdown>
+                    </Row>
+                    <Row className="marginTop">
+                        <div className="flexStyle">
+                            <span></span>
+                            <span style={{fontSize:'14px',marginTop:'7px'}}>上游渠道：</span>
+                        </div>
+                        <Dropdown trigger={<Input placeholder="上游渠道" className="textClsName"   style={{width:'180px'}} value={this.oldData.upstreamName}/>}
+                                  triggerType="click"
+                                  visible={this.state.visible2}
+                                  onVisibleChange={this.onVisibleChange2}
+                                  safeNode={() => this.refs.button}>
+                            <Menu>
+                                {upstream0}
+                            </Menu>
+                        </Dropdown>
+                        <div className="flexStyle">
+                            <span></span>
+                            <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>交易类型：</span>
+                        </div>
+
+                        <Dropdown trigger={<Input placeholder="交易类型" className="textClsName"   style={{width:'180px'}} value={this.oldData.pointTypeName}/>}
+                                  triggerType="click"
+                                  visible={this.state.visible4}
+                                  onVisibleChange={this.onVisibleChange4}
+                                  safeNode={() => this.refs.button}>
+                            <Menu>
+                                {pointType0}
+                            </Menu>
+                        </Dropdown>
+                    </Row>
+                    <Row className="marginTop">
+                        <div className="flexStyle">
+                            <span></span>
+                            <span style={{fontSize:'14px',marginTop:'7px'}}>结算类型：</span>
+                        </div>
+                        <Dropdown trigger={<Input placeholder="结算类型" className="textClsName"   style={{width:'180px'}} value={this.oldData.typeName}/>}
+                                  triggerType="click"
+                                  visible={this.state.visible3}
+                                  onVisibleChange={this.onVisibleChange3}
+                                  safeNode={() => this.refs.button}>
+                            <Menu>
+                                {type0}
+                            </Menu>
+                        </Dropdown>
+                        <div className="flexStyle">
+                            <span></span>
+                            <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>鉴权费：</span>
+                        </div>
+                        <Input placeholder="鉴权费" className="textClsName"   style={{width:'180px'}} value={this.oldData.mode} onChange={(e)=>{this.oldData.mode = e}}/>
+                    </Row>
+                    <Row className="marginTop">
+                        <div className="flexStyle">
+                            <span></span>
+                            <span style={{fontSize:'14px',marginTop:'7px'}}>结算费率(‰)：</span>
+                        </div>
+                        <Input placeholder="结算费率(‰)" className="textClsName"   style={{width:'180px'}} value={this.oldData.fee0} onChange={(e)=>{this.oldData.fee0 = e}}/>
+                        <div className="flexStyle">
+                            <span></span>
+                            <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>代付费(分)：</span>
+                        </div>
+                        <Input placeholder="代付费(分)" className="textClsName"   style={{width:'180px'}} value={this.oldData.d0fee} onChange={(e)=>{this.oldData.d0fee = e}}/>
                     </Row>
                 </Dialog>
             </div>

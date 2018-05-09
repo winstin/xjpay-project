@@ -156,7 +156,7 @@ class OrderMangers extends Component {
                         </Row>
                     </Row>
                     <div style={{marginTop:'20px'}}>
-                        <Table dataSource={dataSource} onRowClick={onRowClick} fixedHeader maxBodyHeight={containerHeight} rowSelection={rowSelection}>
+                        <Table dataSource={dataSource} onRowClick={onRowClick} fixedHeader maxBodyHeight={containerHeight} >
                             <Table.Column title="id" dataIndex="id"/>
                             <Table.Column title="菜单名称" dataIndex="name"/>
                             <Table.Column title="菜单编号" dataIndex="code"/>

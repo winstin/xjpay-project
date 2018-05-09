@@ -15,7 +15,7 @@ export default function PrintDialog(state = initialState, action){
         case 'INITGUNSDATA':
 
                 return Object.assign({},state,{
-                    'dataSource':action.dataSource.slice(0,20),
+                    'dataSource':action.dataSource,
                     'allData':action.dataSource,
                     total:action.total,
                 });

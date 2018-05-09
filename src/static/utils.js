@@ -98,7 +98,7 @@ var Tools = {
           </div>`;
           let div = document.createElement('div');
           div.innerHTML = html;
-          document.getElementById('container').appendChild(div);
+          document.getElementById('app').appendChild(div);
       }
   },
   hideLoading:function(){

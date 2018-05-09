@@ -8,7 +8,7 @@ const config = require('../config')
 const app = express()
 const paths = config.utils_paths
 const proxy = require('http-proxy-middleware')
-const context = [`/rest/agents/list`,`/rest/login`,`/agentrate/list`,`/agents/*`,
+const context = [`/rest/agents/list`,`/rest/login`,`/agentrate/*`,`/agents/*`,`/rates/*`,`/users/*`,
 `/merchants/*`,`/agent/*`,`/orders/*`,`/merchantProfit/*`,`/agentProfit/*`,`/profit/*`,`/mgr/*`,`/profits/*`,`/roles/*`,`/role/*`,`/menus/*`]
 const cookieParser = require('cookie-parser');
 

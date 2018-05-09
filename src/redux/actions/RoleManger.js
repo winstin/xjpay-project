@@ -106,7 +106,7 @@ export function removeData(id){
 }
 
 
-export function addData(name,pName,deptid,num,tips){
+export function addData(name,pName,deptid,num,tips,pid = ''){
 
     let dept = "";
     switch(deptid){
@@ -136,7 +136,8 @@ export function addData(name,pName,deptid,num,tips){
                 pName:pName,
                 num:num,
                 tips:tips,
-                deptid:dept
+                deptid:dept,
+                pid:pName
             },
             callback:(rsp)=>{
                 successToast('删除成功');
@@ -150,43 +151,27 @@ export function addData(name,pName,deptid,num,tips){
 }
 
 
-export function changeData(name,pName,deptid,num,tips){
+export function changeData(oldData,newData){
 
-    let dept = "";
-    switch(deptid){
-        case "总公司":
-            dept = 24;
-            break;
-        case "开发部":
-            dept = 25;
-            break;
-        case "运营部":
-            dept = 26;
-            break;
-        case "战略部":
-            dept = 27;
-            break;
-        case "服务商":
-            dept = 27
-
-    }
+    console.log(oldData);
+    console.log(newData)
 
     return (dispatch)=>{
         api({
             method:'/roles/edit',
             mode:'jsonp',
             args:{
-                name:name,
-                pName:pName,
-                num:num,
-                tips:tips,
-                deptid:dept
+                name:newData.name == undefined ? oldData.name:newData.name,
+                pid:newData.pid == undefined ? oldData.pid:newData.pid,
+                num:newData.num == undefined ? oldData.num:newData.num,
+                tips:newData.tips == undefined ? oldData.tips:newData.tips,
+                deptid:newData.deptid == undefined ? oldData.deptid:newData.deptid
             },
             callback:(rsp)=>{
-                successToast('删除成功');
+                successToast('修改成功');
             },
             errCallback:(msg)=>{
-                errorToast('删除失败');
+                errorToast('修改失败');
             }
         });
       
