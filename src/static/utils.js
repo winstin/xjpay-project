@@ -194,6 +194,7 @@ var Tools = {
             if(isloading){
                 hideLoading();
             }
+
             if(responseText == 'fail'){
                 //遇见错误时弹框提示   by Mothpro
                 //session获取失败登录失效
@@ -206,6 +207,8 @@ var Tools = {
             }
             //错误处理，待补充
             // console.log(error);
+            promptToast('登录超时，请退出重新登录！',2000)
+            
             if (errCallback) {
                 errCallback(error);
             } else {
@@ -322,16 +325,16 @@ var Tools = {
     return result;
   },
 
-  errorToast: function(text,){
-      Toast.error({content: text,hasMask:true,duration: 1000});
+  errorToast: function(text,time=1000){
+      Toast.error({content: text,hasMask:true,duration: time});
   },
 
-  successToast: function(text,){
-      Toast.success({content: text,hasMask:true,duration: 1000});
+  successToast: function(text,time=1000){
+      Toast.success({content: text,hasMask:true,duration: time});
   },
 
-  promptToast:function(text,){
-      Toast.prompt({content: text,hasMask:true,duration: 1000});
+  promptToast:function(text,time=1000){
+      Toast.prompt({content: text,hasMask:true,duration: time});
   },
   /**
  * @Author   Winstin

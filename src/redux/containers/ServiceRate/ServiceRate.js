@@ -388,7 +388,6 @@ class ServiceRates extends Component {
                                         }else{
                                             this.setState({autoName:this.state.autoName+" - "+"没有匹配到服务商"})
                                         }
-                                        
                                     })
                                 }
                             }}

@@ -62,7 +62,7 @@ class App extends Component {
           }
         }
 
-        setTimeout(function(){
+        // setTimeout(function(){
           api({
               method:'/menus/roleMenu',
               mode:'jsonp',
@@ -92,7 +92,7 @@ class App extends Component {
                 
               }
           });
-        },500)
+        // },500)
         
 
     }
