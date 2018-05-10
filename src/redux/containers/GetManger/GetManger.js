@@ -98,7 +98,7 @@ class GetMangers extends Component {
         const {add, value, switchState ,changeSwitchState,containerHeight,dataSource,sumTotalFee,sumOrderNum,sumD0fee,sumProfit,sumTotalProfit} = this.props;
         const TabPane = Tab.TabPane;
         return(
-            <div>
+            <div className="marginTop">
                 <div className="display-flex-100">
                     <div className="display-flex">
                         <span className='top-width'>总交易金额:</span>
@@ -135,7 +135,7 @@ class GetMangers extends Component {
                     }} />
                     <Button type="primary" style={{width:'100px',marginLeft:'10px'}} size="large" onClick={this.onSearch.bind(this)}>搜索</Button>
                 </div>
-                <div style={{marginTop:'10px',marginBottom:'10px'}}>
+                <div style={{marginTop:'20px',marginBottom:'10px'}}>
                     <Table dataSource={dataSource} onRowClick={onRowClick} fixedHeader maxBodyHeight={containerHeight}>
                         <Table.Column title='交易日期' dataIndex="sumDate" />
                         <Table.Column title='交易金额' dataIndex="sumTotalFee" />

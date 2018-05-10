@@ -160,12 +160,12 @@ class GunsIndex extends Component {
                 </div>
                 <div style={{marginTop:'20px'}}>
                     <Table dataSource={dataSources} onRowClick={onRowClick} fixedHeader maxBodyHeight={containerHeight} rowSelection={{onChange: this.onRowClick,mode:'single'}}>
-                        <Table.Column title="商户号" dataIndex="mchId" width="90"/>
-                        <Table.Column title="商户名称" dataIndex="name" width="90"/>
+                        <Table.Column title="商户号" dataIndex="mchId"/>
+                        <Table.Column title="商户名称" dataIndex="name"/>
                         <Table.Column title="身份证号" dataIndex="idCard"/>
                         <Table.Column title="结算卡号" dataIndex="cardNumber"/>
-                        <Table.Column title="渠道名称" dataIndex="agentName" width="100"/>
-                        <Table.Column title="渠道编号" dataIndex="channelAgent.appId" width="90"/>
+                        <Table.Column title="渠道名称" dataIndex="agentName" />
+                        <Table.Column title="渠道编号" dataIndex="channelAgent.appId"/>
                         <Table.Column title="建档时间" dataIndex="createTime" cell={this.cellTime} width="90"/>
                         <Table.Column title="商户类型" dataIndex="mchType" cell={this.cellType} width="90"/>
                         <Table.Column title="电话" dataIndex="tel" width="100"/>

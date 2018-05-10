@@ -79,8 +79,34 @@ class GunsIndex extends Component {
         const {containerHeight,dataSource,total} = (this.props);
         console.log(dataSource)
         return (
-            <div>
-                <div className="paddingTop">
+            <div className="paddingTop">
+                <div className="display-flex-100">
+                    <div className="display-flex">
+                        <span className='top-width'>总交易金额:</span>
+                        <span className="text-width"></span>
+                    </div>
+                    <div className="display-flex">
+                        <span className='top-width'>总交易笔数:</span>
+                        <span className="text-width"></span>
+                    </div>
+                    <div className="display-flex">
+                        <span className='top-width'>总交易手续费分成:</span>
+                        <span className="text-width"></span>
+                    </div>
+                    <div className="display-flex">
+                        <span className='top-width'>总D0手续费:</span>
+                        <span className="text-width"></span>
+                    </div>
+                    <div className="display-flex">
+                        <span className='top-width'>总应结分润:</span>
+                        <span className="text-width"></span>
+                    </div>
+                    <div className="display-flex">
+                        <span className='top-width'>总收益:</span>
+                        <span className="text-width"></span>
+                    </div>
+                </div>
+                <div className="marginTop-20">
                     <span className='top-sumtext-bold'>查询条件：</span>
                     <Input placeholder="商户名称" size="large"   style={{width:'120px'}} onChange={(e)=>{this.merchantName = e}}/>
                     <Input placeholder="商户编号" size="large"  style={{width:'120px',marginLeft:'12px'}} onChange={(e)=>{this.mchId = e}}/>
@@ -136,7 +162,7 @@ function mapDispatchToProps(dispatch,ownProps){
 
 export default Dimensions({
   getHeight: function() { //element
-    return window.innerHeight - 250;
+    return window.innerHeight - 290;
   },
   getWidth: function() { //element
     return window.innerWidth - 24;
