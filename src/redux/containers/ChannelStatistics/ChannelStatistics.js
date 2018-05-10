@@ -26,10 +26,12 @@ class GunsIndex extends Component {
         this.startDate = '';
         this.endDate = '';
         this.agentName = '';
-        this.filterAppId = ''
+        this.filterAppId = '';
+        this.current = 1;
     }
 
   onSearch(value) {
+      this.current = 1;
       const {getInitData} = (this.props);
       getInitData(1,this.startDate,this.endDate,this.agentName,this.filterAppId);
   }
@@ -46,6 +48,7 @@ class GunsIndex extends Component {
   }
 
   handleChange(current) {
+    this.current = current;
     const {getInitData} = this.props;
     getInitData(current);
   }
@@ -61,9 +64,9 @@ class GunsIndex extends Component {
 
         return (
             <div>
-                <Row>
-                    <span style={{fontSize:'14px',marginTop:'7px',width:'80px'}}>查询条件：</span>
-                    <Input placeholder="所属渠道" size="large"   style={{width:'120px'}} onChange={(e)=>{this.agentName = e}}/>
+                <div className="paddingTop">
+                    <span className='top-sumtext-bold'>查询条件：</span>
+                    <Input placeholder="所属渠道" size="large"  style={{width:'120px'}} onChange={(e)=>{this.agentName = e}}/>
                     <Input placeholder="渠道编号" size="large"  style={{width:'120px',marginLeft:'12px'}} onChange={(e)=>{this.filterAppId = e}}/>
                    {/* <span style={{fontSize:'14px',marginTop:'7px',width:'70px',marginLeft:'12px'}}>时间选择：</span>
                     <RangePicker onChange={(a, b) => {
@@ -71,16 +74,16 @@ class GunsIndex extends Component {
                         this.endDate = b[1];
                     }}/>
                     <Button type="primary" style={{width:'100px',marginLeft:'10px'}} onClick={this.onSearch.bind(this)}>搜索</Button>*/}
-                </Row>
+                </div>
 
-                <Row className="marginTop">
-                    <span style={{fontSize:'14px',marginTop:'7px',width:'80px'}}>时间选择：</span>
-                    <RangePicker onChange={(a, b) => {
+                <div className="marginTop-20">
+                    <span className='top-sumtext-bold'>时间选择：</span>
+                    <RangePicker size="large" onChange={(a, b) => {
                         this.startDate = b[0];
                         this.endDate = b[1];
                     }}/>
                     <Button type="primary" style={{width:'100px',marginLeft:'10px'}} size="large" onClick={this.onSearch.bind(this)}>搜索</Button>
-                </Row>
+                </div>
 
                 <div style={{marginTop:'20px'}}>
                     <Table dataSource={dataSource} onRowClick={onRowClick} fixedHeader maxBodyHeight={containerHeight}>
@@ -95,7 +98,7 @@ class GunsIndex extends Component {
                     </Table>
                 </div>
                 <div style={{marginTop:'20px',float:'right'}}>
-                    <Pagination defaultCurrent={1} size="large" total={total} pageSize={20} onChange={this.handleChange.bind(this)} />
+                    <Pagination current={this.current} size="large" total={total} pageSize={20} onChange={this.handleChange.bind(this)} />
 
                 </div>
             </div>
@@ -117,7 +120,7 @@ function mapDispatchToProps(dispatch,ownProps){
 
 export default Dimensions({
   getHeight: function() { //element
-    return window.innerHeight - 230;
+    return window.innerHeight - 250;
   },
   getWidth: function() { //element
     return window.innerWidth - 24;

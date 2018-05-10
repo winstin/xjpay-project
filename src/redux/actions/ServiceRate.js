@@ -8,7 +8,7 @@ export const SERVICEDATA = "SERVICEDATA";
 
 
 // import {ajax} from "./AY_API"
-import {api,ajax,compareTime,isEmpty,successToast,errorToast} from "static/utils.js"
+import {api,ajax,NetWorkPOST,compareTime,isEmpty,successToast,errorToast} from "static/utils.js"
 
 // export function getInitData(){
 //     return (dispatch)=>{
@@ -88,9 +88,9 @@ export function getServiceData(){
 
 export function addData(data = {}){
     return (dispatch)=>{
-        api({
-            method:'/agentrate/add',
-            mode:'jsonp',
+        NetWorkPOST({
+            method:'/rates/add',
+            mode:'json',
             args:{
                 id:'',
                 code:data.code,
@@ -116,9 +116,9 @@ export function addData(data = {}){
 
 export function updateData(oldData){
     return (dispatch)=>{
-        api({
-            method:'/agentrate/update',
-            mode:'jsonp',
+        NetWorkPOST({
+            method:'/rates/update',
+            mode:'json',
             args:oldData,
             callback:(rsp)=>{
                 successToast('修改成功！')
@@ -175,6 +175,27 @@ export function autoSearch(appId='',callback){
             },
             callback:(e)=>{
                 callback(e)
+            },
+            errCallback:(msg)=>{
+                // console.log(msg)
+            }
+        });
+       
+    }
+}
+
+
+export function deleteData(rateId){
+    return (dispatch)=>{
+        ajax({
+            method:'/rates/delete/',
+            mode:'json',
+            type:"POST",
+            args:{
+                url:rateId,
+            },
+            callback:(e)=>{
+                
             },
             errCallback:(msg)=>{
                 // console.log(msg)

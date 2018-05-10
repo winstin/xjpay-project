@@ -6,25 +6,23 @@
 
 **/
 
-import React,{Component, PropTypes} from 'react'
-import Myitem from '../../components/Myitem'
+import React,{Component,PropTypes} from 'react'
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
 
+import Myitem from '../../components/Myitem'
 import Navigation,{Item, Group} from 'qnui/lib/navigation';
 import Icon from 'qnui/lib/icon';
-import Menu from 'qnui/lib/menu';
 import './app.css'
-
 import Input from 'qnui/lib/input';
 import Button from 'qnui/lib/button';
 import Checkbox from 'qnui/lib/checkbox';
 import Field from 'qnui/lib/field';
-
 import {api,ajax,compareTime,isEmpty} from "static/utils.js"
 import Dialog from 'qnui/lib/dialog';
-
 import testImg from 'static/login.png';
 import bcakgroundImg from 'static/loginbackgrond.jpg';
-
+import * as Login from '../../actions/Login'
 
 function clearAllCookie() {  
     var keys = document.cookie.match(/[^ =;]+(?=\=)/g);  
@@ -58,9 +56,11 @@ class App extends Component {
           if(res.minutes >= 30){
               self.setState({msg:'登录超时!'})
           }else{
-              self.setState({isLogin:true})
+              self.setState({isLogin:true});
+
           }
         }
+        window.userType = localStorage.getItem("userType");
 
         // setTimeout(function(){
           api({
@@ -80,13 +80,6 @@ class App extends Component {
                       }
                   }
                   self.setState({context:rsp.data})
-                  if(context.indexOf('接口文档')>-1){
-                      window.userType="超级管理员";
-                  }else if(context.indexOf('用户管理')>-1){
-                      window.userType="管理员";
-                  }else{
-                      window.userType="渠道商";
-                  }
               },
               errCallback:(msg)=>{
                 
@@ -99,23 +92,14 @@ class App extends Component {
 
     handleSubmit() {
         let self = this;
-
-        api({
-            method:'/rest/login',
-            mode:'json',
-            args:{username:this.state.username,password:this.state.password},
-            callback:(rsp)=>{
-                let now = new Date();
-                localStorage.setItem("loginTime",now);
-                self.setState({isLogin:true,msg:''});
-
-            },
-            errCallback:(msg)=>{
-                self.setState({msg:'账号密码错误！'});
-                // clearAllCookie();
-                console.log(msg)
+        const{Login} = this.props;
+        Login(this.state.username,this.state.password,(e)=>{
+            if(e == 'fail'){
+              self.setState({msg:'账号密码错误！'});
+            }else{
+              self.setState({isLogin:true,msg:''});
             }
-        });
+        })
     }
 
     loginOut(){
@@ -126,6 +110,7 @@ class App extends Component {
             onOk:()=>{
               clearAllCookie();
               localStorage.setItem("loginTime",null);
+              localStorage.setItem("appId",null);
               self.setState({isLogin:false})
             }
         });
@@ -240,7 +225,6 @@ class App extends Component {
               }
           })
         }
-
         if(!isLogin){
           return(
             <div id="login">
@@ -445,13 +429,16 @@ class App extends Component {
     }
 }
 
+function mapStateToProps(state, ownProps){
+    return  {
+        userType:state.Login.userType,
+    }
+}
 
 
-export default App
+function mapDispatchToProps(dispatch,ownProps){
+    return  bindActionCreators( Login , dispatch )
+}
 
+export default connect(mapStateToProps, mapDispatchToProps)(App)
 
-// var App = React.createClass({
-
-    
-// })
-// export default App

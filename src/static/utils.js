@@ -1,5 +1,8 @@
 import fetchJsonp from 'fetch-jsonp';
 
+// import fetch from 'whatwg-fetch';
+
+
 import Feedback from 'qnui/lib/feedback';
 const Toast = Feedback.toast;
 
@@ -224,7 +227,8 @@ var Tools = {
         fetch(`${webUrl+method+args}`, {
         // fetch(`${host}${method}`, {
             method : 'GET',
-            mode : 'cors',    
+            mode : 'json',
+            credentials: 'include',//携带cookies
             // body : formData,
         }).then((res)=>res.json()).then(function(responseText){
             if(responseText == 'fail'){
@@ -257,14 +261,41 @@ var Tools = {
    * @param    {[type]}   errCallback} [description]
    * @return   {[type]}                 [description]
    */
-  ajax: function({method,args={},mode='jsonp',type="POST",callback,errCallback}){
+  ajax: function({method,args={},mode='jsonp',type="GET",callback,errCallback}){
       
       const uri = webUrl+method+args.url;
       let data = {};
       data.url = uri;
 
       data.dataType = mode;
-      data.type = 'GET';
+      data.type = type;
+      data.credentials='include';
+
+      data.xhrFields = {
+          withCredentials: true
+      },
+      data.crossDomain = true,
+      
+
+      $.ajax(data).done(function(e) {
+          callback(e);
+      }).fail(function(data,status,xhr) {
+          console.error(data);
+          console.error(status);
+          console.error(xhr);
+      });
+
+     
+  },
+
+  NetWorkPOST: function({method,args={},mode='jsonp',type="POST",callback,errCallback}){
+      
+      const uri = webUrl+method;
+      let data = {};
+      data.url = uri;
+      data.data = args;
+      data.dataType = mode;
+      data.type = type;
       data.credentials='include';
 
       data.xhrFields = {
@@ -361,12 +392,30 @@ var Tools = {
       minute = minute < 10 ? ('0' + minute) : minute;  
       second = second < 10 ? ('0' + second) : second;  
       return y + '-' + m + '-' + d + ' ' + h + ':' + minute + ':' + second;  
+  },
+
+  getNowFormatDate:function() {
+        var date = new Date();
+        var seperator1 = "-";
+        var year = date.getFullYear();
+        var month = date.getMonth() + 1;
+        var strDate = date.getDate();
+        if (month >= 1 && month <= 9) {
+            month = "0" + month;
+        }
+        if (strDate >= 0 && strDate <= 9) {
+            strDate = "0" + strDate;
+        }
+        var currentdate = year + seperator1 + month + seperator1 + strDate;
+        return currentdate;
   }
 
 };
 
 export const api = Tools.api.bind(Tools);
 export const ajax = Tools.ajax.bind(Tools);
+export const NetWorkPOST = Tools.NetWorkPOST.bind(Tools);
+
 export const isEmpty = Tools.isEmpty.bind(Tools);
 export const hideLoading = Tools.hideLoading.bind(Tools);
 export const showLoading = Tools.showLoading.bind(Tools);
@@ -375,6 +424,8 @@ export const errorToast = Tools.errorToast.bind(Tools);
 export const successToast = Tools.successToast.bind(Tools);
 export const FormatDateTime = Tools.FormatDateTime.bind(Tools);
 export const promptToast = Tools.promptToast.bind(Tools);
+export const getNowFormatDate = Tools.getNowFormatDate.bind(Tools);
+
 
 
 export default Tools;

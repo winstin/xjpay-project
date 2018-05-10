@@ -62,6 +62,7 @@ class ServiceMangers extends Component {
     }
 
     onSearch(appId,appName) {
+        this.current = 1;
         const {getInitData,SearchData} = (this.props);
         // getInitData(1,this.appId,this.appName);
         SearchData(this.appId,this.appName);
@@ -210,18 +211,16 @@ class ServiceMangers extends Component {
 
         return (
             <div>
-                <Row >
-                    <span style={{fontSize:'14px',marginTop:'7px',width:'80px'}}>查询条件：</span>
-                     <Row>
-                        <Input placeholder="渠道编号" size="large"  style={{width:'120px'}} onChange={(e)=>{this.appId = e}}/>
-                        
-                        <Input placeholder="渠道名称" size="large"  style={{width:'120px',marginLeft:'12px'}} onChange={(e)=>{this.appName = e}}/>
-                        
-                        <Button type="primary" style={{width:'100px',marginLeft:'10px'}} size="large" onClick={this.onSearch.bind(this)}>搜索</Button>
-                    </Row>
-                </Row>
-                <div style={{marginTop:'20px'}}>
-                    <Button type="primary" style={{width:'100px',marginLeft:'10px'}} size="large" onClick={this.onOpen.bind(this,'add')}>添加</Button>
+                <div className="paddingTop">
+                    <span className='top-sumtext-bold'>查询条件：</span>
+                    <Input placeholder="渠道编号" size="large"  style={{width:'120px'}} onChange={(e)=>{this.appId = e}}/>
+                    
+                    <Input placeholder="渠道名称" size="large"  style={{width:'120px',marginLeft:'12px'}} onChange={(e)=>{this.appName = e}}/>
+                    
+                    <Button type="primary" style={{width:'100px',marginLeft:'10px'}} size="large" onClick={this.onSearch.bind(this)}>搜索</Button>
+                </div>
+                <div className="marginTop-20">
+                    <Button type="primary" style={{width:'100px'}} size="large" onClick={this.onOpen.bind(this,'add')}>添加</Button>
                     <Button type="normal" style={{width:'100px',marginLeft:'10px'}} size="large" onClick={this.onOpen.bind(this,'change')}>修改</Button>
                     <Button type="secondary" style={{width:'120px',marginLeft:'10px'}} size="large" >冻结/启用</Button>
                 </div>
@@ -256,7 +255,7 @@ class ServiceMangers extends Component {
                     </Table>
                 </div>
                 <div style={{marginTop:'20px',float:'right'}}>
-                    <Pagination defaultCurrent={1} size="large" total={total} pageSize={20} onChange={this.changePageno.bind(this)} />
+                    <Pagination current={this.current} size="large" total={total} pageSize={20} onChange={this.changePageno.bind(this)} />
                 </div>
 
 
@@ -287,7 +286,7 @@ function mapDispatchToProps(dispatch,ownProps){
 
 export default Dimensions({
   getHeight: function() { //element
-    return window.innerHeight - 230;
+    return window.innerHeight - 250;
   },
   getWidth: function() { //element
     return window.innerWidth - 24;

@@ -77,6 +77,7 @@ class ServiceRates extends Component {
         };
         this.oldData = {};
         this.current = 1;
+        // this.rateId = "";
     }
 
 
@@ -104,6 +105,7 @@ class ServiceRates extends Component {
 
 
     searchData(){
+        this.current = 1;
         const{getInitData,SearchData} = this.props;
         getInitData(1,this.id,this.name);
     }
@@ -132,6 +134,15 @@ class ServiceRates extends Component {
         });
     }
 
+    remove = () =>{
+        if(this.appid == ""){            
+            promptToast('请选择操作项！');
+            return;
+        }
+        const {deleteData} = this.props;
+        deleteData(this.appid)
+    }
+
     onClose = () => {
         this.setState({
             visible: false
@@ -147,6 +158,7 @@ class ServiceRates extends Component {
 
     onRowClick = (index,record)=>{
         this.appid = index[0];
+
         this.oldData = record[0];
         this.oldData.codeName = this.cellRender(this.oldData.code);
         this.oldData.pointTypeName = this.cellPointType(this.oldData.pointType);
@@ -331,17 +343,22 @@ class ServiceRates extends Component {
 
         return (
             <div>
-                <Row>
-                    <span style={{fontSize:'14px',marginTop:'7px',width:'80px'}}>渠道编号：</span>
-                     <Row>
-                        <Input placeholder="渠道编号" size="large"   style={{width:'120px'}} onChange={this.onchange.bind(this,'id')}/>
-                        <span style={{fontSize:'14px',marginTop:'7px',width:'70px',marginLeft:'12px'}}>渠道名称：</span>
-                        <Input placeholder="渠道名称" size="large"   style={{width:'120px',marginLeft:'6px'}} onChange={this.onchange.bind(this,'name')}/>
-                        <Button type="primary" style={{width:'100px',marginLeft:'10px'}} size="large" onClick={this.searchData.bind(this)}>搜索</Button>
-                        <Button type="normal" style={{width:'100px',marginLeft:'10px'}} size="large" onClick={this.onOpen}>添加</Button>
-                        <Button type="secondary" style={{width:'100px',marginLeft:'10px'}} size="large" onClick={this.onOpenChange}>修改</Button>
-                    </Row>
-                </Row>
+                <div className="paddingTop">
+                    <span className='top-sumtext-bold'>渠道编号：</span>
+                    <Input placeholder="渠道编号" size="large"   style={{width:'120px'}} onChange={this.onchange.bind(this,'id')}/>
+                    <span className='top-sumtext'>渠道名称：</span>
+                    <Input placeholder="渠道名称" size="large"   style={{width:'120px'}} onChange={this.onchange.bind(this,'name')}/>
+                   {/* <Button type="primary" style={{width:'100px',marginLeft:'10px'}} size="large" onClick={this.searchData.bind(this)}>搜索</Button>
+                    <Button type="normal" style={{width:'100px',marginLeft:'10px'}} size="large" onClick={this.onOpen}>添加</Button>
+                    <Button type="secondary" style={{width:'100px',marginLeft:'10px'}} size="large" onClick={this.onOpenChange}>修改</Button>*/}
+                </div>
+
+                <div className="marginTop-20">
+                    <Button type="primary" style={{width:'100px'}} size="large" onClick={this.searchData.bind(this)}>搜索</Button>
+                    <Button type="normal" style={{width:'100px',marginLeft:'10px'}} size="large" onClick={this.onOpen}>添加</Button>
+                    <Button type="secondary" style={{width:'100px',marginLeft:'10px'}} size="large" onClick={this.onOpenChange}>修改</Button>
+                    <Button type="normal" style={{width:'100px',marginLeft:'10px'}} size="large" onClick={this.remove}>删除</Button>
+                </div>
                 <div style={{marginTop:'20px'}}>
                     <Table dataSource={dataSource} rowSelection={{onChange: this.onRowClick,mode:'single'}} fixedHeader maxBodyHeight={containerHeight}>
                         <Table.Column title="编号" dataIndex="id"/>
@@ -358,7 +375,7 @@ class ServiceRates extends Component {
                     </Table>
                 </div>
                 <div style={{marginTop:'20px',float:'right'}}>
-                    <Pagination defaultCurrent={1} size="large" onChange={this.handleChange.bind(this)} pageSize={20} total={total}/>
+                    <Pagination current={this.current} size="large" onChange={this.handleChange.bind(this)} pageSize={20} total={total}/>
                 </div>
 
                 <Dialog visible={this.state.visible}
@@ -582,7 +599,7 @@ function mapDispatchToProps(dispatch,ownProps){
 
 export default Dimensions({
   getHeight: function() { //element
-    return window.innerHeight - 190;
+    return window.innerHeight - 250;
   },
   getWidth: function() { //element
     return window.innerWidth - 24;

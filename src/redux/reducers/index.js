@@ -14,8 +14,9 @@ import UserManger from './UserManger'
 import RoleManger from './RoleManger'
 import OrderManger from './OrderManger'
 
+import Login from './Login'
 
 
 
-export  {OrderManger,RoleManger,UserManger,GetManger,ChannelStatistics,CommodityStatistics,BatchPage,GunIndex,ServiceManger,ServiceRate,AutoEva,Myitem}
+export  {Login,OrderManger,RoleManger,UserManger,GetManger,ChannelStatistics,CommodityStatistics,BatchPage,GunIndex,ServiceManger,ServiceRate,AutoEva,Myitem}
 

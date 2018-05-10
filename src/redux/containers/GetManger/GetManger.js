@@ -99,34 +99,36 @@ class GetMangers extends Component {
         const TabPane = Tab.TabPane;
         return(
             <div>
-                <div style={{display:'flex',width:'100%'}}>
-                    <div style={{width:'25%'}}>
-                        <span style={{fontSize:'14px',marginTop:'7px',width:'80px'}}>总交易金额:</span>
-                        <span style={{fontSize:'14px',marginTop:'7px',width:'80px'}}>{sumTotalFee}</span>
+                <div className="display-flex-100">
+                    <div className="display-flex">
+                        <span className='top-width'>总交易金额:</span>
+                        <span className="text-width">{sumTotalFee}</span>
                     </div>
-                    <div style={{width:'25%'}}>
-                        <span style={{fontSize:'14px',marginTop:'7px',width:'80px'}}>总交易笔数:</span>
-                        <span style={{fontSize:'14px',marginTop:'7px',width:'80px'}}>{sumOrderNum}</span>
+                    <div className="display-flex">
+                        <span className='top-width'>总交易笔数:</span>
+                        <span className="text-width">{sumOrderNum}</span>
                     </div>
-                    <div style={{width:'25%'}}>
-                        <span style={{fontSize:'14px',marginTop:'7px',width:'80px'}}>总交易手续费分成:</span>
-                        <span style={{fontSize:'14px',marginTop:'7px',width:'80px'}}>{sumD0fee}</span>
+                    <div className="display-flex">
+                        <span className='top-width'>总交易手续费分成:</span>
+                        <span className="text-width">{sumProfit}</span>
                     </div>
-                    <div style={{width:'25%'}}>
-                        <span style={{fontSize:'14px',marginTop:'7px',width:'80px'}}>总D0手续费:</span>
-                        <span style={{fontSize:'14px',marginTop:'7px',width:'80px'}}>{sumProfit}</span>
+                    <div className="display-flex">
+                        <span className='top-width'>总D0手续费:</span>
+                        <span className="text-width">{sumD0fee}</span>
                     </div>
-                    <div style={{width:'25%'}}>
-                        <span style={{fontSize:'14px',marginTop:'7px',width:'80px'}}>总应结分润:</span>
-                        <span style={{fontSize:'14px',marginTop:'7px',width:'80px'}}>{sumProfit}</span>
+                    <div className="display-flex">
+                        <span className='top-width'>总应结分润:</span>
+                        <span className="text-width">{sumProfit}</span>
                     </div>
-                    <div style={{width:'25%'}}>
-                        <span style={{fontSize:'14px',marginTop:'7px',width:'80px'}}>总收益:</span>
-                        <span style={{fontSize:'14px',marginTop:'7px',width:'80px'}}>{sumTotalProfit}</span>
+                    <div className="display-flex">
+                        <span className='top-width'>总收益:</span>
+                        <span className="text-width">{sumTotalProfit}</span>
                     </div>
                 </div>
-                <div className="marginTop">
-                    <span style={{fontSize:'14px',marginTop:'7px',width:'70px'}}>时间选择：</span>
+
+
+                <div className="marginTop-20">
+                    <span className='top-sumtext-bold'>时间选择：</span>
                     <RangePicker size="large" onChange={(a, b) => {
                         this.startDate = b[0];
                         this.endDate = b[1];
@@ -136,12 +138,12 @@ class GetMangers extends Component {
                 <div style={{marginTop:'10px',marginBottom:'10px'}}>
                     <Table dataSource={dataSource} onRowClick={onRowClick} fixedHeader maxBodyHeight={containerHeight}>
                         <Table.Column title='交易日期' dataIndex="sumDate" />
-                        <Table.Column title='交易金额' dataIndex="sumTotalFee" width={200}/>
-                        <Table.Column title='交易笔数' dataIndex="sumOrderNum" width={150}/>
-                        <Table.Column title='交易手续费分成' dataIndex="sumProfit" width={150}/>
-                        <Table.Column title='D0手续费' dataIndex="sumD0fee"  width={150}/>
-                        <Table.Column title='应结分润' dataIndex="sumProfit"  width={100}/>
-                        <Table.Column title='收益' dataIndex="sumTotalProfit"  width={100}/>
+                        <Table.Column title='交易金额' dataIndex="sumTotalFee" />
+                        <Table.Column title='交易笔数' dataIndex="sumOrderNum" />
+                        <Table.Column title='交易手续费分成' dataIndex="sumProfit" />
+                        <Table.Column title='D0手续费' dataIndex="sumD0fee"  />
+                        <Table.Column title='应结分润' dataIndex="sumProfit"  />
+                        <Table.Column title='收益' dataIndex="sumTotalProfit" />
                     </Table>
                 </div>
                 {/*<div style={{marginTop:'20px',float:'right'}}>
@@ -174,7 +176,7 @@ function mapDispatchToProps(dispatch,ownProps){
 
 export default Dimensions({
   getHeight: function() { //element
-    return window.innerHeight - 270;
+    return window.innerHeight - 290;
   },
   getWidth: function() { //element
     return window.innerWidth - 24;

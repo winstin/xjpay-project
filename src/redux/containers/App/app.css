@@ -13,6 +13,7 @@
     min-width: 960px;
     width: 100%;
     height: 100%;
+    overflow: hidden;
 }
 #module_data {
     width: 100%;
@@ -320,15 +321,68 @@
     background: #e5e5e5;
 }
 th .next-table-cell-wrapper{
-    font-family: "微软雅黑";
+    font-family: "open sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-weight: bold;
     color: #333;
+    font-size: 13px
 }
 
 
 .next-table-cell-wrapper{
-    font-family: "微软雅黑";
+    font-family: "open sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
     /*font-weight: bold;*/
-    color: #333
+    color: #333;
+    font-size: 13px
+}
+
+.top-sumtext{
+    font-size:14px;
+    margin-top:7px;
+    width:85px;
+    margin-left:12px;
+    font-weight: bold;
+}
+
+.top-sumtext-bold{
+    font-size:14px;
+    margin-top:7px;
+    width:85px;
+    font-weight: bold;
+    /*flex: 1*/
+}
+
+.top-width{
+    font-size:14px;
+    margin-top:7px;
+    /*width:85px;*/
+    font-weight: bold;
+
+    /*flex: 1.5*/
+}
+
+.text-width{
+    font-size:13px;
+    margin-top:7px;
+    padding-left: 10px;
+    font-weight: bold;
+    /*flex: 1*/
+}
+
+.text-center{
+    font-size:14px;
+    margin-top:7px;
+    font-weight: bold;
+}
+
+.display-flex{
+    width:25%;
+    display:flex
+}
+
+.display-flex-100{
+    display:flex
+}
+.paddingTop{
+    padding-top: 10px
 }
 

@@ -42,7 +42,7 @@ class GunsIndex extends Component {
         super(props);
 
         this.state = {
-            dataSource: getData(30)
+            current:1
         };
 
         this.startDate='';
@@ -52,9 +52,11 @@ class GunsIndex extends Component {
         // this.startDate='';
         // this.startDate='';
         this.lockId = "";
+        this.current = 1;
     }
 
     onSearch() {
+        this.setState({current:1})
         const {getInitData} = (this.props);
         getInitData(1,this.merchantName,this.mchId,this.startDate,this.endDate);
     }
@@ -68,6 +70,11 @@ class GunsIndex extends Component {
         const {getInitData,emptyData} = (this.props);
         emptyData();
         getInitData();
+        // $("table tr:even").css("background","#ccc");
+        // var tr = document.getElementsByTagName("tr");
+        // for(var i = 1; i < tr.length ; i += 6){ // 从第二行开始遍历，i初始为1，递增6
+        //     tr[i].style.backgroundColor = "red";
+        // }
     }
 
     /**
@@ -80,6 +87,7 @@ class GunsIndex extends Component {
      * @return   {[type]}     [description]
      */
     changePageno(e){
+        this.setState({current:e})
         const {getInitData} = (this.props);
         getInitData(e);
     }
@@ -127,8 +135,8 @@ class GunsIndex extends Component {
 
         return (
             <div>
-                <Row>
-                    <span style={{fontSize:'14px',marginTop:'7px',width:'80px'}}>查询条件：</span>
+                <div className="paddingTop">
+                    <span className='top-sumtext-bold'>查询条件：</span>
                     <Input placeholder="商户名称" size="large"   style={{width:'160px'}} onChange={(e)=>{this.merchantName = e}}/>
                     <Input placeholder="商户编号" size="large"  style={{width:'160px',marginLeft:'12px'}} onChange={(e)=>{this.mchId = e}}/>
                     {/*<span style={{fontSize:'14px',marginTop:'7px',width:'70px',marginLeft:'12px'}}>时间选择：</span>
@@ -139,34 +147,34 @@ class GunsIndex extends Component {
                     }} />
                     <Button type="primary" size="large" style={{width:'100px',marginLeft:'10px'}}  onClick={this.onSearch.bind(this)}>搜索</Button>
                     <Button type="secondary" size="large" style={{width:'100px',marginLeft:'10px'}} onClick={this.onLock.bind(this)}>冻结</Button>*/}
-                </Row>
-                <Row className='marginTop'>
-                    <span style={{fontSize:'14px',marginTop:'7px',width:'80px'}}>时间选择：</span>
-                    <RangePicker  onChange={(a, b) => {
+                </div>
+                <div className='marginTop-20'>
+                    <span className='top-sumtext-bold'>时间选择：</span>
+                    <RangePicker  size="large" onChange={(a, b) => {
                         // console.log(b[0]);
                         this.startDate = b[0];
                         this.endDate = b[1];
                     }} />
                     <Button type="primary" size="large" style={{width:'100px',marginLeft:'10px'}}  onClick={this.onSearch.bind(this)}>搜索</Button>
                     <Button type="secondary" size="large" style={{width:'100px',marginLeft:'10px'}} onClick={this.onLock.bind(this)}>冻结</Button>
-                </Row>
+                </div>
                 <div style={{marginTop:'20px'}}>
                     <Table dataSource={dataSources} onRowClick={onRowClick} fixedHeader maxBodyHeight={containerHeight} rowSelection={{onChange: this.onRowClick,mode:'single'}}>
-                        <Table.Column title="商户号" dataIndex="mchId"/>
-                        <Table.Column title="商户名称" dataIndex="name"/>
+                        <Table.Column title="商户号" dataIndex="mchId" width="90"/>
+                        <Table.Column title="商户名称" dataIndex="name" width="90"/>
                         <Table.Column title="身份证号" dataIndex="idCard"/>
                         <Table.Column title="结算卡号" dataIndex="cardNumber"/>
-                        <Table.Column title="渠道名称" dataIndex="agentName"/>
-                        <Table.Column title="渠道编号" dataIndex="channelAgent.appId"/>
-                        <Table.Column title="建档时间" dataIndex="createTime" cell={this.cellTime}/>
-                        <Table.Column title="商户类型" dataIndex="mchType" cell={this.cellType}/>
-                        <Table.Column title="电话" dataIndex="tel"/>
-                        <Table.Column title="费率（‰）" dataIndex="fee0"/>
-                        <Table.Column title="代付费" dataIndex="d0fee" cell={this.cellRender}/>
+                        <Table.Column title="渠道名称" dataIndex="agentName" width="100"/>
+                        <Table.Column title="渠道编号" dataIndex="channelAgent.appId" width="90"/>
+                        <Table.Column title="建档时间" dataIndex="createTime" cell={this.cellTime} width="90"/>
+                        <Table.Column title="商户类型" dataIndex="mchType" cell={this.cellType} width="90"/>
+                        <Table.Column title="电话" dataIndex="tel" width="100"/>
+                        <Table.Column title="费率（‰）" dataIndex="fee0" width="95"/>
+                        <Table.Column title="代付费" dataIndex="d0fee" cell={this.cellRender} width="70"/>
                     </Table>
                 </div>
                 <div style={{marginTop:'20px',float:'right'}}>
-                    <Pagination defaultCurrent={1} size="large" total={total} pageSize={20} onChange={this.changePageno.bind(this)} />
+                    <Pagination current={this.state.current} size="large" total={total} pageSize={20} onChange={this.changePageno.bind(this)} />
                 </div>
             </div>
         );
@@ -188,7 +196,7 @@ function mapDispatchToProps(dispatch,ownProps){
 
 export default Dimensions({
   getHeight: function() { //element
-    return window.innerHeight - 230;
+    return window.innerHeight - 250;
   },
   getWidth: function() { //element
     return window.innerWidth - 24;

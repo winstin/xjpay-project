@@ -2,8 +2,10 @@ import React,{Component,PropTypes} from 'react'
 import Dialog from 'qnui/lib/dialog';
 import Tab from 'qnui/lib/tab';
 const TabPane = Tab.TabPane;
-
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
 import Table from 'qnui/lib/table';
+import * as Login from '../../actions/Login'
 
 const onRowClick = function (record, index, e) {
         console.log(record, index, e);
@@ -66,7 +68,9 @@ class RoleDialog extends Component {
         }
     }
 
+
     renderPane(upData,downDetails){
+        console.log(this.props)
         if(window.userType == "管理员"){
             return <Tab style={{height:600}}>
                     <TabPane tab="上游信息" key="1" >
@@ -127,6 +131,16 @@ class RoleDialog extends Component {
 }
 
 
+function mapStateToProps(state, ownProps){
+    return {
+        userType:state.Login.userType,
+    }
+}
 
-export default RoleDialog
+
+function mapDispatchToProps(dispatch,ownProps){
+    return 
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(RoleDialog)
 
