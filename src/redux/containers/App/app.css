@@ -210,6 +210,8 @@
     margin: 0px;
     padding: 0px;
     z-index: -99999;
+    top:0px;
+    left:0px
 }
 
 .guns-title{
