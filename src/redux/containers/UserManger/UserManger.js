@@ -210,22 +210,22 @@ class UserMangers extends Component {
             <div>
                 <Row>
                     <span style={{fontSize:'14px',marginTop:'7px',width:'80px'}}>用户名称：</span>
-                    <Input placeholder="帐号/姓名/手机号" className="textClsName"   className='marginRight' onChange={this.onchange.bind(this,'name')}/>
+                    <Input placeholder="帐号/姓名/手机号" size="large"  className='marginRight' onChange={this.onchange.bind(this,'name')}/>
                     <span style={{fontSize:'14px',marginTop:'7px',width:'80px'}}>注册时间：</span>
-                    <RangePicker onChange={(a, b) => {
+                    <RangePicker size="large" onChange={(a, b) => {
                         this.startDate = b[0];
                         this.endDate = b[1];
                     }} />
                     
                 </Row>
                 <Row className='marginTop-larger'>
-                    <Button type="primary" style={{width:'100px'}} onClick={this.searchData.bind(this)}>搜索</Button>
+                    <Button type="primary" style={{width:'100px'}} size="large" onClick={this.searchData.bind(this)}>搜索</Button>
                     
-                    {window.userType == "超级管理员" && <Button type="normal" className='top-btn' onClick={this.onOpen.bind(this,"添加")}>添加</Button>}
-                    {window.userType == "超级管理员" &&<Button type="normal" className='top-btn' onClick={this.onOpen.bind(this,"修改")}>修改</Button>}
-                    {window.userType == "超级管理员" &&<Button type="primary" className='top-btn' onClick={this.removeData.bind(this)}>删除</Button>}
-                    {window.userType == "超级管理员" &&<Button type="normal" className='top-btn' onClick={this.resetData.bind(this)}>重置密码</Button>}
-                    {window.userType == "超级管理员" &&<Button type="primary" className='top-btn' onClick={
+                    {window.userType == "超级管理员" && <Button type="normal" className='top-btn' size="large" onClick={this.onOpen.bind(this,"添加")}>添加</Button>}
+                    {window.userType == "超级管理员" &&<Button type="normal" className='top-btn' size="large" onClick={this.onOpen.bind(this,"修改")}>修改</Button>}
+                    {window.userType == "超级管理员" &&<Button type="primary" className='top-btn' size="large" onClick={this.removeData.bind(this)}>删除</Button>}
+                    {window.userType == "超级管理员" &&<Button type="normal" className='top-btn' size="large" onClick={this.resetData.bind(this)}>重置密码</Button>}
+                    {window.userType == "超级管理员" &&<Button type="primary" className='top-btn' size="large" onClick={
                         ()=>{
                             if(this.removeid == ""){
                                 promptToast('请选择操作项！');
@@ -235,8 +235,8 @@ class UserMangers extends Component {
                         }}
                     >角色分配</Button>}
 
-                    <Button type="secondary" className='top-btn' onClick={this.freezeData.bind(this)}>冻结</Button>
-                    <Button type="normal" className='top-btn' onClick={this.unfreezeData.bind(this)}>解除冻结</Button>
+                    <Button type="secondary" className='top-btn' size="large" onClick={this.freezeData.bind(this)}>冻结</Button>
+                    <Button type="normal" className='top-btn' size="large" onClick={this.unfreezeData.bind(this)}>启用</Button>
                 </Row>
                 <div style={{marginTop:'20px'}}>
                     <Table dataSource={dataSource} fixedHeader maxBodyHeight={containerHeight} rowSelection={{onChange: this.onRowClick,mode:'single'}}>

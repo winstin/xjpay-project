@@ -213,17 +213,17 @@ class ServiceMangers extends Component {
                 <Row >
                     <span style={{fontSize:'14px',marginTop:'7px',width:'80px'}}>查询条件：</span>
                      <Row>
-                        <Input placeholder="渠道编号" className="textClsName"  style={{width:'120px'}} onChange={(e)=>{this.appId = e}}/>
+                        <Input placeholder="渠道编号" size="large"  style={{width:'120px'}} onChange={(e)=>{this.appId = e}}/>
                         
-                        <Input placeholder="渠道名称" className="textClsName"  style={{width:'120px',marginLeft:'12px'}} onChange={(e)=>{this.appName = e}}/>
+                        <Input placeholder="渠道名称" size="large"  style={{width:'120px',marginLeft:'12px'}} onChange={(e)=>{this.appName = e}}/>
                         
-                        <Button type="primary" style={{width:'100px',marginLeft:'10px'}} onClick={this.onSearch.bind(this)}>搜索</Button>
+                        <Button type="primary" style={{width:'100px',marginLeft:'10px'}} size="large" onClick={this.onSearch.bind(this)}>搜索</Button>
                     </Row>
                 </Row>
                 <div style={{marginTop:'20px'}}>
-                    <Button type="primary" style={{width:'100px',marginLeft:'10px'}} onClick={this.onOpen.bind(this,'add')}>添加</Button>
-                    <Button type="normal" style={{width:'100px',marginLeft:'10px'}} onClick={this.onOpen.bind(this,'change')}>修改</Button>
-                    <Button type="secondary" style={{width:'120px',marginLeft:'10px'}} >冻结/启用</Button>
+                    <Button type="primary" style={{width:'100px',marginLeft:'10px'}} size="large" onClick={this.onOpen.bind(this,'add')}>添加</Button>
+                    <Button type="normal" style={{width:'100px',marginLeft:'10px'}} size="large" onClick={this.onOpen.bind(this,'change')}>修改</Button>
+                    <Button type="secondary" style={{width:'120px',marginLeft:'10px'}} size="large" >冻结/启用</Button>
                 </div>
                 <div style={{marginTop:'20px'}}>
                     <Table dataSource={dataSource} fixedHeader maxBodyHeight={containerHeight} rowSelection={{onChange: this.onRowClick,mode:'single'}}>

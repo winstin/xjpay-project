@@ -63,17 +63,25 @@ class GunsIndex extends Component {
             <div>
                 <Row>
                     <span style={{fontSize:'14px',marginTop:'7px',width:'80px'}}>查询条件：</span>
-                     <Row>
-                        <Input placeholder="所属渠道" className="textClsName"   style={{width:'120px'}} onChange={(e)=>{this.agentName = e}}/>
-                        <Input placeholder="渠道编号" className="textClsName"  style={{width:'120px',marginLeft:'12px'}} onChange={(e)=>{this.filterAppId = e}}/>
-                        <span style={{fontSize:'14px',marginTop:'7px',width:'70px',marginLeft:'12px'}}>时间选择：</span>
-                        <RangePicker onChange={(a, b) => {
-                            this.startDate = b[0];
-                            this.endDate = b[1];
-                        }}/>
-                        <Button type="primary" style={{width:'100px',marginLeft:'10px'}} onClick={this.onSearch.bind(this)}>搜索</Button>
-                    </Row>
+                    <Input placeholder="所属渠道" size="large"   style={{width:'120px'}} onChange={(e)=>{this.agentName = e}}/>
+                    <Input placeholder="渠道编号" size="large"  style={{width:'120px',marginLeft:'12px'}} onChange={(e)=>{this.filterAppId = e}}/>
+                   {/* <span style={{fontSize:'14px',marginTop:'7px',width:'70px',marginLeft:'12px'}}>时间选择：</span>
+                    <RangePicker onChange={(a, b) => {
+                        this.startDate = b[0];
+                        this.endDate = b[1];
+                    }}/>
+                    <Button type="primary" style={{width:'100px',marginLeft:'10px'}} onClick={this.onSearch.bind(this)}>搜索</Button>*/}
                 </Row>
+
+                <Row className="marginTop">
+                    <span style={{fontSize:'14px',marginTop:'7px',width:'80px'}}>时间选择：</span>
+                    <RangePicker onChange={(a, b) => {
+                        this.startDate = b[0];
+                        this.endDate = b[1];
+                    }}/>
+                    <Button type="primary" style={{width:'100px',marginLeft:'10px'}} size="large" onClick={this.onSearch.bind(this)}>搜索</Button>
+                </Row>
+
                 <div style={{marginTop:'20px'}}>
                     <Table dataSource={dataSource} onRowClick={onRowClick} fixedHeader maxBodyHeight={containerHeight}>
                         <Table.Column title="交易日期" dataIndex="sumDate" />
@@ -109,7 +117,7 @@ function mapDispatchToProps(dispatch,ownProps){
 
 export default Dimensions({
   getHeight: function() { //element
-    return window.innerHeight - 190;
+    return window.innerHeight - 230;
   },
   getWidth: function() { //element
     return window.innerWidth - 24;

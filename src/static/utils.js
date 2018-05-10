@@ -1,5 +1,4 @@
 import fetchJsonp from 'fetch-jsonp';
-// import fetch from 'fetch-jsonp';
 
 import Feedback from 'qnui/lib/feedback';
 const Toast = Feedback.toast;

@@ -135,16 +135,56 @@ class BatchPage extends Component {
                         <span style={{fontSize:'14px',marginTop:'7px',width:'80px'}}>{totalProfit}</span>
                     </div>
                 </Row>
-                <Row style={{marginTop:'20px'}}>
-                    <span style={{fontSize:'14px',marginTop:'7px',width:'80px'}}>查询条件：</span>
-                    <Input placeholder="订单号" className="textClsName"   style={{width:'120px'}} onChange={(e)=>{this.orderNo = e}}/>
-                    <Input placeholder="渠道订单号" className="textClsName"  style={{width:'120px',marginLeft:'12px'}} onChange={(e)=>{this.agentOrderNo = e}}/>
-                    <Input placeholder="渠道名称" className="textClsName"  style={{width:'120px',marginLeft:'12px'}} onChange={(e)=>{this.agentName = e}}/>
-                    <Input placeholder="渠道编号" className="textClsName"  style={{width:'120px',marginLeft:'12px'}} onChange={(e)=>{this.filterAppId = e}}/>
-                    <Input placeholder="商户名称" className="textClsName"  style={{width:'120px',marginLeft:'12px'}} onChange={(e)=>{this.merchantName = e}}/>
-                    <Input placeholder="商户号" className="textClsName"  style={{width:'120px',marginLeft:'12px'}} onChange={(e)=>{this.mchId = e}}/>
+                
+                <div className="marginTop">
+                    <Row className="marginTop">
+                        <span style={{fontSize:'14px',marginTop:'7px',width:'90px'}}>订单号：</span>
+                        <Input placeholder="订单号" size="large"   style={{width:'160px',marginLeft:'12px'}} onChange={(e)=>{this.orderNo = e}}/>
 
-                    <Dropdown trigger={<Input placeholder="订单状态" className="textClsName"  style={{width:'120px',marginLeft:'12px'}} value={this.orderSta}/>}
+                        <span style={{fontSize:'14px',marginTop:'7px',width:'90px',marginLeft:'12px'}}>商户名称：</span>
+                        <Input placeholder="商户名称" size="large"  style={{width:'160px',marginLeft:'12px'}} onChange={(e)=>{this.merchantName = e}}/>
+
+                        <span style={{fontSize:'14px',marginTop:'7px',width:'90px',marginLeft:'12px'}}>商户号：</span>
+                        <Input placeholder="商户号" size="large"  style={{width:'160px',marginLeft:'12px'}} onChange={(e)=>{this.mchId = e}}/>
+                    
+                    </Row>
+                    <Row className="marginTop">
+                        <span style={{fontSize:'14px',marginTop:'7px',width:'90px'}}>渠道编号：</span>
+                        <Input placeholder="渠道编号" size="large"  style={{width:'160px',marginLeft:'12px'}} onChange={(e)=>{this.filterAppId = e}}/>
+
+                        <span style={{fontSize:'14px',marginTop:'7px',width:'90px',marginLeft:'12px'}}>渠道订单号：</span>
+                        <Input placeholder="渠道订单号" size="large"  style={{width:'160px',marginLeft:'12px'}} onChange={(e)=>{this.agentOrderNo = e}}/>
+
+                        <span style={{fontSize:'14px',marginTop:'7px',width:'90px',marginLeft:'12px'}}>渠道名称：</span>
+                        <Input placeholder="渠道名称" size="large"  style={{width:'160px',marginLeft:'12px'}} onChange={(e)=>{this.agentName = e}}/>
+                        
+                    </Row>
+                    <Row className="marginTop">
+                        <span style={{fontSize:'14px',marginTop:'7px',width:'90px'}}>订单状态：</span>
+                        <Dropdown trigger={<Input placeholder="订单状态" size="large"  style={{width:'160px',marginLeft:'12px'}} value={this.orderSta}/>}
+                                  triggerType="click"
+                                  visible={this.state.visibles}
+                                  onVisibleChange={this.onVisibleChange}
+                                  safeNode={() => this.refs.button}>
+                            <Menu>
+                                {PayStatement}
+                            </Menu>
+                        </Dropdown>
+                        <span style={{fontSize:'14px',marginTop:'7px',width:'90px',marginLeft:'12px'}}>交易结果：</span>
+                        <Input placeholder="交易结果" size="large"  style={{width:'160px',marginLeft:'12px'}} onChange={(e)=>{this.result = e}}/>
+
+                        <span style={{fontSize:'14px',marginTop:'7px',width:'90px',marginLeft:'12px'}}>时间选择：</span>
+                        <RangePicker size="large" style={{marginLeft:'12px'}} onChange={(a, b) => {
+                            this.startDate = b[0];
+                            this.endDate = b[1];
+                        }} />
+                    </Row>
+                    {/*<Input placeholder="渠道订单号" size="large"  style={{width:'120px',marginLeft:'12px'}} onChange={(e)=>{this.agentOrderNo = e}}/>
+                    <Input placeholder="渠道名称" size="large"  style={{width:'120px',marginLeft:'12px'}} onChange={(e)=>{this.agentName = e}}/>
+                    <Input placeholder="渠道编号" size="large"  style={{width:'120px',marginLeft:'12px'}} onChange={(e)=>{this.filterAppId = e}}/>
+                    <Input placeholder="商户名称" size="large"  style={{width:'120px',marginLeft:'12px'}} onChange={(e)=>{this.merchantName = e}}/>
+                    <Input placeholder="商户号" size="large"  style={{width:'120px',marginLeft:'12px'}} onChange={(e)=>{this.mchId = e}}/>
+                    <Dropdown trigger={<Input placeholder="订单状态" size="large"  style={{width:'120px',marginLeft:'12px'}} value={this.orderSta}/>}
                               triggerType="click"
                               visible={this.state.visibles}
                               onVisibleChange={this.onVisibleChange}
@@ -153,16 +193,12 @@ class BatchPage extends Component {
                             {PayStatement}
                         </Menu>
                     </Dropdown>
-                    <Input placeholder="交易结果" className="textClsName"  style={{width:'120px',marginLeft:'12px'}} onChange={(e)=>{this.result = e}}/>
-                </Row>
+                    <Input placeholder="交易结果" size="large"  style={{width:'120px',marginLeft:'12px'}} onChange={(e)=>{this.result = e}}/>*/}
+                </div>
+                
                 <Row style={{marginTop:'20px'}}>
-                        <span style={{fontSize:'14px',marginTop:'7px',width:'80px'}}>时间选择：</span>
-                        <RangePicker onChange={(a, b) => {
-                            this.startDate = b[0];
-                            this.endDate = b[1];
-                        }} />
-                        <Button type="primary" style={{width:'80px',marginLeft:'10px'}} onClick={this.onSearch.bind(this)}>搜索</Button>
-                        <Button type="normal" style={{width:'80px',marginLeft:'10px'}} onClick={this.onExport.bind(this)}>导出</Button>
+                    <Button type="primary" style={{width:'80px'}} size="large" onClick={this.onSearch.bind(this)}>搜索</Button>
+                    <Button type="normal" style={{width:'80px',marginLeft:'10px'}} size="large" onClick={this.onExport.bind(this)}>导出</Button>
                 </Row>
                 <div style={{marginTop:'20px'}}>
                     <Table dataSource={dataSource} onRowClick={this.onRowClick.bind(this)} fixedHeader maxBodyHeight={containerHeight}>
@@ -215,7 +251,7 @@ function mapDispatchToProps(dispatch,ownProps){
 
 export default Dimensions({
   getHeight: function() { //element
-    return window.innerHeight - 270;
+    return window.innerHeight - 350;
   },
   getWidth: function() { //element
     return window.innerWidth - 24;

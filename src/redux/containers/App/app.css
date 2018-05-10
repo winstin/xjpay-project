@@ -313,4 +313,22 @@
     height: 1000px;
     overflow: hidden;
 }
+.next-table-row{
+    height: 70px
+}
+.next-table-row:hover{
+    background: #e5e5e5;
+}
+th .next-table-cell-wrapper{
+    font-family: "微软雅黑";
+    font-weight: bold;
+    color: #333;
+}
+
+
+.next-table-cell-wrapper{
+    font-family: "微软雅黑";
+    /*font-weight: bold;*/
+    color: #333
+}
 

@@ -129,18 +129,27 @@ class GunsIndex extends Component {
             <div>
                 <Row>
                     <span style={{fontSize:'14px',marginTop:'7px',width:'80px'}}>查询条件：</span>
-                    <Input placeholder="商户名称" className="textClsName"   style={{width:'160px'}} onChange={(e)=>{this.merchantName = e}}/>
-                    <Input placeholder="商户编号" className="textClsName"  style={{width:'160px',marginLeft:'12px'}} onChange={(e)=>{this.mchId = e}}/>
-                    <span style={{fontSize:'14px',marginTop:'7px',width:'70px',marginLeft:'12px'}}>时间选择：</span>
+                    <Input placeholder="商户名称" size="large"   style={{width:'160px'}} onChange={(e)=>{this.merchantName = e}}/>
+                    <Input placeholder="商户编号" size="large"  style={{width:'160px',marginLeft:'12px'}} onChange={(e)=>{this.mchId = e}}/>
+                    {/*<span style={{fontSize:'14px',marginTop:'7px',width:'70px',marginLeft:'12px'}}>时间选择：</span>
                     <RangePicker  onChange={(a, b) => {
                         // console.log(b[0]);
                         this.startDate = b[0];
                         this.endDate = b[1];
                     }} />
-                    <Button type="primary" style={{width:'100px',marginLeft:'10px'}}  onClick={this.onSearch.bind(this)}>搜索</Button>
-                    <Button type="secondary" style={{width:'100px',marginLeft:'10px'}} onClick={this.onLock.bind(this)}>冻结</Button>
+                    <Button type="primary" size="large" style={{width:'100px',marginLeft:'10px'}}  onClick={this.onSearch.bind(this)}>搜索</Button>
+                    <Button type="secondary" size="large" style={{width:'100px',marginLeft:'10px'}} onClick={this.onLock.bind(this)}>冻结</Button>*/}
                 </Row>
-
+                <Row className='marginTop'>
+                    <span style={{fontSize:'14px',marginTop:'7px',width:'80px'}}>时间选择：</span>
+                    <RangePicker  onChange={(a, b) => {
+                        // console.log(b[0]);
+                        this.startDate = b[0];
+                        this.endDate = b[1];
+                    }} />
+                    <Button type="primary" size="large" style={{width:'100px',marginLeft:'10px'}}  onClick={this.onSearch.bind(this)}>搜索</Button>
+                    <Button type="secondary" size="large" style={{width:'100px',marginLeft:'10px'}} onClick={this.onLock.bind(this)}>冻结</Button>
+                </Row>
                 <div style={{marginTop:'20px'}}>
                     <Table dataSource={dataSources} onRowClick={onRowClick} fixedHeader maxBodyHeight={containerHeight} rowSelection={{onChange: this.onRowClick,mode:'single'}}>
                         <Table.Column title="商户号" dataIndex="mchId"/>
@@ -179,7 +188,7 @@ function mapDispatchToProps(dispatch,ownProps){
 
 export default Dimensions({
   getHeight: function() { //element
-    return window.innerHeight - 190;
+    return window.innerHeight - 230;
   },
   getWidth: function() { //element
     return window.innerWidth - 24;

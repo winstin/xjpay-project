@@ -127,11 +127,11 @@ class GetMangers extends Component {
                 </div>
                 <div className="marginTop">
                     <span style={{fontSize:'14px',marginTop:'7px',width:'70px'}}>时间选择：</span>
-                    <RangePicker onChange={(a, b) => {
+                    <RangePicker size="large" onChange={(a, b) => {
                         this.startDate = b[0];
                         this.endDate = b[1];
                     }} />
-                    <Button type="primary" style={{width:'100px',marginLeft:'10px'}} onClick={this.onSearch.bind(this)}>搜索</Button>
+                    <Button type="primary" style={{width:'100px',marginLeft:'10px'}} size="large" onClick={this.onSearch.bind(this)}>搜索</Button>
                 </div>
                 <div style={{marginTop:'10px',marginBottom:'10px'}}>
                     <Table dataSource={dataSource} onRowClick={onRowClick} fixedHeader maxBodyHeight={containerHeight}>

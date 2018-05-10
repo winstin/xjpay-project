@@ -334,12 +334,12 @@ class ServiceRates extends Component {
                 <Row>
                     <span style={{fontSize:'14px',marginTop:'7px',width:'80px'}}>渠道编号：</span>
                      <Row>
-                        <Input placeholder="渠道编号" className="textClsName"   style={{width:'120px'}} onChange={this.onchange.bind(this,'id')}/>
+                        <Input placeholder="渠道编号" size="large"   style={{width:'120px'}} onChange={this.onchange.bind(this,'id')}/>
                         <span style={{fontSize:'14px',marginTop:'7px',width:'70px',marginLeft:'12px'}}>渠道名称：</span>
-                        <Input placeholder="渠道名称" className="textClsName"   style={{width:'120px',marginLeft:'6px'}} onChange={this.onchange.bind(this,'name')}/>
-                        <Button type="primary" style={{width:'100px',marginLeft:'10px'}} onClick={this.searchData.bind(this)}>搜索</Button>
-                        <Button type="normal" style={{width:'100px',marginLeft:'10px'}} onClick={this.onOpen}>添加</Button>
-                        <Button type="secondary" style={{width:'100px',marginLeft:'10px'}} onClick={this.onOpenChange}>修改</Button>
+                        <Input placeholder="渠道名称" size="large"   style={{width:'120px',marginLeft:'6px'}} onChange={this.onchange.bind(this,'name')}/>
+                        <Button type="primary" style={{width:'100px',marginLeft:'10px'}} size="large" onClick={this.searchData.bind(this)}>搜索</Button>
+                        <Button type="normal" style={{width:'100px',marginLeft:'10px'}} size="large" onClick={this.onOpen}>添加</Button>
+                        <Button type="secondary" style={{width:'100px',marginLeft:'10px'}} size="large" onClick={this.onOpenChange}>修改</Button>
                     </Row>
                 </Row>
                 <div style={{marginTop:'20px'}}>
