@@ -138,7 +138,7 @@ var Tools = {
    * @param  {Function} callback [成功回调]
    * @return {[type]}            [description]
    */
-  api: function({method,args='',mode='jsonp',callback,errCallback = undefined,isloading = true}){
+  apis: function({method,args='',mode='jsonp',callback,errCallback = undefined,isloading = true}){
     var self = this;
     
     
@@ -247,6 +247,57 @@ var Tools = {
             }
         });
     }
+  },
+
+
+
+   /**
+   * 调用接口方法 ajax
+   * author: wp
+   * @param  {[type]}   method   [接口名称]
+   * @param  {String}   args     [参数 默认为空]
+   * @param  {String}   mode     [默认jsonp 否则为json]
+   * @param  {Function} callback [成功回调]
+   * @return {[type]}            [description]
+   */
+  api: function({method,args='',mode='jsonp',callback,errCallback = undefined,isloading = true}){
+    var self = this;
+    
+    
+    if(isloading){
+       showLoading('加载数据中...');
+    }
+    args = this.buildStr(args);
+    if(args!=''){
+        args = '?'+args;
+    }
+
+    const uri = webUrl+method+args;
+    let data = {};
+    data.url = uri;
+
+    data.dataType = 'json';
+    data.type = 'GET';
+    data.credentials='include';
+
+    data.xhrFields = {
+        withCredentials: true
+    },
+    data.crossDomain = true,
+    
+
+    $.ajax(data).done(function(e) {
+        if(isloading){
+            hideLoading();
+        }
+        callback(e);
+    }).fail(function(data,status,xhr) {
+        if(isloading){
+            hideLoading();
+        }
+        promptToast('登录超时，请退出重新登录！',2000)
+    });
+    
   },
   /**
    * @Author   Winstin

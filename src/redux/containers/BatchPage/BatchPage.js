@@ -14,6 +14,7 @@ import {FormatDateTime} from "static/utils.js"
 import Menu from 'qnui/lib/menu';
 import Config from 'static/config.js'
 import Dropdown from 'qnui/lib/dropdown';
+import {getNowFormatDate} from "static/utils.js"
 
 
 class BatchPage extends Component {
@@ -24,8 +25,8 @@ class BatchPage extends Component {
             orderdata:{},
             visibles:false
         };
-        this.startDate='';
-        this.endDate='';
+        this.startDate=getNowFormatDate();
+        this.endDate=getNowFormatDate();
         this.merchantName='';
         this.mchId='';
         this.orderNo='';
@@ -128,15 +129,15 @@ class BatchPage extends Component {
                     </div>
                     <div className="display-flex">
                         <span className='top-sumtext'>总订单数:</span>
-                        <span style={{fontSize:'14px',marginTop:'7px'}}>{countOrderNum}</span>
+                        <span className="text-center">{countOrderNum}</span>
                     </div>
                     <div className="display-flex">
                         <span className='top-sumtext'>总金额:</span>
-                        <span style={{fontSize:'14px',marginTop:'7px'}}>{totalMoney}</span>
+                        <span className="text-center">{totalMoney}</span>
                     </div>
                     <div className="display-flex">
                         <span className='top-sumtext'>总分润:</span>
-                        <span style={{fontSize:'14px',marginTop:'7px'}}>{totalProfit}</span>
+                        <span className="text-center">{totalProfit}</span>
                     </div>
                 </Row>
                 
