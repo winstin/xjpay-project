@@ -247,9 +247,9 @@ class App extends Component {
                   {msg!="" && <div className="block label marginBottom">
                     <span className='warining'>{msg}</span>
                   </div>}
-                  <div className="block label">
+                  {/*<div className="block label">
                     <Checkbox id="apple" value="apple" >记住我</Checkbox>
-                  </div>
+                  </div>*/}
                   <div className="marginTop"></div>
                   <div className="block">
                     <Button type="primary" onClick={this.handleSubmit.bind(this)}>登录</Button>
