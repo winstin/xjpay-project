@@ -418,8 +418,8 @@ class App extends Component {
                           </Myitem>*/}
                       </Navigation>
                   </div>
-                  <div id="module_data"  style={{backgroundColor:"white"}}>
-                      <div id="initSet" style={{minHeight:"100%",height:"100%",overflow:'auto',backgroundColor:"white"}}>
+                  <div id="module_data" >
+                      <div id="initSet" style={{minHeight:"100%",height:"100%",overflow:'auto'}}>
                           {this.props.children}
                       </div>
                   </div>
