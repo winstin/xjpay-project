@@ -13,6 +13,7 @@ import { Row, Col } from 'qnui/lib/grid';
 import Input from 'qnui/lib/input';
 import Pagination from 'qnui/lib/pagination';
 import Dimensions from 'react-dimensions';
+import {getNowFormatDate} from "static/utils.js"
 
 
 const onRowClick = function(record, index, e) {
@@ -42,8 +43,8 @@ class GunsIndex extends Component {
             dataSource: getData(30)
         };
 
-        this.startDate='';
-        this.endDate='';
+        this.startDate=getNowFormatDate();
+        this.endDate=getNowFormatDate();
         this.merchantName='';
         this.mchId='';
         this.filterAppId='';
@@ -69,6 +70,12 @@ class GunsIndex extends Component {
         getInitData();
     }
 
+    reSetData(){
+        this.current =1;
+        const {getInitData} = (this.props);
+        getInitData();
+    }
+    
     handleChange(current) {
         this.current =current;
         const {getInitData} = this.props;
@@ -126,7 +133,11 @@ class GunsIndex extends Component {
                         this.startDate = b[0];
                         this.endDate = b[1];
                     }}
-                    /><Button type="primary" style={{width:'100px',marginLeft:'10px'}} size="large" onClick={this.onSearch.bind(this)}>搜索</Button>
+                    />
+
+                    <Button type="primary" style={{width:'100px',marginLeft:'10px'}} size="large" onClick={this.onSearch.bind(this)}>搜索</Button>
+                    <Button type="normal" size="large" style={{width:'100px',marginLeft:'10px'}} onClick={this.reSetData.bind(this)}>重置</Button>
+
                 </div>
                 <div style={{marginTop:'20px'}}>
                     <Table dataSource={dataSource} onRowClick={onRowClick} fixedHeader maxBodyHeight={containerHeight}>

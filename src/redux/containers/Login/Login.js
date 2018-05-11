@@ -9,6 +9,9 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
 import {ajax} from "../../actions/AY_API"
+import * as Login from '../../actions/Login'
+import testImg from 'static/login.png';
+import bcakgroundImg from 'static/loginbackgrond.jpg';
 
 const FormItem = Form.Item;
 
@@ -16,16 +19,33 @@ class Demo extends React.Component {
     constructor(props) {
         super(props);
         this.field = new Field(this);
-        
+        this.state={
+          isLogin:false,
+          password:'',
+          username:'',
+          msg:'',
+          context:[]
+        }
     }
 
     handleSubmit() {
-        console.log(this.field.getValues());
-        ajax("/login",this.field.getValues(),"Post",function(e){
-            console.log("GoodsListTable：", e);
-        });
-        location.href='/UserManger'
+        let self = this;
+        const{Login} = this.props;
+        Login(this.state.username,this.state.password,(e)=>{
+            if(e == 'fail'){
+              self.setState({msg:'账号密码错误！'});
+            }else{
+              self.setState({isLogin:true,msg:''});
+            }
+        })
+    }
 
+    onchange(type,value){
+        if(type=='username'){
+            this.setState({username:value})
+        }else{
+            this.setState({password:value})
+        }
     }
 
     render() {
@@ -39,31 +59,50 @@ class Demo extends React.Component {
             }
         };
 
+        const {isLogin,username,password,msg,context} = this.state;
         return (
-            <div className="changePassword">
-                <div style={{width:'50%'}}>
-                    <div className="space-bottom">
-                        <span className='tips-title'>修改密码</span>
-                    </div>
-                    <Form direction="ver" field={this.field} >
-                        <FormItem label="原密码：" required {...formItemLayout}>
-                            <Input htmlType="password" {...init('password')} placeholder="请输入原密码"/>
-                        </FormItem>
-                        <FormItem label="新密码：" required {...formItemLayout}>
-                            <Input htmlType="password" {...init('password')} placeholder="请输入新密码"/>
-                        </FormItem>
-                        <FormItem label="新密码验证：" required {...formItemLayout}>
-                            <Input htmlType="password" {...init('password')} placeholder="请输入新密码验证"/>
-                        </FormItem>
-                        <FormItem label=" " {...formItemLayout} >
-                            <Button type="primary" onClick={this.handleSubmit.bind(this)}>确定</Button>
-
-                        </FormItem>
-                    </Form>
-                </div>
+            <div id="login">
+              <img src={bcakgroundImg} className="loginBcakground"/>
+              <div className="block">
+                  <div className="guns-title">
+                      星洁科技后台管理
+                  </div>
+                  <img src={testImg} className="loginImg"/>
+                  <div className="marginTop"></div>
+                  <div className="block">
+                    <Input htmlType="username" placeholder="请输入账号" value={username} onChange={this.onchange.bind(this,'username')}/>
+                  </div>
+                  <div className="marginTop"></div>
+                  <div className="block">
+                    <Input htmlType="password" placeholder="请输入密码" value={password} onChange={this.onchange.bind(this,'password')}/>
+                  </div>
+                  <div className="marginTop"></div>
+                  {msg!="" && <div className="block label marginBottom">
+                    <span className='warining'>{msg}</span>
+                  </div>}
+                  {/*<div className="block label">
+                    <Checkbox id="apple" value="apple" >记住我</Checkbox>
+                  </div>*/}
+                  <div className="marginTop"></div>
+                  <div className="block">
+                    <Button type="primary" onClick={this.handleSubmit.bind(this)}>登录</Button>
+                  </div>
+              </div>
             </div>
         );
     }
 }
 
-export default Demo
+
+function mapStateToProps(state, ownProps){
+    return  {
+        userType:state.Login.userType,
+    }
+}
+
+
+function mapDispatchToProps(dispatch,ownProps){
+    return  bindActionCreators( Login , dispatch )
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Demo)

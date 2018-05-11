@@ -184,7 +184,15 @@ export function autoSearch(appId='',callback){
     }
 }
 
-
+/**
+ * @Author   Winstin
+ * @DateTime 2018-05-11
+ * @param    string
+ * @license  删除费率
+ * @version  [version]
+ * @param    {[type]}   rateId [description]
+ * @return   {[type]}          [description]
+ */
 export function deleteData(rateId){
     return (dispatch)=>{
         ajax({
@@ -195,10 +203,10 @@ export function deleteData(rateId){
                 url:rateId,
             },
             callback:(e)=>{
-                
+                successToast('删除成功！')
             },
             errCallback:(msg)=>{
-                // console.log(msg)
+                errorToast('删除失败！')
             }
         });
        

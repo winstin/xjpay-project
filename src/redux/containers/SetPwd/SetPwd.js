@@ -16,6 +16,20 @@ class Demo extends React.Component {
     constructor(props) {
         super(props);
         this.field = new Field(this);
+        this.state = {
+            firstLogin:false
+        }
+    }
+
+    componentDidMount(){
+        let self = this; 
+        let firstLogin = false;
+        let temp =localStorage.getItem("menus");
+        if(isEmpty(temp)){
+            firstLogin = true
+        }
+      
+        self.setState({firstLogin:firstLogin});
         
     }
 
@@ -25,15 +39,25 @@ class Demo extends React.Component {
             mode:'jsonp',
             args:this.field.getValues(),
             callback:(rsp)=>{
+                console.log(rsp)
                 if(rsp.code == ""){
-                    successToast('修改成功！');
+                    if(this.state.firstLogin){
+                        successToast('首次修改密码成功,请退出重新登录！',2000);
+                    }else{
+                        successToast('修改成功！');
+                    }
                 }else{
                     errorToast(rsp.message);
                 }
                
             },
             errCallback:(msg)=>{
-                errorToast('修改失败！');
+                if(msg.message){
+                    errorToast(msg.message);
+                }else{
+                    errorToast('修改失败！');
+                }
+               
             }
         });
     }
@@ -45,7 +69,7 @@ class Demo extends React.Component {
                 fixedSpan: 10
             },
             wrapperCol: {
-                span: 14
+                span: 10
             }
         };
 
@@ -60,23 +84,32 @@ class Demo extends React.Component {
 
         return (
             <div className="changePassword">
-                <div style={{width:'50%'}}>
-                    {/*<div className="space-bottom">
-                        <span className='tips-title'>修改密码</span>
-                    </div>*/}
+                <div className="borderStyle">
+                    {this.state.firstLogin &&<div className="space-bottom-20">
+                        <span className='tips-title'>首次登录修改密码</span>
+                    </div>}
                     <Form direction="ver" field={this.field} >
-                        <FormItem label="原密码：" required {...formItemLayout}>
+                        <div className="block">
                             <Input htmlType="password" {...init('oldPwd')} placeholder="请输入原密码"/>
-                        </FormItem>
-                        <FormItem label="新密码：" required {...formItemLayout}>
+                        </div>
+                        <div className="marginTop"></div>
+                        <div className="block">
+                       
                             <Input htmlType="password" {...init('newPwd')} placeholder="请输入新密码"/>
-                        </FormItem>
-                        <FormItem label="新密码验证：" required {...formItemLayout}>
+                        </div>
+                         <div className="marginTop"></div>
+                        <div className="block">
+                        
                             <Input htmlType="password" {...init('rePwd')} placeholder="请输入新密码验证"/>
-                        </FormItem>
-                        <FormItem label=" " {...formItemLayout0} >
-                            <Button type="primary" onClick={this.handleSubmit.bind(this)}>确定</Button>
-                        </FormItem>
+                        </div>
+                        
+                        <div className="marginTop"></div>
+
+                        <div className="block">
+                            <Button type="primary" onClick={this.handleSubmit.bind(this)}>提交</Button>
+                        </div>
+                        
+                       
                     </Form>
                 </div>
             </div>

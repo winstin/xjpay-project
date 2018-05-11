@@ -88,6 +88,12 @@ class ServiceMangers extends Component {
         ,500)
     }
 
+    reSetData(){
+        this.current =1;
+        const {getInitData} = (this.props);
+        getInitData();
+    }
+
     /**
      * @Author   Winstin
      * @DateTime 2018-05-04
@@ -223,6 +229,8 @@ class ServiceMangers extends Component {
                     <Button type="primary" style={{width:'100px'}} size="large" onClick={this.onOpen.bind(this,'add')}>添加</Button>
                     <Button type="normal" style={{width:'100px',marginLeft:'10px'}} size="large" onClick={this.onOpen.bind(this,'change')}>修改</Button>
                     <Button type="secondary" style={{width:'120px',marginLeft:'10px'}} size="large" >冻结/启用</Button>
+                    <Button type="normal" size="large" style={{width:'100px',marginLeft:'10px'}} onClick={this.reSetData.bind(this)}>重置</Button>
+
                 </div>
                 <div style={{marginTop:'20px'}}>
                     <Table dataSource={dataSource} fixedHeader maxBodyHeight={containerHeight} rowSelection={{onChange: this.onRowClick,mode:'single'}}>

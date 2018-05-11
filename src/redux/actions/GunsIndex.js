@@ -4,7 +4,7 @@
 export const INITGUNSDATA = "INITGUNSDATA";
 export const CHOOSEDATA = "CHOOSEDATA";
 
-import {api,isEmpty,successToast,errorToast} from "static/utils.js"
+import {api,isEmpty,successToast,errorToast,getNowFormatDate} from "static/utils.js"
 
 /**
  * @Author   Winstin
@@ -15,7 +15,8 @@ import {api,isEmpty,successToast,errorToast} from "static/utils.js"
  * @param    {Number}   pageno [description]
  * @return   {[type]}          [description]
  */
-export function getInitData(pageno = 1,merchantName='',mchId='',startDate='',endDate=''){
+export function getInitData(pageno = 1,merchantName='',mchId='',startDate=getNowFormatDate(),endDate=getNowFormatDate()){
+
     return (dispatch)=>{
         api({
             method:'/merchants/page',
@@ -32,13 +33,19 @@ export function getInitData(pageno = 1,merchantName='',mchId='',startDate='',end
             },
             callback:(rsp)=>{
                 if(rsp.data.data == ""){
-                    return;
+                    dispatch({
+                        type:INITGUNSDATA,
+                        dataSource: [],
+                        total:0
+                    });
+                }else{
+                    dispatch({
+                        type:INITGUNSDATA,
+                        dataSource: rsp.data.data,
+                        total:rsp.data.total
+                    });
                 }
-                dispatch({
-                    type:INITGUNSDATA,
-                    dataSource: rsp.data.data,
-                    total:rsp.data.total
-                });
+                
             },
             errCallback:(msg)=>{
                 // console.log(msg)

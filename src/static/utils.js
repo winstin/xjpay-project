@@ -295,7 +295,8 @@ var Tools = {
         if(isloading){
             hideLoading();
         }
-        promptToast('登录超时，请退出重新登录！',2000)
+        errCallback(data.responseJSON)
+        // promptToast('登录超时，请退出重新登录！',2000)
     });
     
   },

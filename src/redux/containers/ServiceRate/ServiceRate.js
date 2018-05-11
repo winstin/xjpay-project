@@ -97,6 +97,12 @@ class ServiceRates extends Component {
         ,500)
     }
 
+    reSetData(){
+        this.current =1;
+        const {getInitData} = (this.props);
+        getInitData();
+    }
+
     handleChange(current) {
         this.current = current;
         const {getInitData} = this.props;
@@ -140,7 +146,8 @@ class ServiceRates extends Component {
             return;
         }
         const {deleteData} = this.props;
-        deleteData(this.appid)
+        deleteData(this.appid);
+        this.reLoad();
     }
 
     onClose = () => {
@@ -358,6 +365,7 @@ class ServiceRates extends Component {
                     <Button type="normal" style={{width:'100px',marginLeft:'10px'}} size="large" onClick={this.onOpen}>添加</Button>
                     <Button type="secondary" style={{width:'100px',marginLeft:'10px'}} size="large" onClick={this.onOpenChange}>修改</Button>
                     <Button type="normal" style={{width:'100px',marginLeft:'10px'}} size="large" onClick={this.remove}>删除</Button>
+                    <Button type="normal" size="large" style={{width:'100px',marginLeft:'10px'}} onClick={this.reSetData.bind(this)}>重置</Button>
                 </div>
                 <div style={{marginTop:'20px'}}>
                     <Table dataSource={dataSource} rowSelection={{onChange: this.onRowClick,mode:'single'}} fixedHeader maxBodyHeight={containerHeight}>
@@ -396,7 +404,7 @@ class ServiceRates extends Component {
                                 this.setState({autoName:e})
                             }}
                             onBlur={(e)=>{
-                                if(this.state.newData.appid!=""){
+                                if(this.state.newData.appid!="" && this.state.newData.appid!= undefined){
                                     const {autoSearch} = this.props;
                                     autoSearch(this.state.newData.appid,(e)=>{
                                         // console.log(e);

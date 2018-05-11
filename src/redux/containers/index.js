@@ -21,6 +21,7 @@ import UserManger from './UserManger/UserManger';
 import RoleManger from './RoleManger/RoleManger';
 import OrderManger from './OrderManger/OrderManger';
 import PersonalCenter from './PersonalCenter/PersonalCenter';
+import Login from './Login/Login';
 
 export  {
 	UserManger,
@@ -36,5 +37,6 @@ export  {
 	App,
 	RoleManger,
 	OrderManger,
-	PersonalCenter
+	PersonalCenter,
+	Login
 }

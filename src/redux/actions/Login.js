@@ -9,7 +9,7 @@ import {api} from "static/utils.js"
  * @Author   Winstin
  * @DateTime 2018-05-04
  * @param    string
- * @license  获取数据
+ * @license  登录判段
  * @version  [version]
  * @param    {Number}   pageno [description]
  * @return   {[type]}          [description]
@@ -24,11 +24,16 @@ export function Login(username="",password="",callback){
                 let now = new Date();
                 localStorage.setItem("loginTime",now);
                 localStorage.setItem("appId",username);
-                callback("success");
-                localStorage.setItem("userType",rsp.data[0].roleName);
+                localStorage.setItem("userType",rsp.data.roles[0].roleName);
+                if(rsp.data.firstLogin == false || rsp.data.firstLogin == "false"){//用户非第一次登录
+                    callback("success");
+                }else{
+                    callback("firstLogin");
+                }
+
                 dispatch({
                     type:INITGUNSDATA,
-                    userType: rsp.data[0].roleName,
+                    userType:rsp.data.roles[0].roleName,
                 });
                 
             },

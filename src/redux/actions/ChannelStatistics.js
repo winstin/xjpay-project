@@ -5,7 +5,7 @@ export const INITGUNSDATA = "INITGUNSDATA";
 export const CHOOSEDATA = "CHOOSEDATA";
 export const GETDATA = "GETDATA";
 
-import {api,isEmpty} from "static/utils.js"
+import {api,isEmpty,getNowFormatDate} from "static/utils.js"
 
 /**
  * @Author   Winstin
@@ -16,7 +16,7 @@ import {api,isEmpty} from "static/utils.js"
  * @param    {Number}   pageno [description]
  * @return   {[type]}          [description]
  */
-export function getInitData(pageno = 1,startDate='',endDate='',agentName='',filterAppId='',){
+export function getInitData(pageno = 1,startDate=getNowFormatDate(),endDate=getNowFormatDate(),agentName='',filterAppId='',){
     return (dispatch)=>{
         api({
             method:'/profits/agent/page',

@@ -24,6 +24,15 @@ import testImg from 'static/login.png';
 import bcakgroundImg from 'static/loginbackgrond.jpg';
 import * as Login from '../../actions/Login'
 
+import Menu from 'qnui/lib/menu';  
+
+let onMouseEnter = (id, item, nav) => {
+    console.log('onMouseEnter')  
+}
+
+let onMouseLeave = (id, item, nav) => {
+    console.log('onMouseLeave')
+}
 function clearAllCookie() {  
     var keys = document.cookie.match(/[^ =;]+(?=\=)/g);  
     if(keys) {  
@@ -32,7 +41,7 @@ function clearAllCookie() {
     }  
 }  
 
-let context = '';
+// let context = '';
 class App extends Component {
     constructor(props) {
         super(props);
@@ -51,43 +60,57 @@ class App extends Component {
         let self = this; 
         let now = new Date();
         let loginTime = localStorage.getItem("loginTime");
+        window.userType = localStorage.getItem("userType");
         if (!isEmpty(loginTime)) {
           let res = compareTime(loginTime,now);
           if(res.minutes >= 30){
+              localStorage.clear();
               self.setState({msg:'登录超时!'})
           }else{
-              self.setState({isLogin:true});
-
+              let context = [];
+              try{
+                let temp =localStorage.getItem("menus");
+                if(!isEmpty(temp)){
+                    context = JSON.parse(temp);
+                }
+              }catch(e){
+                context = [];
+              }
+              self.setState({isLogin:true,context:context});
           }
         }
-        window.userType = localStorage.getItem("userType");
 
-        // setTimeout(function(){
-          api({
-              method:'/menus/roleMenu',
-              mode:'jsonp',
-              args:{},
-              callback:(rsp)=>{
-                  if(rsp.data){
-                      for(let i =0;i<rsp.data.length;i++){
-                          if(rsp.data[i].children.length>=1){
-                              for(let m in rsp.data[i].children){
-                                context = context+' '+(rsp.data[i].children[m].name)
-                              }
-                          }else{
-                              context = context+' '+(rsp.data[i].name)
-                          }
-                      }
+       /* var demo=document.getElementById("demo");
+        // var demo1=document.getElementById("demo1");
+        // var demo2=document.getElementById("demo2");
+        // demo2.innerHTML=demo1.innerHTML;
+        // //给demo1,demo2加相同的高度
+        // demo1.style.height=demo.offsetHeight+"px";
+        // demo2.style.height=demo.offsetHeight+"px";
+        //定时器，每隔50毫秒调用一次scrollup()函数，来实现文字的滚动
+        var timer=window.setInterval("scrollup()",50);
+        //定义函数
+        function scrollup()
+        {
+          //如果demo滚上去的高度大于demo的高度，重新给demo赋值从0再开始滑动
+          if(demo.scrollTop>=200)
+          {
+            demo.scrollTop=0;
+          }else
+          {
+            demo.scrollTop++;
+          }
+        }
+        //鼠标放上停止滚动，鼠标离开继续滚动
+          demo.onmouseover=function(){
+                        //清除定时器
+                        clearInterval(timer);
+                        }
+          demo.onmouseout=function(){
+                  //添加定时器
+                  timer=window.setInterval("scrollup()",50);
                   }
-                  self.setState({context:rsp.data})
-              },
-              errCallback:(msg)=>{
-                
-              }
-          });
-        // },500)
-        
-
+        */
     }
 
     handleSubmit() {
@@ -96,8 +119,23 @@ class App extends Component {
         Login(this.state.username,this.state.password,(e)=>{
             if(e == 'fail'){
               self.setState({msg:'账号密码错误！'});
+            }else if(e == 'success'){
+              api({
+                  method:'/menus/roleMenu',
+                  mode:'jsonp',
+                  args:{},
+                  callback:(rsp)=>{
+                      window.userType = localStorage.getItem("userType");
+                      localStorage.setItem("menus",JSON.stringify(rsp.data));
+                      self.setState({context:rsp.data,isLogin:true,msg:''})
+                  },
+                  errCallback:(msg)=>{
+                    
+                  }
+              });
             }else{
-              self.setState({isLogin:true,msg:''});
+              window.location.href="/dist/reSetPassword";
+              // self.setState({context:[],isLogin:true,msg:''})
             }
         })
     }
@@ -109,9 +147,8 @@ class App extends Component {
             title: '退出',
             onOk:()=>{
               clearAllCookie();
-              localStorage.setItem("loginTime",null);
-              localStorage.setItem("appId",null);
-              self.setState({isLogin:false})
+              localStorage.clear();
+              self.setState({isLogin:false});
             }
         });
     }
@@ -200,17 +237,21 @@ class App extends Component {
                         ></Myitem>
                 })
 
-                return  <Myitem
-                            itemId={item.id}
-                            kind = "navigation_max"
-                            icon={self.checkInfo(item.name).icon}
-                            link=''
-                            text={item.name}
-                        >
-                        <Navigation>
-                          {card}
-                        </Navigation>
-                        </Myitem>
+                if (window.userType == "管理员" && item.name == "系统管理") {
+                      return
+                }else{
+                  return  <Myitem
+                              itemId={item.id}
+                              kind = "navigation_max"
+                              icon={self.checkInfo(item.name).icon}
+                              link=''
+                              text={item.name}
+                          >
+                          <Navigation>
+                            {card}
+                          </Navigation>
+                          </Myitem>
+                }
               }else{
                 // if(self.checkInfo(item.name) == undefined){
                 //   return;
@@ -225,35 +266,74 @@ class App extends Component {
               }
           })
         }
+
+
+
         if(!isLogin){
           return(
-            <div id="login">
+            <div style={{width:'100%',height:'100%'}}>
+              {/*<Navigation
+                  onMouseEnter={onMouseEnter}
+                  onMouseLeave={onMouseLeave}
+                  type="filling"
+                  activeDirection="bottom"
+                  >
+                  <li className="navigation-logo-zone" style={{marginLeft:"15%"}}>
+                    <div className="middle-center">
+                      <img src={testImg} className="loginImg1"/>
+                      <span>星洁科技</span>
+                    </div>
+                  </li>
+                  <span id="demo">公告 ：召开背街小巷综合整治工作调度会</span>
 
-              <img src={bcakgroundImg} className="loginBcakground"/>
-              <div className="block">
-                  <div className="guns-title">
-                      星洁科技后台管理
-                  </div>
-                  <img src={testImg} className="loginImg"/>
-                  <div className="marginTop"></div>
-                  <div className="block">
-                    <Input htmlType="username" placeholder="请输入账号" value={username} onChange={this.onchange.bind(this,'username')}/>
-                  </div>
-                  <div className="marginTop"></div>
-                  <div className="block">
-                    <Input htmlType="password" placeholder="请输入密码" value={password} onChange={this.onchange.bind(this,'password')}/>
-                  </div>
-                  <div className="marginTop"></div>
-                  {msg!="" && <div className="block label marginBottom">
-                    <span className='warining'>{msg}</span>
-                  </div>}
-                  {/*<div className="block label">
-                    <Checkbox id="apple" value="apple" >记住我</Checkbox>
-                  </div>*/}
-                  <div className="marginTop"></div>
-                  <div className="block">
-                    <Button type="primary" onClick={this.handleSubmit.bind(this)}>登录</Button>
-                  </div>
+                  <li className="navigation-toolbar" style={{marginRight:"15%"}}>
+                    <ul>
+                      <li>
+                        <Icon type="electronics" />
+                        <span>首页</span>
+                      </li>
+                      <li>
+                        <Icon type="link" />
+                        <span>登录</span>
+                      </li>
+                      <li>
+                        <Icon type="text" />
+                        <span>帮助</span>
+                      </li>
+                      <li>
+                        <Icon type="set" />
+                        <span>设置</span>
+                      </li>
+                    </ul>
+                  </li>
+              </Navigation>*/}
+              <div id="login">
+                {<img src={bcakgroundImg} className="loginBcakground"/>}
+                <div className="block">
+                    {/*<div className="guns-title">
+                        星洁科技后台管理
+                    </div>*/}
+                    <img src={testImg} className="loginImg"/>
+                    <div className="marginTop"></div>
+                    <div className="block">
+                      <Input htmlType="username" placeholder="请输入账号" value={username} onChange={this.onchange.bind(this,'username')}/>
+                    </div>
+                    <div className="marginTop"></div>
+                    <div className="block">
+                      <Input htmlType="password" placeholder="请输入密码" value={password} onChange={this.onchange.bind(this,'password')}/>
+                    </div>
+                    <div className="marginTop"></div>
+                    {msg!="" && <div className="block label marginBottom">
+                      <span className='warining'>{msg}</span>
+                    </div>}
+                    {/*<div className="block label">
+                      <Checkbox id="apple" value="apple" >记住我</Checkbox>
+                    </div>*/}
+                    <div className="marginTop"></div>
+                    <div className="block">
+                      <Button type="primary" onClick={this.handleSubmit.bind(this)}>登录</Button>
+                    </div>
+                </div>
               </div>
             </div>
           )

@@ -62,6 +62,12 @@ class BatchPage extends Component {
         getInitData();
     }
 
+    reSetData(){
+        this.current =1;
+        const {getInitData} = (this.props);
+        getInitData();
+    }
+    
     onRowClick(record, index, e) {
         this.setState({detailvisible:true,orderdata:record})
     }
@@ -198,7 +204,8 @@ class BatchPage extends Component {
                 
                 <Row style={{marginTop:'20px'}}>
                     <Button type="primary" style={{width:'80px'}} size="large" onClick={this.onSearch.bind(this)}>搜索</Button>
-                    <Button type="normal" style={{width:'80px',marginLeft:'10px'}} size="large" onClick={this.onExport.bind(this)}>导出</Button>
+                    <Button type="secondary" style={{width:'80px',marginLeft:'10px'}} size="large" onClick={this.onExport.bind(this)}>导出</Button>
+                    <Button type="normal" size="large" style={{width:'100px',marginLeft:'10px'}} onClick={this.reSetData.bind(this)}>重置</Button>
                 </Row>
                 <div style={{marginTop:'20px'}}>
                     <Table dataSource={dataSource}  fixedHeader maxBodyHeight={containerHeight}>

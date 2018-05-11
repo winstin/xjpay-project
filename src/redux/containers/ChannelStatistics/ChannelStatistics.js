@@ -13,7 +13,7 @@ import { Row, Col } from 'qnui/lib/grid';
 import Input from 'qnui/lib/input';
 import Pagination from 'qnui/lib/pagination';
 import Dimensions from 'react-dimensions';
-import {FormatDateTime} from "static/utils.js"
+import {FormatDateTime,getNowFormatDate} from "static/utils.js"
 
 const onRowClick = function(record, index, e) {
         console.log(record, index, e);
@@ -23,8 +23,8 @@ const onRowClick = function(record, index, e) {
 class GunsIndex extends Component {
   constructor(props) {
         super(props);
-        this.startDate = '';
-        this.endDate = '';
+        this.startDate = getNowFormatDate();
+        this.endDate = getNowFormatDate();
         this.agentName = '';
         this.filterAppId = '';
         this.current = 1;
@@ -44,6 +44,12 @@ class GunsIndex extends Component {
   componentDidMount(){
       const {getInitData,emptyData} = (this.props);
       emptyData();
+      getInitData();
+  }
+
+  reSetData(){
+      this.current =1;
+      const {getInitData} = (this.props);
       getInitData();
   }
 
@@ -110,6 +116,7 @@ class GunsIndex extends Component {
                         this.endDate = b[1];
                     }}/>
                     <Button type="primary" style={{width:'100px',marginLeft:'10px'}} size="large" onClick={this.onSearch.bind(this)}>搜索</Button>
+                    <Button type="normal" size="large" style={{width:'100px',marginLeft:'10px'}} onClick={this.reSetData.bind(this)}>重置</Button>
                 </div>
 
                 <div style={{marginTop:'20px'}}>
