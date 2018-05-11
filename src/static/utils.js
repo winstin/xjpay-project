@@ -295,6 +295,11 @@ var Tools = {
         if(isloading){
             hideLoading();
         }
+        if(data.responseText){
+            if(data.responseText.indexOf('登录超时')>-1){
+              promptToast("登录超时，请退出重新登录!",2000)
+            }
+        }
         errCallback(data.responseJSON)
         // promptToast('登录超时，请退出重新登录！',2000)
     });
@@ -332,9 +337,14 @@ var Tools = {
       $.ajax(data).done(function(e) {
           callback(e);
       }).fail(function(data,status,xhr) {
-          console.error(data);
-          console.error(status);
-          console.error(xhr);
+        if(data.responseText){
+            if(data.responseText.indexOf('登录超时')>-1){
+              promptToast("登录超时，请退出重新登录!",2000)
+            }
+        }
+        console.error(data);
+        // console.error(status);
+        // console.error(xhr);
       });
 
      

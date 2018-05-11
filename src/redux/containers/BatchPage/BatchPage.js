@@ -212,10 +212,10 @@ class BatchPage extends Component {
                         <Table.Column title="订单号" dataIndex="orderNo" width={130}/>
                         <Table.Column title="渠道订单号" dataIndex="agentOrderNo" width={180}/>
                         <Table.Column title="渠道编号" dataIndex="channelAgent.appId"  width={90}/>
+                        <Table.Column title="所属渠道" dataIndex="channelAgent.name"  width={100}/>
                         <Table.Column title="商户号" dataIndex="merchantId"  width={90}/>
                         <Table.Column title="商户名称" dataIndex="name"  width={100}/>
                         <Table.Column title="交易时间" dataIndex="createTime"  width={100} cell={this.cellTime}/>
-                        {/*<Table.Column title="所属渠道" dataIndex="channelAgent.name"  width={100}/>*/}
                         <Table.Column title="交易金额" dataIndex="totalFee"  width={100} cell={this.cellClick}/>
                         <Table.Column title="费率（‰）" dataIndex="fee0"  width={95} cell={this.cellClick}/>
                         <Table.Column title="代付费" dataIndex="d0fee"  width={70} cell={this.cellRender}/>

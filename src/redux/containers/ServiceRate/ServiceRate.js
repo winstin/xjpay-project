@@ -69,7 +69,7 @@ class ServiceRates extends Component {
             visibles:false,
             newData:{
                 code:1,codeName:'银联快捷',
-                upstream:'HF_SERVICE',upstreamName:'Q1',
+                upstream:'',upstreamName:'',
                 pointType:0,pointTypeName:'商旅类',
                 type:0,typeName:'D0',
             },
@@ -99,7 +99,8 @@ class ServiceRates extends Component {
 
     reSetData(){
         this.current =1;
-        const {getInitData} = (this.props);
+        const {getInitData,emptyData} = (this.props);
+        emptyData();
         getInitData();
     }
 
@@ -173,10 +174,29 @@ class ServiceRates extends Component {
         this.oldData.upstreamName = this.cellUpstream(this.oldData.upstream);
     }
 
+    /**
+     * @Author   Winstin
+     * @DateTime 2018-05-11
+     * @param    string
+     * @license  服务商添加费率
+     * @version  [version]
+     * @return   {[type]}   [description]
+     */
     addRates = () =>{
+        if(this.state.newData.upstreamName == "" ){
+            promptToast("请填写完整信息！")
+            return;
+        }
+        if(this.state.newData.appid == undefined || this.state.newData.fee0 == undefined||this.state.newData.d0fee == undefined||this.state.newData.mode == undefined || this.state.newData.appid == "" || this.state.newData.fee0 == ""||this.state.newData.d0fee == ""||this.state.newData.mode == ""){
+            promptToast("请填写完整信息！")
+            return;
+        }
+
         this.setState({
             visible: false
         });
+
+
         const {getInitData,addData} = this.props;
         addData(this.state.newData);
         this.reLoad();

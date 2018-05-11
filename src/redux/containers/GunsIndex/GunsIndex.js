@@ -15,7 +15,10 @@ import Pagination from 'qnui/lib/pagination';
 import Dimensions from 'react-dimensions';
 import TimePicker from 'qnui/lib/time-picker';
 
-import {FormatDateTime,promptToast,getNowFormatDate} from "static/utils.js"
+import {FormatDateTime,promptToast,getNowFormatDate} from "static/utils.js";
+
+import Dialog from 'qnui/lib/dialog';
+
 
 const onRowClick = function(record, index, e) {
         console.log(record, index, e);
@@ -42,7 +45,8 @@ class GunsIndex extends Component {
         super(props);
 
         this.state = {
-            current:1
+            current:1,
+            visible:false
         };
 
         this.startDate=getNowFormatDate();
@@ -51,6 +55,7 @@ class GunsIndex extends Component {
         this.mchId='';
         this.lockId = "";
         this.current = 1;
+        this.oldData = {};
     }
 
     onSearch() {
@@ -127,6 +132,24 @@ class GunsIndex extends Component {
     onRowClick = (index,record)=>{
         // console.log(record);
         this.lockId = record[0].mchId;
+        this.oldData = record[0];
+    }
+    openDaiog(){
+        if(this.lockId == ""){
+            promptToast("请选择操作项！");
+            return;
+        }
+        this.setState({visible:true})
+    }
+    onClose = ()=>{
+        this.setState({visible:false})
+    }
+
+    changeInfo = ()=>{
+        this.setState({visible:false});
+        const{changeInfo} = this.props;
+        changeInfo(oldData);
+        this.reSetData();
     }
 
     render() {
@@ -155,12 +178,15 @@ class GunsIndex extends Component {
                         this.startDate = b[0];
                         this.endDate = b[1];
                     }} />
-                    <Button type="primary" size="large" style={{width:'100px',marginLeft:'10px'}}  onClick={this.onSearch.bind(this)}>搜索</Button>
+                </div>
+                <div className='marginTop-20'>
+                    <Button type="primary" size="large" style={{width:'100px'}}  onClick={this.onSearch.bind(this)}>搜索</Button>
+                    <Button type="normal" size="large" style={{width:'100px',marginLeft:'10px'}} onClick={this.openDaiog.bind(this)}>修改</Button>
                     <Button type="secondary" size="large" style={{width:'100px',marginLeft:'10px'}} onClick={this.onLock.bind(this)}>冻结</Button>
                     <Button type="normal" size="large" style={{width:'100px',marginLeft:'10px'}} onClick={this.reSetData.bind(this)}>重置</Button>
                 </div>
                 <div style={{marginTop:'20px'}}>
-                    <Table dataSource={dataSources} onRowClick={onRowClick} fixedHeader maxBodyHeight={containerHeight} rowSelection={{onChange: this.onRowClick,mode:'single'}}>
+                    <Table dataSource={dataSources} fixedHeader maxBodyHeight={containerHeight} rowSelection={{onChange: this.onRowClick,mode:'single'}}>
                         <Table.Column title="商户号" dataIndex="mchId"/>
                         <Table.Column title="商户名称" dataIndex="name"/>
                         <Table.Column title="渠道编号" dataIndex="channelAgent.appId"/>
@@ -177,6 +203,39 @@ class GunsIndex extends Component {
                 <div style={{marginTop:'20px',float:'right'}}>
                     <Pagination current={this.state.current} size="large" total={total} pageSize={20} onChange={this.changePageno.bind(this)} />
                 </div>
+
+
+                <Dialog visible={this.state.visible}
+                        onOk={this.changeInfo}
+                        closable="esc,mask,close"
+                        onCancel={this.onClose}
+                        onClose={this.onClose} title="修改">
+                  
+                    <Row className="marginTop">
+                        <div className="flexStyle">
+                            <span></span>
+                            <span style={{fontSize:'14px',marginTop:'7px'}}>结算卡号：</span>
+                        </div>
+                        <Input placeholder="结算卡号"  style={{width:'180px'}} defaultValue={this.oldData.cardNumber} onChange={(e)=>{this.oldData.cardNumber=e}}/>
+                        <div className="flexStyle">
+                            <span></span>
+                            <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>代付费：</span>
+                        </div>
+
+                       <Input placeholder="代付费"  style={{width:'180px'}} defaultValue={(this.oldData.d0fee/100).toFixed(2)} onChange={(e)=>{this.oldData.d0fee=e*100}}/>
+                    </Row>
+
+                    <Row className="marginTop">
+                        <div className="flexStyle">
+                            <span></span>
+                            <span style={{fontSize:'14px',marginTop:'7px'}}>结算费率(‰)：</span>
+                        </div>
+                        <Input placeholder="结算费率(‰)"  style={{width:'180px'}} defaultValue={this.oldData.fee0} onChange={(e)=>{this.oldData.fee0=e}}/>
+                        <div className="flexStyle hide">
+                        </div>
+                        <Input placeholder="部门名称" className='hide' style={{width:'180px'}}/>
+                    </Row>
+                </Dialog>
             </div>
         );
     }
@@ -197,7 +256,7 @@ function mapDispatchToProps(dispatch,ownProps){
 
 export default Dimensions({
   getHeight: function() { //element
-    return window.innerHeight - 250;
+    return window.innerHeight - 290;
   },
   getWidth: function() { //element
     return window.innerWidth - 24;

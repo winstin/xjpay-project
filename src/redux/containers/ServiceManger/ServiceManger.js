@@ -64,8 +64,8 @@ class ServiceMangers extends Component {
     onSearch(appId,appName) {
         this.current = 1;
         const {getInitData,SearchData} = (this.props);
-        // getInitData(1,this.appId,this.appName);
-        SearchData(this.appId,this.appName);
+        getInitData(1,this.appId,this.appName);
+        // SearchData(this.appId,this.appName);
     }
 
 

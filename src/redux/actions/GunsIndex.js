@@ -95,6 +95,34 @@ export function lockChants(mchId=''){
       
     }
 }
+
+
+
+/**
+ * @Author   Winstin
+ * @DateTime 2018-05-04
+ * @param    string
+ * @license  修改数据
+ * @version  [version]
+ * @param    {Number}   pageno [description]
+ * @return   {[type]}          [description]
+ */
+export function changeInfo(data){
+    return (dispatch)=>{
+        api({
+            method:'/merchants/lock',
+            mode:'jsonp',
+            args:data,
+            callback:(rsp)=>{
+                successToast('修改成功！')
+            },
+            errCallback:(msg)=>{
+                errorToast('修改失败！')
+            }
+        });
+      
+    }
+}
 /**
  * @Author   Winstin
  * @DateTime 2018-05-04

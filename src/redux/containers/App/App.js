@@ -51,7 +51,8 @@ class App extends Component {
           password:'',
           username:'',
           msg:'',
-          context:[]
+          context:[],
+          appname:"星洁科技"
         }
     }
 
@@ -61,6 +62,7 @@ class App extends Component {
         let now = new Date();
         let loginTime = localStorage.getItem("loginTime");
         window.userType = localStorage.getItem("userType");
+        let userInfo = localStorage.getItem("userType");
         if (!isEmpty(loginTime)) {
           let res = compareTime(loginTime,now);
           if(res.minutes >= 30){
@@ -76,41 +78,19 @@ class App extends Component {
               }catch(e){
                 context = [];
               }
-              self.setState({isLogin:true,context:context});
+              try{
+                userInfo = JSON.parse(userInfo);
+              }catch(e){
+
+              }
+              self.setState({
+                isLogin:true,
+                context:context,
+                appname:userInfo.appname
+              });
           }
         }
 
-       /* var demo=document.getElementById("demo");
-        // var demo1=document.getElementById("demo1");
-        // var demo2=document.getElementById("demo2");
-        // demo2.innerHTML=demo1.innerHTML;
-        // //给demo1,demo2加相同的高度
-        // demo1.style.height=demo.offsetHeight+"px";
-        // demo2.style.height=demo.offsetHeight+"px";
-        //定时器，每隔50毫秒调用一次scrollup()函数，来实现文字的滚动
-        var timer=window.setInterval("scrollup()",50);
-        //定义函数
-        function scrollup()
-        {
-          //如果demo滚上去的高度大于demo的高度，重新给demo赋值从0再开始滑动
-          if(demo.scrollTop>=200)
-          {
-            demo.scrollTop=0;
-          }else
-          {
-            demo.scrollTop++;
-          }
-        }
-        //鼠标放上停止滚动，鼠标离开继续滚动
-          demo.onmouseover=function(){
-                        //清除定时器
-                        clearInterval(timer);
-                        }
-          demo.onmouseout=function(){
-                  //添加定时器
-                  timer=window.setInterval("scrollup()",50);
-                  }
-        */
     }
 
     handleSubmit() {
@@ -215,19 +195,13 @@ class App extends Component {
 
     render(){
         const init = this.field.init;
-        const {isLogin,username,password,msg,context} = this.state;
+        const {isLogin,username,password,msg,context,appname} = this.state;
         let self = this;
         let jsx = '';
         if(context){
           jsx = context.map((item,index)=>{
-              // if(self.checkInfo(item.name) == undefined){
-              //   return;
-              // }
               if(item.children.length>=1){
                 let card = item.children.map((content,i)=>{
-                  // if(self.checkInfo(content.name) == undefined){
-                  //   return;
-                  // }
                   return <Myitem
                             itemId={item.id}
                             kind = "navigation_max"
@@ -253,9 +227,6 @@ class App extends Component {
                           </Myitem>
                 }
               }else{
-                // if(self.checkInfo(item.name) == undefined){
-                //   return;
-                // }
                 return  <Myitem
                             itemId={item.id}
                             kind = "navigation_max"
@@ -271,69 +242,89 @@ class App extends Component {
 
         if(!isLogin){
           return(
-            <div style={{width:'100%',height:'100%'}}>
-              {/*<Navigation
+            <div style={{width:'100%',height:'100%',background:'#fff'}}>
+              {<Navigation
                   onMouseEnter={onMouseEnter}
                   onMouseLeave={onMouseLeave}
                   type="filling"
                   activeDirection="bottom"
+                  className = "nav-style"
                   >
                   <li className="navigation-logo-zone" style={{marginLeft:"15%"}}>
                     <div className="middle-center">
                       <img src={testImg} className="loginImg1"/>
-                      <span>星洁科技</span>
+                      <span className="index-title">{appname}</span>
                     </div>
                   </li>
-                  <span id="demo">公告 ：召开背街小巷综合整治工作调度会</span>
+                  
 
                   <li className="navigation-toolbar" style={{marginRight:"15%"}}>
                     <ul>
                       <li>
                         <Icon type="electronics" />
-                        <span>首页</span>
+                        <span className='index-info'>首页</span>
                       </li>
                       <li>
                         <Icon type="link" />
-                        <span>登录</span>
+                        <span className='index-info'>登录</span>
                       </li>
                       <li>
                         <Icon type="text" />
-                        <span>帮助</span>
+                        <span className='index-info'>帮助</span>
                       </li>
                       <li>
                         <Icon type="set" />
-                        <span>设置</span>
+                        <span className='index-info'>设置</span>
                       </li>
                     </ul>
                   </li>
-              </Navigation>*/}
+              </Navigation>}
               <div id="login">
-                {<img src={bcakgroundImg} className="loginBcakground"/>}
-                <div className="block">
-                    {/*<div className="guns-title">
-                        星洁科技后台管理
-                    </div>*/}
-                    <img src={testImg} className="loginImg"/>
-                    <div className="marginTop"></div>
-                    <div className="block">
-                      <Input htmlType="username" placeholder="请输入账号" value={username} onChange={this.onchange.bind(this,'username')}/>
-                    </div>
-                    <div className="marginTop"></div>
-                    <div className="block">
-                      <Input htmlType="password" placeholder="请输入密码" value={password} onChange={this.onchange.bind(this,'password')}/>
-                    </div>
-                    <div className="marginTop"></div>
-                    {msg!="" && <div className="block label marginBottom">
-                      <span className='warining'>{msg}</span>
-                    </div>}
-                    {/*<div className="block label">
-                      <Checkbox id="apple" value="apple" >记住我</Checkbox>
-                    </div>*/}
-                    <div className="marginTop"></div>
-                    <div className="block">
-                      <Button type="primary" onClick={this.handleSubmit.bind(this)}>登录</Button>
-                    </div>
-                </div>
+                  {/*<img src={bcakgroundImg} className="loginBcakground"/>*/}
+                  <div className="block" className="login-width">
+                      <div className="guns-title">
+                          <span >后台管理</span>
+                      </div>
+                      {/*<img src={testImg} className="loginImg"/>*/}
+                      <div className="marginTop"></div>
+                      <div className="block">
+                        <Input htmlType="username" 
+                        placeholder="请输入账号" 
+                        value={username} 
+                        onChange={this.onchange.bind(this,'username')}
+                        style={{width:'250px'}}
+                        />
+                      </div>
+                      <div className="marginTop"></div>
+                      <div className="block">
+                        <Input htmlType="password" placeholder="请输入密码" 
+                        value={password} 
+                        onChange={this.onchange.bind(this,'password')}
+                        style={{width:'250px'}}/>
+                      </div>
+                      <div className="marginTop"></div>
+                      {msg!="" && <div className="block label marginBottom">
+                        <span className='warining'>{msg}</span>
+                      </div>}
+                      {/*<div className="block label">
+                        <Checkbox id="apple" value="apple" >记住我</Checkbox>
+                      </div>*/}
+                      <div className="marginTop"></div>
+                      <div className="block">
+                        <Button type="primary" style={{width:'250px'}} onClick={this.handleSubmit.bind(this)}>登录</Button>
+                      </div>
+                  </div>
+              </div>
+              <div className="container-white">
+              </div>
+              <div id="footer">
+                  <div className="bottom-10">关于我们 服务协议 运营中心 辟谣中心 星洁科技 联系邮箱 侵权投诉</div>
+                  {/*<div className="bottom-10">
+                      <span>粤公网安备44010602002022号</span><span>&nbsp;|&nbsp;</span>
+                      <span>星洁科技</span><span>&nbsp;|&nbsp;</span>
+                      <span>粤公网安备44010602002022号</span>
+                  </div>*/}
+                  <div>Powered by XjPay Winstin.</div>
               </div>
             </div>
           )

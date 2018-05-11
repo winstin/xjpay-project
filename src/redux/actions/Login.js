@@ -25,16 +25,30 @@ export function Login(username="",password="",callback){
                 localStorage.setItem("loginTime",now);
                 localStorage.setItem("appId",username);
                 localStorage.setItem("userType",rsp.data.roles[0].roleName);
-                if(rsp.data.firstLogin == false || rsp.data.firstLogin == "false"){//用户非第一次登录
-                    callback("success");
-                }else{
-                    callback("firstLogin");
-                }
+                api({
+                    method:'/agent/list',
+                    mode:'jsonp',
+                    args:{
+                        appId:username,
+                    },
+                    callback:(e)=>{
+                        localStorage.setItem("userInfo",JSON.stringify(e));
+                        if(rsp.data.firstLogin == false || rsp.data.firstLogin == "false"){//用户非第一次登录
+                            callback("success");
+                        }else{
+                            callback("firstLogin");
+                        }
 
-                dispatch({
-                    type:INITGUNSDATA,
-                    userType:rsp.data.roles[0].roleName,
+                        dispatch({
+                            type:INITGUNSDATA,
+                            userType:rsp.data.roles[0].roleName,
+                        });
+                    },
+                    errCallback:(msg)=>{
+                        // console.log(msg)
+                    }
                 });
+                
                 
             },
             errCallback:(msg)=>{
@@ -45,5 +59,6 @@ export function Login(username="",password="",callback){
       
     }
 }
+
 
 

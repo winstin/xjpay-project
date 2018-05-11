@@ -61,6 +61,16 @@ export function getInitData(pageno=1,appId='',appName=''){
     }
 }
 
+export function emptyData(){
+    return (dispatch)=>{
+        dispatch({
+            type:INITDATA,
+            dataSource: [],
+            total:0
+        });
+      
+    }
+}
 
 export function getServiceData(){
     return (dispatch)=>{
