@@ -74,17 +74,26 @@ class App extends Component {
               }catch(e){
                 context = [];
               }
+
               try{
                 userInfo = JSON.parse(userInfo);
               }catch(e){
 
               }
-              console.log(userInfo)
-              self.setState({
-                isLogin:true,
-                context:context,
-                appname:userInfo.name
-              });
+              if(userInfo!=undefined && userInfo!=null){
+                  self.setState({
+                    isLogin:true,
+                    context:context,
+                    appname:userInfo.name
+                  });
+              }else{
+                  self.setState({
+                    isLogin:true,
+                    context:context,
+                    appname:"星洁科技"
+                  });
+              }
+              
           }
         }
 
