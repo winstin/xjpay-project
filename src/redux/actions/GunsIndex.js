@@ -108,8 +108,10 @@ export function lockChants(mchId=''){
  * @return   {[type]}          [description]
  */
 export function changeInfo(data){
+
     return (dispatch)=>{
-        api({
+        console.log(data)
+        /*api({
             method:'/merchants/lock',
             mode:'jsonp',
             args:data,
@@ -119,7 +121,7 @@ export function changeInfo(data){
             errCallback:(msg)=>{
                 errorToast('修改失败！')
             }
-        });
+        });*/
       
     }
 }

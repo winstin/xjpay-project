@@ -440,8 +440,9 @@ th .next-table-cell-wrapper{
 }
 
 .display-flex{
-    width:25%;
-    display:flex
+    flex:1;
+    display:flex;
+    /*text-align: center;*/
 }
 
 .display-flex-100{
@@ -456,9 +457,10 @@ th .next-table-cell-wrapper{
 
 }
 .loginImg1{
-    width: 30px;
-    height: 30px;
-    border-radius: 50px
+    width: 40px;
+    height: 40px;
+    border-radius: 50px;
+    border:1px solid #F3F3F3;
 }
 
 .middle-center{

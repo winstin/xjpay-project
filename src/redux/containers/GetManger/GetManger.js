@@ -98,7 +98,7 @@ class GetMangers extends Component {
         const {add, value, switchState ,changeSwitchState,containerHeight,dataSource,sumTotalFee,sumOrderNum,sumD0fee,sumProfit,sumTotalProfit} = this.props;
         const TabPane = Tab.TabPane;
         return(
-            <div className="marginTop">
+            <div className="paddingTop">
                 <div className="display-flex-100">
                     <div className="display-flex">
                         <span className='top-width'>总交易金额:</span>
@@ -112,17 +112,19 @@ class GetMangers extends Component {
                         <span className='top-width'>总交易手续费分成:</span>
                         <span className="text-width">{sumProfit}</span>
                     </div>
+                </div>
+                <div className="marginTop"></div>
+                <div className="display-flex-100">
                     <div className="display-flex">
                         <span className='top-width'>总D0手续费:</span>
                         <span className="text-width">{sumD0fee}</span>
                     </div>
                     <div className="display-flex">
-                        <span className='top-width'>总应结分润:</span>
-                        <span className="text-width">{sumProfit}</span>
-                    </div>
-                    <div className="display-flex">
                         <span className='top-width'>总收益:</span>
                         <span className="text-width">{sumTotalProfit}</span>
+                    </div>
+                    <div className="display-flex">
+                        
                     </div>
                 </div>
 
@@ -142,7 +144,6 @@ class GetMangers extends Component {
                         <Table.Column title='交易笔数' dataIndex="sumOrderNum" />
                         <Table.Column title='交易手续费分成' dataIndex="sumProfit" />
                         <Table.Column title='D0手续费' dataIndex="sumD0fee"  />
-                        <Table.Column title='应结分润' dataIndex="sumProfit"  />
                         <Table.Column title='收益' dataIndex="sumTotalProfit" />
                     </Table>
                 </div>

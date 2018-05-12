@@ -1,15 +1,11 @@
 /**
 *APP组件，整个应用顶级路由
-
 这是整个APP的顶层路由页面，所有的路由都会加载这个页面组件，然后根据路由来匹配this.props.children子页面路由
-
-
 **/
 
 import React,{Component,PropTypes} from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-
 import Myitem from '../../components/Myitem'
 import Navigation,{Item, Group} from 'qnui/lib/navigation';
 import Icon from 'qnui/lib/icon';
@@ -26,13 +22,7 @@ import * as Login from '../../actions/Login'
 
 import Menu from 'qnui/lib/menu';  
 
-let onMouseEnter = (id, item, nav) => {
-    console.log('onMouseEnter')  
-}
 
-let onMouseLeave = (id, item, nav) => {
-    console.log('onMouseLeave')
-}
 function clearAllCookie() {  
     var keys = document.cookie.match(/[^ =;]+(?=\=)/g);  
     if(keys) {  
@@ -40,7 +30,13 @@ function clearAllCookie() {
             document.cookie = keys[i] + '=0;expires=' + new Date(0).toUTCString()  
     }  
 }  
+let onMouseEnter = (id, item, nav) => {
+    console.log('onMouseEnter')  
+}
 
+let onMouseLeave = (id, item, nav) => {
+    console.log('onMouseLeave')
+}
 // let context = '';
 class App extends Component {
     constructor(props) {
@@ -60,9 +56,9 @@ class App extends Component {
     componentDidMount(){
         let self = this; 
         let now = new Date();
-        let loginTime = localStorage.getItem("loginTime");
-        window.userType = localStorage.getItem("userType");
-        let userInfo = localStorage.getItem("userType");
+        let loginTime = localStorage.getItem("loginTime");//登录超时参数
+        window.userType = localStorage.getItem("userType");//用户身份
+        let userInfo = localStorage.getItem("userInfo");//用户信息
         if (!isEmpty(loginTime)) {
           let res = compareTime(loginTime,now);
           if(res.minutes >= 30){
@@ -86,7 +82,8 @@ class App extends Component {
               self.setState({
                 isLogin:true,
                 context:context,
-                appname:userInfo.appname
+                appname: "星洁科技"
+                // appname:userInfo.appname || "星洁科技"
               });
           }
         }

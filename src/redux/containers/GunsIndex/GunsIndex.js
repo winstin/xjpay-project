@@ -66,7 +66,7 @@ class GunsIndex extends Component {
 
 
     componentWillMount() {
-      // console.log('Component WILL MOUNT!');
+
     }
 
     componentDidMount(){
@@ -75,10 +75,29 @@ class GunsIndex extends Component {
         getInitData();
     }
 
+    /**
+     * @Author   Winstin
+     * @DateTime 2018-05-12
+     * @param    string
+     * @license  重置数据
+     * @version  [version]
+     * @return   {[type]}   [description]
+     */
     reSetData(){
         this.setState({current:1})
         const {getInitData} = (this.props);
         getInitData();
+    }
+
+
+    reLoad(){
+        let self = this;
+        const{getInitData} = this.props;
+        setTimeout(
+            function(){
+                getInitData(self.state.current,self.merchantName,self.mchId,self.startDate,self.endDate);
+            }
+        ,500)
     }
 
     /**
@@ -117,15 +136,22 @@ class GunsIndex extends Component {
         }
     }
 
+    /**
+     * @Author   Winstin
+     * @DateTime 2018-05-12
+     * @param    string
+     * @license  锁定商户
+     * @version  [version]
+     * @return   {[type]}   [description]
+     */
     onLock(){
-        
         const {lockChants} = this.props;
         if(this.lockId == ""){
             promptToast("请选择冻结商户！");
             return;
         }
         lockChants(this.lockId);
-        // this.lockId = "";
+        this.reLoad();
 
     }
 
@@ -145,11 +171,23 @@ class GunsIndex extends Component {
         this.setState({visible:false})
     }
 
+    /**
+     * @Author   Winstin
+     * @DateTime 2018-05-12
+     * @param    string
+     * @license  修改商户信息
+     * @version  [version]
+     * @return   {[type]}   [description]
+     */
     changeInfo = ()=>{
         this.setState({visible:false});
         const{changeInfo} = this.props;
-        changeInfo(oldData);
-        this.reSetData();
+        changeInfo(this.oldData);
+        this.reLoad();
+    }
+
+    cellStatus = (value, index, record, context) => {
+        return <div >{value=="LOCK"?"锁定":"正常"}</div>
     }
 
     render() {
@@ -198,6 +236,7 @@ class GunsIndex extends Component {
                         <Table.Column title="电话" dataIndex="tel" width="120"/>
                         <Table.Column title="费率（‰）" dataIndex="fee0" width="95"/>
                         <Table.Column title="代付费" dataIndex="d0fee" cell={this.cellRender} width="70"/>
+                        <Table.Column title="状态" dataIndex="status" cell={this.cellStatus} width={100}/>
                     </Table>
                 </div>
                 <div style={{marginTop:'20px',float:'right'}}>

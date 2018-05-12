@@ -3,7 +3,7 @@
 **/
 export const INITGUNSDATA = "INITGUNSDATA";
 
-import {api} from "static/utils.js"
+import {api,ajax} from "static/utils.js"
 
 /**
  * @Author   Winstin
@@ -25,14 +25,16 @@ export function Login(username="",password="",callback){
                 localStorage.setItem("loginTime",now);
                 localStorage.setItem("appId",username);
                 localStorage.setItem("userType",rsp.data.roles[0].roleName);
-                api({
-                    method:'/agent/list',
-                    mode:'jsonp',
+                /*ajax({
+                    method:'/users/view',
+                    mode:'json',
                     args:{
-                        appId:username,
+                        url:"/"+username,
                     },
-                    callback:(e)=>{
-                        localStorage.setItem("userInfo",JSON.stringify(e));
+                    callback:(e)=>{*/
+                        console.log("用户信息");
+                        /*console.log(e)
+                        localStorage.setItem("userInfo",JSON.stringify(e));*/
                         if(rsp.data.firstLogin == false || rsp.data.firstLogin == "false"){//用户非第一次登录
                             callback("success");
                         }else{
@@ -43,11 +45,11 @@ export function Login(username="",password="",callback){
                             type:INITGUNSDATA,
                             userType:rsp.data.roles[0].roleName,
                         });
-                    },
+                   /* },
                     errCallback:(msg)=>{
                         // console.log(msg)
                     }
-                });
+                });*/
                 
                 
             },
@@ -59,6 +61,5 @@ export function Login(username="",password="",callback){
       
     }
 }
-
 
 

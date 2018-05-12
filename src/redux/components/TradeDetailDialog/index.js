@@ -98,7 +98,6 @@ class TradeDetailDialog extends Component {
 
     render() {
         const {visible,title,dataSource} = this.props;
-        console.log(dataSource)
         let state = this.getState(dataSource.orderState);
         
         return (

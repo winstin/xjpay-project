@@ -78,6 +78,35 @@ export function getDetailData(appId){
 }
 
 
+/**
+ * @Author   Winstin
+ * @DateTime 2018-05-09
+ * @param    string
+ * @license  冻结服务商
+ * @version  [version]
+ * @param    {[type]}   appId [description]
+ * @return   {[type]}         [description]
+ */
+export function freezeData(appId,status){
+    return (dispatch)=>{
+        ajax({
+            method:'/agents/status',
+            mode:'json',
+            args:{
+                url:"/"+appId+"/"+status,
+            },
+            callback:(rsp)=>{
+                successToast('冻结成功！')
+            },
+            errCallback:(msg)=>{
+                errorToast('冻结失败！')
+            }
+        });
+      
+    }
+}
+
+
 
 
 // id: 1

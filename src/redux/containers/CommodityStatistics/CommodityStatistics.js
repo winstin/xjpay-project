@@ -84,7 +84,6 @@ class GunsIndex extends Component {
 
     render() {
         const {containerHeight,dataSource,total} = (this.props);
-        console.log(dataSource)
         return (
             <div className="paddingTop">
                 <div className="display-flex-100">
@@ -100,6 +99,9 @@ class GunsIndex extends Component {
                         <span className='top-width'>总交易手续费分成:</span>
                         <span className="text-width"></span>
                     </div>
+                </div>
+                <div className="paddingTop"></div>
+                <div className="display-flex-100">
                     <div className="display-flex">
                         <span className='top-width'>总D0手续费:</span>
                         <span className="text-width"></span>
@@ -173,7 +175,7 @@ function mapDispatchToProps(dispatch,ownProps){
 
 export default Dimensions({
   getHeight: function() { //element
-    return window.innerHeight - 290;
+    return window.innerHeight - 330;
   },
   getWidth: function() { //element
     return window.innerWidth - 24;

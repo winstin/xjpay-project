@@ -171,6 +171,17 @@ class ServiceMangers extends Component {
         this.setState({visible0:true})
     }
 
+    freezeData(){
+        const {freezeData,chooseDatas} = (this.props);
+        if(chooseDatas.length == 0){
+            errorToast('请选择一条记录！');
+            return;
+        }
+        // console.log(chooseDatas);
+        freezeData(chooseDatas[0].appId,chooseDatas[0].status);
+        this.reLoad();
+    }
+
 
     cellRender = (value, index, record, context) => {
         if(value == 1){
@@ -198,6 +209,10 @@ class ServiceMangers extends Component {
 
     cellAppId = (value, index, record, context) => {
         return <div onClick={this.showDeatil.bind(this,value)}>{value}</div>
+    }
+
+    cellStatus = (value, index, record, context) => {
+        return <div >{value==1?"启用":"冻结"}</div>
     }
 
     updateData(newData){
@@ -228,7 +243,7 @@ class ServiceMangers extends Component {
                 <div className="marginTop-20">
                     <Button type="primary" style={{width:'100px'}} size="large" onClick={this.onOpen.bind(this,'add')}>添加</Button>
                     <Button type="normal" style={{width:'100px',marginLeft:'10px'}} size="large" onClick={this.onOpen.bind(this,'change')}>修改</Button>
-                    <Button type="secondary" style={{width:'120px',marginLeft:'10px'}} size="large" >冻结/启用</Button>
+                    <Button type="secondary" style={{width:'120px',marginLeft:'10px'}} size="large" onClick={this.freezeData.bind(this)}>冻结/启用</Button>
                     <Button type="normal" size="large" style={{width:'100px',marginLeft:'10px'}} onClick={this.reSetData.bind(this)}>重置</Button>
 
                 </div>
@@ -259,7 +274,7 @@ class ServiceMangers extends Component {
                         <Table.Column title="开户行" dataIndex="bank" width={100}/>
                         <Table.Column title="收款账户" dataIndex="account" width={200}/>
 
-                        <Table.Column title="状态" dataIndex="time" width={100}/>
+                        <Table.Column title="状态" dataIndex="status" cell={this.cellStatus} width={100}/>
                     </Table>
                 </div>
                 <div style={{marginTop:'20px',float:'right'}}>

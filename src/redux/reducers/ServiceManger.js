@@ -20,7 +20,6 @@ export default function PrintDialog(state = initialState, action){
                     'dataSource':action.dataSource,
                     'isLoad':false,
                     'total':action.total,
-                    chooseDatas:[]
                 });
             break;
 
