@@ -4,19 +4,18 @@
 export const INITGUNSDATA = "INITGUNSDATA";
 export const CHOOSEDATA = "CHOOSEDATA";
 
-import {api,isEmpty,successToast,errorToast,getNowFormatDate} from "static/utils.js"
+import {api,isEmpty,successToast,errorToast,getNowFormatDate,NetWorkPOST} from "static/utils.js"
 
 /**
  * @Author   Winstin
  * @DateTime 2018-05-04
  * @param    string
- * @license  获取数据
+ * @license  获取商户管理数据
  * @version  [version]
  * @param    {Number}   pageno [description]
  * @return   {[type]}          [description]
  */
-export function getInitData(pageno = 1,merchantName='',mchId='',startDate=getNowFormatDate(),endDate=getNowFormatDate()){
-
+export function getInitData(pageno = 1,merchantName='',mchId='',startDate=getNowFormatDate(),endDate=getNowFormatDate(),isloading=true){
     return (dispatch)=>{
         api({
             method:'/merchants/page',
@@ -31,6 +30,7 @@ export function getInitData(pageno = 1,merchantName='',mchId='',startDate=getNow
                 pageIndex:pageno,
                 pageSize:20
             },
+            isloading:isloading,
             callback:(rsp)=>{
                 if(rsp.data.data == ""){
                     dispatch({
@@ -55,7 +55,14 @@ export function getInitData(pageno = 1,merchantName='',mchId='',startDate=getNow
     }
 }
 
-
+/**
+ * @Author   Winstin
+ * @DateTime 2018-05-12
+ * @param    string
+ * @license  清空数据
+ * @version  [version]
+ * @return   {[type]}   [description]
+ */
 export function emptyData(){
     return (dispatch)=>{
         dispatch({
@@ -108,20 +115,24 @@ export function lockChants(mchId=''){
  * @return   {[type]}          [description]
  */
 export function changeInfo(data){
-
     return (dispatch)=>{
         console.log(data)
-        /*api({
-            method:'/merchants/lock',
-            mode:'jsonp',
-            args:data,
+        NetWorkPOST({
+            method:'/merchants/updateBase/'+data.mchId,
+            mode:'json',
+            args:{
+                cardNumber:data.cardNumber,
+                d0fee:data.d0fee,
+                fee0:data.fee0,
+            },
+            dataType:'json',
             callback:(rsp)=>{
                 successToast('修改成功！')
             },
             errCallback:(msg)=>{
                 errorToast('修改失败！')
             }
-        });*/
+        });
       
     }
 }
@@ -143,6 +154,7 @@ export function setData(arrIndex,arrData){
         });
     }
 }
+
 
 export function SearchData(appId,appName){
     return (dispatch)=>{

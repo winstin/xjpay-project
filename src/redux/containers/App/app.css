@@ -169,6 +169,7 @@
    bottom:10px;
    width: 100%;
    text-align: center;
+   font-size: 12px;
    border-top: 1px solid #eee;padding-top: 10px
 }
 
@@ -346,7 +347,7 @@
 }
 
 .marginTop-20{
-    margin-top: 20px
+    margin-top: 20px;
 }
 
 /*.next-table-selection .next-checkbox .next-checkbox-inner{
@@ -449,7 +450,12 @@ th .next-table-cell-wrapper{
     display:flex
 }
 .paddingTop{
-    padding-top: 10px
+    padding-top: 10px;
+    /*padding-left: 12px*/
+}
+
+.paddingLeft-12{
+    padding-left: 12px;
 }
 
 .borderStyle{

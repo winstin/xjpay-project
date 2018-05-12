@@ -68,7 +68,7 @@ class GunsIndex extends Component {
         const {containerHeight,dataSource,total} = (this.props);
         return (
             <div className='paddingTop'>
-                <div className="display-flex-100">
+                <div className="display-flex-100 paddingLeft-12">
                     <div className="display-flex">
                         <span className='top-width'>总交易金额:</span>
                         <span className="text-width"></span>
@@ -81,13 +81,13 @@ class GunsIndex extends Component {
                         <span className='top-width'>总交易手续费分成:</span>
                         <span className="text-width"></span>
                     </div>
-                </div>
-                <div className='paddingTop'></div>
-                <div className="display-flex-100">
                     <div className="display-flex">
                         <span className='top-width'>总D0手续费:</span>
                         <span className="text-width"></span>
                     </div>
+                </div>
+                <div className='paddingTop paddingLeft-12'></div>
+                <div className="display-flex-100 paddingLeft-12">
                     <div className="display-flex">
                         <span className='top-width'>总应结分润:</span>
                         <span className="text-width"></span>
@@ -96,8 +96,14 @@ class GunsIndex extends Component {
                         <span className='top-width'>总收益:</span>
                         <span className="text-width"></span>
                     </div>
+                    <div className="display-flex">
+                       
+                    </div>
+                    <div className="display-flex">
+                       
+                    </div>
                 </div>
-                <div className="marginTop-20">
+                <div className="marginTop-20 paddingLeft-12">
                     <span className='top-sumtext-bold'>查询条件：</span>
                     <Input placeholder="所属渠道" size="large"  style={{width:'120px'}} onChange={(e)=>{this.agentName = e}}/>
                     <Input placeholder="渠道编号" size="large"  style={{width:'120px',marginLeft:'12px'}} onChange={(e)=>{this.filterAppId = e}}/>
@@ -109,7 +115,7 @@ class GunsIndex extends Component {
                     <Button type="primary" style={{width:'100px',marginLeft:'10px'}} onClick={this.onSearch.bind(this)}>搜索</Button>*/}
                 </div>
 
-                <div className="marginTop-20">
+                <div className="marginTop-20 paddingLeft-12">
                     <span className='top-sumtext-bold'>时间选择：</span>
                     <RangePicker size="large" onChange={(a, b) => {
                         this.startDate = b[0];

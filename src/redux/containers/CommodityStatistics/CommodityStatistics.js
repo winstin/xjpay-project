@@ -3,12 +3,9 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import Checkbox from 'qnui/lib/checkbox';
 import DatePicker, { RangePicker } from 'qnui/lib/date-picker';
-import Search from 'qnui/lib/search';
-import Tab from 'qnui/lib/tab';
 import Button from 'qnui/lib/button';
 import Table from 'qnui/lib/table';
 import * as CommodityStatistics from '../../actions/CommodityStatistics'
-// import {getInitData} from '../../actions/CommodityStatistics';
 import { Row, Col } from 'qnui/lib/grid';
 import Input from 'qnui/lib/input';
 import Pagination from 'qnui/lib/pagination';
@@ -16,33 +13,10 @@ import Dimensions from 'react-dimensions';
 import {getNowFormatDate} from "static/utils.js"
 
 
-const onRowClick = function(record, index, e) {
-        console.log(record, index, e);
-    },
-    getData = (length) => {
-        let result = [];
-        for (let i = 0; i < length; i++) {
-            result.push({
-                title: {name: `Quotation for 1PCS Nano ${3 + i}.0 controller compatible`},
-                id: 100306660940 + i,
-                time: 2000 + i
-            });
-        }
-        return result;
-    },
-    render = (value, index, record) => {
-        return <a>Remove({record.id})</a>;
-    };
-
 
 class GunsIndex extends Component {
     constructor(props) {
         super(props);
-
-        this.state = {
-            dataSource: getData(30)
-        };
-
         this.startDate=getNowFormatDate();
         this.endDate=getNowFormatDate();
         this.merchantName='';
@@ -61,7 +35,7 @@ class GunsIndex extends Component {
 
    
     componentWillMount() {
-        // console.log('Component WILL MOUNT!');
+        
     }
 
     componentDidMount(){
@@ -86,7 +60,7 @@ class GunsIndex extends Component {
         const {containerHeight,dataSource,total} = (this.props);
         return (
             <div className="paddingTop">
-                <div className="display-flex-100">
+                <div className="display-flex-100 paddingLeft-12">
                     <div className="display-flex">
                         <span className='top-width'>总交易金额:</span>
                         <span className="text-width"></span>
@@ -99,13 +73,13 @@ class GunsIndex extends Component {
                         <span className='top-width'>总交易手续费分成:</span>
                         <span className="text-width"></span>
                     </div>
-                </div>
-                <div className="paddingTop"></div>
-                <div className="display-flex-100">
                     <div className="display-flex">
                         <span className='top-width'>总D0手续费:</span>
                         <span className="text-width"></span>
                     </div>
+                </div>
+                <div className="paddingTop paddingLeft-12"></div>
+                <div className="display-flex-100 paddingLeft-12">
                     <div className="display-flex">
                         <span className='top-width'>总应结分润:</span>
                         <span className="text-width"></span>
@@ -114,35 +88,30 @@ class GunsIndex extends Component {
                         <span className='top-width'>总收益:</span>
                         <span className="text-width"></span>
                     </div>
+                    <div className="display-flex">
+                    </div>
+                    <div className="display-flex">
+                    </div>
                 </div>
-                <div className="marginTop-20">
+                <div className="marginTop-20 paddingLeft-12">
                     <span className='top-sumtext-bold'>查询条件：</span>
                     <Input placeholder="商户名称" size="large"   style={{width:'120px'}} onChange={(e)=>{this.merchantName = e}}/>
                     <Input placeholder="商户编号" size="large"  style={{width:'120px',marginLeft:'12px'}} onChange={(e)=>{this.mchId = e}}/>
                     <Input placeholder="所属渠道" size="large"  style={{width:'120px',marginLeft:'12px'}} onChange={(e)=>{this.agentName = e}}/>
                     <Input placeholder="渠道编号" size="large"  style={{width:'120px',marginLeft:'12px'}} onChange={(e)=>{this.filterAppId = e}}/>
-                    {/*<span style={{fontSize:'14px',marginTop:'7px',width:'70px',marginLeft:'12px'}}>时间选择：</span>
-                    <RangePicker onChange={(a, b) => {
-                        this.startDate = b[0];
-                        this.endDate = b[1];
-                    }}
-                    /><Button type="primary" style={{width:'100px',marginLeft:'10px'}} onClick={this.onSearch.bind(this)}>搜索</Button>*/}
                 </div>
-
-                <div className="marginTop-20">
+                <div className="marginTop-20 paddingLeft-12">
                     <span className='top-sumtext-bold'>时间选择：</span>
                     <RangePicker size="large" onChange={(a, b) => {
                         this.startDate = b[0];
                         this.endDate = b[1];
                     }}
                     />
-
                     <Button type="primary" style={{width:'100px',marginLeft:'10px'}} size="large" onClick={this.onSearch.bind(this)}>搜索</Button>
                     <Button type="normal" size="large" style={{width:'100px',marginLeft:'10px'}} onClick={this.reSetData.bind(this)}>重置</Button>
-
                 </div>
                 <div style={{marginTop:'20px'}}>
-                    <Table dataSource={dataSource} onRowClick={onRowClick} fixedHeader maxBodyHeight={containerHeight}>
+                    <Table dataSource={dataSource} fixedHeader maxBodyHeight={containerHeight}>
                         <Table.Column title="商户编号" dataIndex="mchId"/>
                         <Table.Column title="商户名称" dataIndex="name"/>
                         <Table.Column title="所属渠道" dataIndex="agentName"/>

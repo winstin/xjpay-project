@@ -83,7 +83,7 @@ class ServiceMangers extends Component {
         const{getInitData} = this.props;
         setTimeout(
             function(){
-                getInitData(self.current,self.appId,self.appName);
+                getInitData(self.current,self.appId,self.appName,false);
             }
         ,500)
     }
@@ -212,7 +212,7 @@ class ServiceMangers extends Component {
     }
 
     cellStatus = (value, index, record, context) => {
-        return <div >{value==1?"启用":"冻结"}</div>
+        return <div >{value==0?"启用":"冻结"}</div>
     }
 
     updateData(newData){
@@ -232,7 +232,7 @@ class ServiceMangers extends Component {
 
         return (
             <div>
-                <div className="paddingTop">
+                <div className="paddingTop paddingLeft-12">
                     <span className='top-sumtext-bold'>查询条件：</span>
                     <Input placeholder="渠道编号" size="large"  style={{width:'120px'}} onChange={(e)=>{this.appId = e}}/>
                     
@@ -240,7 +240,7 @@ class ServiceMangers extends Component {
                     
                     <Button type="primary" style={{width:'100px',marginLeft:'10px'}} size="large" onClick={this.onSearch.bind(this)}>搜索</Button>
                 </div>
-                <div className="marginTop-20">
+                <div className="marginTop-20 paddingLeft-12">
                     <Button type="primary" style={{width:'100px'}} size="large" onClick={this.onOpen.bind(this,'add')}>添加</Button>
                     <Button type="normal" style={{width:'100px',marginLeft:'10px'}} size="large" onClick={this.onOpen.bind(this,'change')}>修改</Button>
                     <Button type="secondary" style={{width:'120px',marginLeft:'10px'}} size="large" onClick={this.freezeData.bind(this)}>冻结/启用</Button>

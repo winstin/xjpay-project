@@ -92,7 +92,7 @@ class ServiceRates extends Component {
         const{getInitData} = this.props;
         setTimeout(
             function(){
-                getInitData(self.current,self.id,self.name);
+                getInitData(self.current,self.id,self.name,false);
             }
         ,500)
     }
@@ -211,9 +211,7 @@ class ServiceRates extends Component {
         });
         const {updateData} = this.props;
         updateData(this.oldData);
-
         this.reLoad();
-        // setTimeout(function(){getInitData()},500);
     }
 
     toggleVisible = () => {
@@ -370,7 +368,7 @@ class ServiceRates extends Component {
 
         return (
             <div>
-                <div className="paddingTop">
+                <div className="paddingTop paddingLeft-12">
                     <span className='top-sumtext-bold'>渠道编号：</span>
                     <Input placeholder="渠道编号" size="large"   style={{width:'120px'}} onChange={this.onchange.bind(this,'id')}/>
                     <span className='top-sumtext'>渠道名称：</span>
@@ -380,7 +378,7 @@ class ServiceRates extends Component {
                     <Button type="secondary" style={{width:'100px',marginLeft:'10px'}} size="large" onClick={this.onOpenChange}>修改</Button>*/}
                 </div>
 
-                <div className="marginTop-20">
+                <div className="marginTop-20 paddingLeft-12">
                     <Button type="primary" style={{width:'100px'}} size="large" onClick={this.searchData.bind(this)}>搜索</Button>
                     <Button type="normal" style={{width:'100px',marginLeft:'10px'}} size="large" onClick={this.onOpen}>添加</Button>
                     <Button type="secondary" style={{width:'100px',marginLeft:'10px'}} size="large" onClick={this.onOpenChange}>修改</Button>

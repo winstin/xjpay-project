@@ -16,7 +16,7 @@ import {api,ajax,isEmpty,successToast,errorToast} from "static/utils.js"
  * @param    {Number}   pageno [description]
  * @return   {[type]}          [description]
  */
-export function getInitData(pageno = 1,appId='',appName=''){
+export function getInitData(pageno = 1,appId='',appName='',isloading=true){
     return (dispatch)=>{
         api({
             method:'/agents/page',
@@ -27,6 +27,7 @@ export function getInitData(pageno = 1,appId='',appName=''){
                 pageIndex:pageno,
                 pageSize:20
             },
+            isloading:isloading,
             callback:(rsp)=>{
                 if(rsp.data.records == ""){
                     return;
@@ -88,18 +89,24 @@ export function getDetailData(appId){
  * @return   {[type]}         [description]
  */
 export function freezeData(appId,status){
+    let sta = "";
+    if(status == 0){
+        sta = 1;
+    }else{
+        sta = 0;
+    }
     return (dispatch)=>{
         ajax({
             method:'/agents/status',
             mode:'json',
             args:{
-                url:"/"+appId+"/"+status,
+                url:"/"+appId+"/"+sta,
             },
             callback:(rsp)=>{
-                successToast('冻结成功！')
+                successToast(rsp.message)
             },
             errCallback:(msg)=>{
-                errorToast('冻结失败！')
+                errorToast('操作失败！')
             }
         });
       

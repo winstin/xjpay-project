@@ -95,7 +95,7 @@ class GunsIndex extends Component {
         const{getInitData} = this.props;
         setTimeout(
             function(){
-                getInitData(self.state.current,self.merchantName,self.mchId,self.startDate,self.endDate);
+                getInitData(self.state.current,self.merchantName,self.mchId,self.startDate,self.endDate,false);
             }
         ,500)
     }
@@ -195,7 +195,7 @@ class GunsIndex extends Component {
 
         return (
             <div>
-                <div className="paddingTop">
+                <div className="paddingTop paddingLeft-12">
                     <span className='top-sumtext-bold'>查询条件：</span>
                     <Input placeholder="商户名称" size="large"   style={{width:'160px'}}  onChange={(e)=>{this.merchantName = e}}/>
                     <Input placeholder="商户编号" size="large"  style={{width:'160px',marginLeft:'12px'}} onChange={(e)=>{this.mchId = e}}/>
@@ -209,7 +209,7 @@ class GunsIndex extends Component {
                     <Button type="secondary" size="large" style={{width:'100px',marginLeft:'10px'}} onClick={this.onLock.bind(this)}>冻结</Button>*/}
                     
                 </div>
-                <div className='marginTop-20'>
+                <div className='marginTop-20 paddingLeft-12'>
                     <span className='top-sumtext-bold'>时间选择：</span>
                     <RangePicker  size="large" onChange={(a, b) => {
                         // console.log(b[0]);
@@ -217,7 +217,7 @@ class GunsIndex extends Component {
                         this.endDate = b[1];
                     }} />
                 </div>
-                <div className='marginTop-20'>
+                <div className='marginTop-20 paddingLeft-12'>
                     <Button type="primary" size="large" style={{width:'100px'}}  onClick={this.onSearch.bind(this)}>搜索</Button>
                     <Button type="normal" size="large" style={{width:'100px',marginLeft:'10px'}} onClick={this.openDaiog.bind(this)}>修改</Button>
                     <Button type="secondary" size="large" style={{width:'100px',marginLeft:'10px'}} onClick={this.onLock.bind(this)}>冻结</Button>

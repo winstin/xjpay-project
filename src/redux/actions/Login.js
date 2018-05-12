@@ -25,6 +25,7 @@ export function Login(username="",password="",callback){
                 localStorage.setItem("loginTime",now);
                 localStorage.setItem("appId",username);
                 localStorage.setItem("userType",rsp.data.roles[0].roleName);
+                localStorage.setItem("userInfo",JSON.stringify(rsp.data.userDetail));
                 /*ajax({
                     method:'/users/view',
                     mode:'json',
@@ -32,7 +33,6 @@ export function Login(username="",password="",callback){
                         url:"/"+username,
                     },
                     callback:(e)=>{*/
-                        console.log("用户信息");
                         /*console.log(e)
                         localStorage.setItem("userInfo",JSON.stringify(e));*/
                         if(rsp.data.firstLogin == false || rsp.data.firstLogin == "false"){//用户非第一次登录
@@ -54,6 +54,7 @@ export function Login(username="",password="",callback){
                 
             },
             errCallback:(msg)=>{
+                console.log(msg)
                 callback("fail")
                 
             }

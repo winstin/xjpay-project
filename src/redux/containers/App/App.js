@@ -79,11 +79,11 @@ class App extends Component {
               }catch(e){
 
               }
+              console.log(userInfo)
               self.setState({
                 isLogin:true,
                 context:context,
-                appname: "星洁科技"
-                // appname:userInfo.appname || "星洁科技"
+                appname:userInfo.name
               });
           }
         }
@@ -102,9 +102,10 @@ class App extends Component {
                   mode:'jsonp',
                   args:{},
                   callback:(rsp)=>{
+                      window.location.href="/dist/";
                       window.userType = localStorage.getItem("userType");
                       localStorage.setItem("menus",JSON.stringify(rsp.data));
-                      self.setState({context:rsp.data,isLogin:true,msg:''})
+                      self.setState({context:rsp.data,isLogin:true,msg:''});
                   },
                   errCallback:(msg)=>{
                     
@@ -112,7 +113,6 @@ class App extends Component {
               });
             }else{
               window.location.href="/dist/reSetPassword";
-              // self.setState({context:[],isLogin:true,msg:''})
             }
         })
     }
@@ -158,10 +158,10 @@ class App extends Component {
               return {icon:'account',link:'/dist/GetManger'}
               break;
             case"服务商管理":
-              return {icon:'account',link:'/dist/ServiceManger'}
+              return {icon:'table',link:'/dist/ServiceManger'}
               break;
             case"服务商费率":
-              return {icon:'account',link:'/dist/ServiceRate'}
+              return {icon:'training',link:'/dist/ServiceRate'}
               break;
             case"用户管理":
               return {icon:'account',link:'/dist/UserManger'}
@@ -337,7 +337,7 @@ class App extends Component {
                       >
                           <div className="qn-navigation-vertical" style={{background:"#3189DC"}}>
                             <Icon type ="account" />
-                            <span>星洁科技</span>
+                            <span>{appname}</span>
                           </div>
                           {jsx}
                           <Myitem

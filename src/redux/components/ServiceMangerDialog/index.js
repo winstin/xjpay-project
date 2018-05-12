@@ -18,7 +18,7 @@ import Menu from 'qnui/lib/menu';
 
 import Config from 'static/config.js'
 import '../components.scss';
-import {api,isEmpty} from "static/utils.js"
+import {api,isEmpty,promptToast} from "static/utils.js"
 
 
 const onRowClick = function(record, index, e) {
@@ -99,30 +99,6 @@ class CustomDialog extends Component {
         };
     }
 
-
-    
-    // id: 1
-    // name: 江苏星洁科技有限公司
-    // signdate: 2013-11-08
-    // expiredate: 2033-11-08
-    // principal: 陈晓峰
-    // phone: 13365203333
-    // province: 江苏省
-    // city: 泰州
-    // address: 泰州市海陵区青年南路37号402
-    // accountname: 江苏星洁科技有限公司
-    // account: 3210200091010000074188 
-    // bank: 江苏泰州农村商业银行鲍徐支行
-    // accounttype: 1
-    // accountprovince: 1
-    // accountcity: 91321291081599974H
-    // accountaddress: 1
-    // idtype: 
-    // linkman: 792282@qq.com
-    // linkmantel: 792282@qq.com
-    // appname: 星洁科技
-    // website: 
-
     
     onOpen = () => {
         this.props.index.setState({
@@ -145,10 +121,78 @@ class CustomDialog extends Component {
         this.state.newData={};
     }
 
+    // id: 1
+    // name: 江苏星洁科技有限公司
+    // signdate: 2013-11-08
+    // expiredate: 2033-11-08
+    // principal: 陈晓峰
+    // phone: 13365203333
+    // province: 江苏省
+    // city: 泰州
+    // address: 泰州市海陵区青年南路37号402
+    // accountname: 江苏星洁科技有限公司
+    // account: 3210200091010000074188 
+    // bank: 江苏泰州农村商业银行鲍徐支行
+    // accounttype: 1
+    // accountprovince: 1
+    // accountcity: 91321291081599974H
+    // accountaddress: 1
+    // idtype: 
+    // linkman: 792282@qq.com
+    // linkmantel: 792282@qq.com
+    // appname: 星洁科技
+    // website: 
+    
     addData = () => {
         this.props.index.setState({
             visible: false
         });
+
+        if(this.state.newData.name == "" || this.state.newData.name == undefined){
+            promptToast("请填写完整信息！");
+            return;
+        }
+
+        if(this.state.newData.principal == "" || this.state.newData.principal == undefined){
+            promptToast("请填写完整信息！");return;
+        }
+
+        if(this.state.newData.province == "" || this.state.newData.province == undefined){
+            promptToast("请填写完整信息！");return;
+        }
+
+        if(this.state.newData.city == "" || this.state.newData.city == undefined){
+            promptToast("请填写完整信息！");return;
+        }
+
+        if(this.state.newData.accountname == "" || this.state.newData.accountname == undefined){
+            promptToast("请填写完整信息！");return;
+        }
+
+        if(this.state.newData.account == "" || this.state.newData.account == undefined){
+            promptToast("请填写完整信息！");return;
+        }
+
+        if(this.state.newData.bank == "" || this.state.newData.bank == undefined){
+            promptToast("请填写完整信息！");return;
+        }
+
+        if(this.state.newData.accounttype == "" || this.state.newData.accounttype == undefined){
+            promptToast("请填写完整信息！");return;
+        }
+
+        if(this.state.newData.accountprovince == "" || this.state.newData.accountprovince == undefined){
+            promptToast("请填写完整信息！");return;
+        }
+
+        if(this.state.newData.accountcity == "" || this.state.newData.accountcity == undefined){
+            promptToast("请填写完整信息！");return;
+        }
+
+        if(this.state.newData.appname == "" || this.state.newData.appname == undefined){
+            promptToast("请填写完整信息！");return;
+        }
+
         this.props.index.addData(this.state.newData);
         this.state.newData={};
     }

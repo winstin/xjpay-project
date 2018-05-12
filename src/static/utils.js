@@ -299,8 +299,14 @@ var Tools = {
             if(data.responseText.indexOf('登录超时')>-1){
               promptToast("登录超时，请退出重新登录!",2000)
             }
+
+            if(data.responseText.indexOf('502 Bad Gateway')>-1){
+              promptToast("服务器异常请稍后登录!",2000)
+            }
+        }else{
+            errCallback(data.responseJSON)
         }
-        errCallback(data.responseJSON)
+       
         // promptToast('登录超时，请退出重新登录！',2000)
     });
     
@@ -350,20 +356,31 @@ var Tools = {
      
   },
 
-  NetWorkPOST: function({method,args={},mode='jsonp',type="POST",callback,errCallback}){
+  NetWorkPOST: function({method,args={},mode='jsonp',type="POST",dataType="",callback,errCallback}){
       
       const uri = webUrl+method;
       let data = {};
       data.url = uri;
-      data.data = args;
+      if(dataType == "json"){
+          data.contentType = "application/json;charset=UTF-8"
+          data.header = {
+            "Content-Type":"application/json;charset=UTF-8"
+          }
+          data.data = JSON.stringify(args);
+      }else{
+          data.data = args;
+      }
+      
       data.dataType = mode;
       data.type = type;
       data.credentials='include';
 
       data.xhrFields = {
           withCredentials: true
-      },
-      data.crossDomain = true,
+      };
+      data.crossDomain = true;
+
+
       
 
       $.ajax(data).done(function(e) {

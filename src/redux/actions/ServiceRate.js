@@ -7,32 +7,9 @@ export const SERVICEDATA = "SERVICEDATA";
 
 
 
-// import {ajax} from "./AY_API"
 import {api,ajax,NetWorkPOST,compareTime,isEmpty,successToast,errorToast} from "static/utils.js"
 
-// export function getInitData(){
-//     return (dispatch)=>{
-//         api({
-//             method:'/agentrate/list',
-//             mode:'jsonp',
-//             // args:{},
-//             callback:(rsp)=>{
-//                 
-//                 dispatch({
-//                     type:INITDATA,
-//                     dataSource: rsp
-//                 });
-//             },
-//             errCallback:(msg)=>{
-//                 // self.setState({msg:'账号密码错误！'});
-//                 // clearAllCookie();
-//                 // console.log(msg)
-//             }
-//         });
-       
-//     }
-// }
-export function getInitData(pageno=1,appId='',appName=''){
+export function getInitData(pageno=1,appId='',appName='',isloading=true){
     return (dispatch)=>{
         api({
             method:'/rates/page',
@@ -43,6 +20,7 @@ export function getInitData(pageno=1,appId='',appName=''){
                 pageIndex:pageno,
                 pageSize:20
             },
+            isloading:isloading,
             callback:(rsp)=>{
              
                 dispatch({

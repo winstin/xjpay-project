@@ -1,48 +1,23 @@
 import React,{Component,PropTypes} from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-
 import Table from 'qnui/lib/table';
 import Tab from 'qnui/lib/tab';
+
 import Button from 'qnui/lib/button';
-import Feedback from 'qnui/lib/feedback';
-import Switch from 'qnui/lib/switch';
 import Pagination from 'qnui/lib/pagination';
-import Select, {Option} from 'qnui/lib/select';
 import { Row, Col } from 'qnui/lib/grid';
 import Input from 'qnui/lib/input';
 import DatePicker, { RangePicker } from 'qnui/lib/date-picker';
 import Dimensions from 'react-dimensions';
 import * as GetManger from '../../actions/GetManger'
-
 import {FormatDateTime} from "static/utils.js"
-
-// import MySettings from './MySettings/MySettings';
-// import MyBlackList from './MyBlackList/MyBlackList';
-// import MyEvaLog from './MyEvaLog/MyEvaLog';
-
-
 import './GetManger.css'
 
-const change = function(value) {
-    console.log(value);
-};
-const onRowClick = function(record, index, e){
-        console.log(record, index, e);
-    },
-    getData = (i,j) =>{
-        let result = [];
-        for (let k =i; k < j; k++) {
-          result.push({
-              title:{
-                name: `Quotation for 1PCS Nano ${3+i}.0 controller compatible`,
-                },
-              id:100306660940+k,
-              time: 2000 + k
-            })
-        }
-        return result;
-    }
+// const change = function(value) {
+//     console.log(value);
+// };
+
     
 
 class GetMangers extends Component {
@@ -55,7 +30,6 @@ class GetMangers extends Component {
               onSelectAll: function(selected, records){ console.log('onSelectAll', selected, records) },
               selectedRowKeys: []
             },
-            dataSource: getData(0, 5),
             rateState: '所有'
         }
         this.startDate='';
@@ -80,11 +54,7 @@ class GetMangers extends Component {
         console.log('onChange', ids, records);
         this.setState({ rowSelection });
     }
-    modifyDataSource(){
-        this.setState({
-          dataSource: getData(9, 14)
-        })
-    }
+
 
     cellTime = (value, index, record, context) => {
         return FormatDateTime(value);
@@ -99,7 +69,7 @@ class GetMangers extends Component {
         const TabPane = Tab.TabPane;
         return(
             <div className="paddingTop">
-                <div className="display-flex-100">
+                <div className="display-flex-100 paddingLeft-12">
                     <div className="display-flex">
                         <span className='top-width'>总交易金额:</span>
                         <span className="text-width">{sumTotalFee}</span>
@@ -112,13 +82,14 @@ class GetMangers extends Component {
                         <span className='top-width'>总交易手续费分成:</span>
                         <span className="text-width">{sumProfit}</span>
                     </div>
-                </div>
-                <div className="marginTop"></div>
-                <div className="display-flex-100">
                     <div className="display-flex">
                         <span className='top-width'>总D0手续费:</span>
                         <span className="text-width">{sumD0fee}</span>
                     </div>
+                </div>
+                <div className="marginTop paddingLeft-12"></div>
+                <div className="display-flex-100 paddingLeft-12">
+                    
                     <div className="display-flex">
                         <span className='top-width'>总收益:</span>
                         <span className="text-width">{sumTotalProfit}</span>
@@ -126,10 +97,13 @@ class GetMangers extends Component {
                     <div className="display-flex">
                         
                     </div>
+                    <div className="display-flex">
+                        
+                    </div>
                 </div>
 
 
-                <div className="marginTop-20">
+                <div className="marginTop-20 paddingLeft-12">
                     <span className='top-sumtext-bold'>时间选择：</span>
                     <RangePicker size="large" onChange={(a, b) => {
                         this.startDate = b[0];
@@ -138,7 +112,7 @@ class GetMangers extends Component {
                     <Button type="primary" style={{width:'100px',marginLeft:'10px'}} size="large" onClick={this.onSearch.bind(this)}>搜索</Button>
                 </div>
                 <div style={{marginTop:'20px',marginBottom:'10px'}}>
-                    <Table dataSource={dataSource} onRowClick={onRowClick} fixedHeader maxBodyHeight={containerHeight}>
+                    <Table dataSource={dataSource} fixedHeader maxBodyHeight={containerHeight}>
                         <Table.Column title='交易日期' dataIndex="sumDate" />
                         <Table.Column title='交易金额' dataIndex="sumTotalFee" />
                         <Table.Column title='交易笔数' dataIndex="sumOrderNum" />
@@ -150,7 +124,6 @@ class GetMangers extends Component {
                 {/*<div style={{marginTop:'20px',float:'right'}}>
                     <Pagination pageSizeSelector={false} total={2} onChange={change}/>
                 </div>*/}
-                
             </div>
         );
     }
