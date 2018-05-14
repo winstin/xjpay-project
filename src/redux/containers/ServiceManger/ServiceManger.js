@@ -14,6 +14,7 @@ import ServiceMangerDialog from '../../components/ServiceMangerDialog/index.js'
 import DetailsDialog from '../../components/DetailsDialog/index.js'
 
 import {errorToast} from "static/utils.js"
+import Headers from '../../components/Header/index.js'
 
 /**
  * @Author   Winstin
@@ -34,8 +35,6 @@ class ServiceMangers extends Component {
         };
         this.appId="";
         this.appName="";
-
-
         this.id = "";
         this.name='';
         this.signdate='';
@@ -58,7 +57,6 @@ class ServiceMangers extends Component {
         this.appname='';
         this.website
         this.current = 1;
-
     }
 
     onSearch(appId,appName) {
@@ -166,8 +164,12 @@ class ServiceMangers extends Component {
 
 
     showDeatil(value){
+        if(window.userType!="管理员"){
+            return;
+        }
         const {getDetailData} = (this.props);
-        getDetailData(value)
+        getDetailData(value);
+
         this.setState({visible0:true})
     }
 
@@ -207,8 +209,8 @@ class ServiceMangers extends Component {
         }
     }
 
-    cellAppId = (value, index, record, context) => {
-        return <div onClick={this.showDeatil.bind(this,value)}>{value}</div>
+    cellAppName = (value, index, record, context) => {
+        return  <div onClick={this.showDeatil.bind(this,record.appId)}>{value}</div>
     }
 
     cellStatus = (value, index, record, context) => {
@@ -232,6 +234,7 @@ class ServiceMangers extends Component {
 
         return (
             <div>
+                <Headers title="服务商管理"/>
                 <div className="paddingTop paddingLeft-12">
                     <span className='top-sumtext-bold'>查询条件：</span>
                     <Input placeholder="渠道编号" size="large"  style={{width:'120px'}} onChange={(e)=>{this.appId = e}}/>
@@ -249,8 +252,8 @@ class ServiceMangers extends Component {
                 </div>
                 <div style={{marginTop:'20px'}}>
                     <Table dataSource={dataSource} fixedHeader maxBodyHeight={containerHeight} rowSelection={{onChange: this.onRowClick,mode:'single'}}>
-                        <Table.Column title="渠道编号" dataIndex="appId" width={100} cell={this.cellAppId}/>
-                        <Table.Column title="公司名称" dataIndex="name" width={100}/>
+                        <Table.Column title="渠道编号" dataIndex="appId" width={100} />
+                        <Table.Column title="公司名称" dataIndex="name" width={100} cell={this.cellAppName}/>
                         <Table.Column title="执照编号" dataIndex="accountcity" width={200}/>
                         <Table.Column title="渠道类型" dataIndex="accountprovince" cell={this.cellAccountprovince} width={100}/>
                         <Table.Column title="渠道级别" dataIndex="accountaddress" cell={this.cellAccountaddress} width={100}/>
@@ -309,7 +312,7 @@ function mapDispatchToProps(dispatch,ownProps){
 
 export default Dimensions({
   getHeight: function() { //element
-    return window.innerHeight - 250;
+    return window.innerHeight - 290;
   },
   getWidth: function() { //element
     return window.innerWidth - 24;

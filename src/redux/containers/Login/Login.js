@@ -8,7 +8,6 @@ import React,{Component,PropTypes} from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
-import {ajax} from "../../actions/AY_API"
 import * as Login from '../../actions/Login'
 import testImg from 'static/login.png';
 import bcakgroundImg from 'static/loginbackgrond.jpg';

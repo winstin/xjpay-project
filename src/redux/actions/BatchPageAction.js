@@ -51,20 +51,20 @@ export function getInitData(pageno = 1,startDate=getNowFormatDate(),endDate=getN
                                 type:INITGUNSDATA,
                                 dataSource: [],
                                 total:0,
-                                countMerchantNum:e.data.countMerchantNum,
-                                countOrderNum:e.data.countOrderNum,
-                                totalMoney:e.data.totalMoney,
-                                totalProfit:e.data.totalProfit,
+                                countMerchantNum:0,
+                                countOrderNum:0,
+                                totalMoney:0,
+                                totalProfit:0,
                             });
                         }else{
                             dispatch({
                                 type:INITGUNSDATA,
                                 dataSource: rsp.data.data,
                                 total:Number(rsp.data.total),
-                                countMerchantNum:e.data.countMerchantNum,
-                                countOrderNum:e.data.countOrderNum,
-                                totalMoney:e.data.totalMoney,
-                                totalProfit:e.data.totalProfit,
+                                countMerchantNum:rsp.data.countMerchant,
+                                countOrderNum:rsp.data.countOrderNum,
+                                totalMoney:rsp.data.totalMoney,
+                                totalProfit:rsp.data.totalProfit,
                             });
                         }
                         

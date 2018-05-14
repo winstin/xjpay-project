@@ -153,6 +153,26 @@ class CustomDialog extends Component {
             return;
         }
 
+        if(this.state.newData.idtype == "" || this.state.newData.name == undefined){
+            promptToast("请填写完整信息！");
+            return;
+        }
+
+        if(this.state.newData.linkmantel == "" || this.state.newData.name == undefined){
+            promptToast("请填写完整信息！");
+            return;
+        }
+
+        if(this.state.newData.linkman == "" || this.state.newData.name == undefined){
+            promptToast("请填写完整信息！");
+            return;
+        }
+
+        if(this.state.newData.address == "" || this.state.newData.name == undefined){
+            promptToast("请填写完整信息！");
+            return;
+        }
+
         if(this.state.newData.principal == "" || this.state.newData.principal == undefined){
             promptToast("请填写完整信息！");return;
         }
@@ -307,12 +327,14 @@ class CustomDialog extends Component {
                                 <span></span>
                                 <span style={{fontSize:'14px',marginTop:'7px'}}>签约时间：</span>
                             </div>
-                            <Input defaultValue={dataSource.signdate} htmlType='date' placeholder="签约时间" className='classWidth'   onChange={(e)=>{this.state.newData.signdate = e}} />
+                            <DatePicker defaultValue={dataSource.signdate} className="time-width" onChange={(val, str) => {this.state.newData.signdate = str}} />
+                            {/*<Input defaultValue={dataSource.signdate} htmlType='date' placeholder="签约时间" className='classWidth'   onChange={(e)=>{this.state.newData.signdate = e}} />*/}
                             <div className="flexStyle">
                                 <span></span>
                                 <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>到期时间：</span>
                             </div>
-                            <Input defaultValue={dataSource.expiredate} htmlType='date' placeholder="到期时间" className='classWidth'   onChange={(e)=>{this.state.newData.expiredate = e}} />
+                            <DatePicker defaultValue={dataSource.expiredate} className="time-width" onChange={(val, str) => {this.state.newData.expiredate = str}} />
+                            {/*<Input defaultValue={dataSource.expiredate} htmlType='date' placeholder="到期时间" className='classWidth'   onChange={(e)=>{this.state.newData.expiredate = e}} />*/}
                         </Row>
                         <Row className="marginTop">
                             <div className="flexStyle">
@@ -471,12 +493,14 @@ class CustomDialog extends Component {
                                 <span></span>
                                 <span style={{fontSize:'14px',marginTop:'7px'}}>签约时间：</span>
                             </div>
-                            <Input  placeholder="签约时间" className='classWidth'  htmlType='date'  onChange={(e)=>{this.state.newData.signdate = e}}/>
+                            <DatePicker className="time-width" onChange={(val, str) => {this.state.newData.signdate = str}} />
+                            {/*<Input  placeholder="签约时间" className='classWidth'  htmlType='date'  onChange={(e)=>{this.state.newData.signdate = e}}/>*/}
                             <div className="flexStyle">
                                 <span></span>
                                 <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>到期时间：</span>
                             </div>
-                            <Input  placeholder="到期时间" className='classWidth'  htmlType='date' onChange={(e)=>{this.state.newData.expiredate = e}}  />
+                            <DatePicker className="time-width" onChange={(val, str) => {this.state.newData.expiredate = str}} />
+                            {/*<Input  placeholder="到期时间" className='classWidth'  htmlType='date' onChange={(e)=>{this.state.newData.expiredate = e}}  />*/}
                         </Row>
                         <Row className="marginTop">
                             <div className="flexStyle">

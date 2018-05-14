@@ -20,6 +20,69 @@
     overflow: auto;
     padding: 10px 10px 10px 10px;
 }
+
+.next-breadcrumb .next-breadcrumb-item .next-breadcrumb-text{
+    font-size: 14px;
+    cursor: pointer;
+}
+.time-width .next-input-medium{
+    width: 250px
+}
+.padding-10{
+    /*padding: 10px 10px 10px 10px;*/
+}
+
+.borderSoild{
+    display: flex;
+    border-bottom: 3px solid #2E89DD;
+
+}
+/*.paddtingRight-5:hover{
+    color: #ccc
+}*/
+.nav-border{
+    padding: 5px;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    margin-right: 5px;
+    border-bottom: 0px
+}
+
+.nav-border:hover{
+    padding: 5px;
+    color: #fff;
+    cursor: pointer;
+    margin-right: 5px;
+    background: #2E89DD
+}
+
+.nav-border-active{
+    padding: 5px;
+    cursor: pointer;
+    margin-right: 5px;
+    color: #fff;
+    background: #2E89DD
+}
+
+.paddtingRight-5{
+    padding-right: 5px
+}
+
+.topicon{
+    font-size: 10px;
+    cursor: pointer;
+}
+
+.next-icon-mediums:before {
+    width: 20px;
+    font-size: 10px;
+    line-height: inherit;
+}
+
+/*.topicon:hover{
+    color: #ccc
+}*/
+
 .excep-buttons{
     position: fixed;
     z-index: 999;
@@ -51,12 +114,17 @@
     overflow: hidden;
     text-overflow: ellipsis;
     word-break: break-all;
+    text-align: center;
+}
+.next-table td{
+    border: 1px solid #ccc
 }
 .next-table th .next-table-cell-wrapper {
     padding: 8px 12px;
     overflow: hidden;
     text-overflow: ellipsis;
     word-break: break-all;
+    text-align: center;
 }
 
 .nav_link{
@@ -289,7 +357,7 @@
     border: 1px solid #eee;
     height: 100%;
     overflow: auto;
-    padding: 10px
+    /*padding: 10px*/
 }
 
 .input-width{
@@ -370,7 +438,7 @@
 
 .Dialog-height{
     height: 1000px;
-    overflow: hidden;
+    /*overflow: hidden;*/
 }
 .next-table-row{
     height: 70px
@@ -472,4 +540,18 @@ th .next-table-cell-wrapper{
 .middle-center{
     display: flex;align-items: center;justify-content: center;
 }
+.input-width-l{
+    width: 50%;
+    text-align: left;
+    /* justify-content: center; */
+    align-items: center;
+    display: flex;
+}
 
+.personal-text{
+    font-size:14px;margin-top:4px;
+}
+
+.height-20 .next-table-row{
+    height: 40px;
+}

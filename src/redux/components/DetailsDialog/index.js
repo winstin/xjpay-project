@@ -7,9 +7,23 @@ import { connect } from 'react-redux'
 import Table from 'qnui/lib/table';
 import * as Login from '../../actions/Login'
 
-const onRowClick = function (record, index, e) {
+const onRowClick = function(record, index, e) {
         console.log(record, index, e);
-    }
+    },
+    getData = (length) => {
+        let result = [];
+        for (let i = 0; i < length; i++) {
+            result.push({
+                title: {name: `Quotation for 1PCS Nano ${3 + i}.0 controller compatible`},
+                id: 100306660940 + i,
+                time: 2000 + i
+            });
+        }
+        return result;
+    },
+    render = (value, index, record) => {
+        return <a>Remove({record.id})</a>;
+    };
 
 class RoleDialog extends Component {
   constructor(props) {
@@ -70,9 +84,8 @@ class RoleDialog extends Component {
 
 
     renderPane(upData,downDetails){
-        console.log(this.props)
         if(window.userType == "管理员"){
-            return <Tab style={{height:600}}>
+            return <Tab >
                     <TabPane tab="上游信息" key="1" >
                         <Table dataSource={upData} onRowClick={onRowClick} fixedHeader maxBodyHeight={600}>
                             <Table.Column title="渠道编号" dataIndex="appId" />
@@ -84,11 +97,14 @@ class RoleDialog extends Component {
                     </TabPane>
                     <TabPane tab="下游信息" key="2">
                         <Table dataSource={downDetails} onRowClick={onRowClick} maxBodyHeight={600}>
+                            <Table.Column title="层级" dataIndex="Num" />
+                            <Table.Column title="上游渠道编号" dataIndex="up_appId" />
                             <Table.Column title="渠道编号" dataIndex="appId" />
                             <Table.Column title="渠道名称" dataIndex="appName" />
                             <Table.Column title="代付费" dataIndex="rates" cell={this.cellDee}/>
                             <Table.Column title="鉴权费" dataIndex="rates" cell={this.cellMode}/>
                             <Table.Column title="结算费率" dataIndex="rates" cell={this.cellFee}/>
+
                         </Table>
                     </TabPane>
                 </Tab>
@@ -113,6 +129,37 @@ class RoleDialog extends Component {
         if(upDetail.appId != undefined){
             upData = [upDetail];
         }
+
+        let downDetailsData = [];
+        for(let a in downDetails){
+            downDetails[a].Num = "1";
+            downDetailsData.push(downDetails[a]);
+            let downDetails_a = downDetails[a].downDetails;
+            if(downDetails_a.length>=1){
+                for(let b in downDetails_a){
+                    downDetails_a[b].Num = "2";
+                    downDetails_a[b].up_appId = downDetails[a].appId;
+                    downDetailsData.push(downDetails_a[b]);
+                    let downDetails_b = downDetails_a[b].downDetails;
+                    if(downDetails_b.length>=1){
+                        for(let c in downDetails_b){
+                            downDetails_b[c].Num = "3";
+                            downDetails_b[c].up_appId = downDetails_a[b].appId;
+                            downDetailsData.push(downDetails_b[c]);
+                            let downDetails_c = downDetails_b[c].downDetails;
+                            if(downDetails_c.length>=1){
+                                for(let d in downDetails_c){
+                                    downDetails_c[d].Num = "4";
+                                    downDetails_c[d].up_appId = downDetails_b[c].appId;
+                                    downDetailsData.push(downDetails_c[d]);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        console.log(downDetailsData)
         
         return (
             <Dialog visible={visible}
@@ -124,7 +171,7 @@ class RoleDialog extends Component {
                     className="Dialog-height"
                     footer={false}
                     >
-                {this.renderPane(upData,downDetails)}
+                {this.renderPane(upData,downDetailsData)}
             </Dialog>
         );
     }

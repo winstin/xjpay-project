@@ -26,6 +26,8 @@ export function Login(username="",password="",callback){
                 localStorage.setItem("appId",username);
                 localStorage.setItem("userType",rsp.data.roles[0].roleName);
                 localStorage.setItem("userInfo",JSON.stringify(rsp.data.userDetail));
+
+                localStorage.setItem("History",JSON.stringify(["首页"]));
                 /*ajax({
                     method:'/users/view',
                     mode:'json',

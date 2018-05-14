@@ -15,6 +15,7 @@ import Menu from 'qnui/lib/menu';
 import Config from 'static/config.js'
 import Dropdown from 'qnui/lib/dropdown';
 import {getNowFormatDate} from "static/utils.js"
+import Headers from '../../components/Header/index.js'
 
 
 class BatchPage extends Component {
@@ -128,6 +129,7 @@ class BatchPage extends Component {
         })
         return (
             <div>
+                <Headers title="交易管理"/>
                 <Row className="paddingTop">
                     <div className="display-flex">
                         <span className='top-sumtext-bold'>总商户数:</span>

@@ -17,6 +17,7 @@ import Dropdown from 'qnui/lib/dropdown';
 import Menu from 'qnui/lib/menu';
 import {promptToast} from "static/utils.js"
 
+import Headers from '../../components/Header/index.js'
 
 import './ServiceRate.css';
 
@@ -192,12 +193,39 @@ class ServiceRates extends Component {
             return;
         }
 
-        this.setState({
-            visible: false
-        });
-
-
         const {getInitData,addData} = this.props;
+        let userData = localStorage.getItem("userFee0");
+        if(userData!=undefined || userData!=null){
+            userData = JSON.parse(userData);
+            let falg = "";
+            for(let i in userData){
+                if(userData[i].upstream == this.state.newData.upstream){
+                    falg = i;
+                }
+            }
+            if(falg == ""){
+                promptToast("不存在该上游渠道！")
+                return;
+            }
+            if(Number(this.state.newData.fee0)<Number(userData[falg].fee0)){
+                promptToast("结算费率过低！")
+                return;
+            }
+
+            if(Number(this.state.newData.d0fee)<Number(userData[falg].d0fee)){
+                promptToast("代付费过低！")
+                return;
+            }
+
+            if(Number(this.state.newData.mode)<Number(userData[falg].mode)){
+                promptToast("鉴权费过低！")
+                return;
+            }
+        }
+        this.setState({
+            visible: false,
+            autoName:""
+        });
         addData(this.state.newData);
         this.reLoad();
 
@@ -206,10 +234,39 @@ class ServiceRates extends Component {
 
 
     updateRates = () =>{
-        this.setState({
-            visible0: false
-        });
         const {updateData} = this.props;
+        let userData = localStorage.getItem("userFee0");
+        if(userData!=undefined || userData!=null){
+            userData = JSON.parse(userData);
+            let falg = "";
+            for(let i in userData){
+                if(userData[i].upstream == this.state.newData.upstream){
+                    falg = i;
+                }
+            }
+            if(falg == ""){
+                promptToast("不存在该上游渠道！")
+                return;
+            }
+            if(Number(this.state.newData.fee0)<Number(userData[falg].fee0)){
+                promptToast("结算费率过低！")
+                return;
+            }
+
+            if(Number(this.state.newData.d0fee)<Number(userData[falg].d0fee)){
+                promptToast("代付费过低！")
+                return;
+            }
+
+            if(Number(this.state.newData.mode)<Number(userData[falg].mode)){
+                promptToast("鉴权费过低！")
+                return;
+            }
+        }
+        this.setState({
+            visible0: false,
+            autoName:""
+        });
         updateData(this.oldData);
         this.reLoad();
     }
@@ -280,6 +337,16 @@ class ServiceRates extends Component {
             return 'T1';
         }
     }
+
+    cellMode = (value, index, record, context) => {
+        return (value/100).toFixed(2)+"分";
+    }
+
+    cellFee = (value, index, record, context) => {
+        return value;
+    }
+
+
     render() {
         const {dataSource,isLoad,total,containerHeight} = this.props;
 
@@ -368,6 +435,7 @@ class ServiceRates extends Component {
 
         return (
             <div>
+                <Headers title="服务商费率"/>
                 <div className="paddingTop paddingLeft-12">
                     <span className='top-sumtext-bold'>渠道编号：</span>
                     <Input placeholder="渠道编号" size="large"   style={{width:'120px'}} onChange={this.onchange.bind(this,'id')}/>
@@ -395,8 +463,8 @@ class ServiceRates extends Component {
                         <Table.Column title="上游渠道" dataIndex="upstream" cell={this.cellUpstream}/>
                         <Table.Column title="交易类型" dataIndex="pointType" cell={this.cellPointType}/>
                         <Table.Column title="结算类型" dataIndex="type" cell={this.cellType}/>
-                        <Table.Column title="鉴权费" dataIndex="mode"/>
-                        <Table.Column title="结算费率" dataIndex="fee0"/>
+                        <Table.Column title="鉴权费" dataIndex="mode" cell={this.cellMode}/>
+                        <Table.Column title="结算费率(‰)" dataIndex="fee0" cell={this.cellFee}/>
                         <Table.Column title="代付费" dataIndex="d0fee"/>
                     </Table>
                 </div>
@@ -625,7 +693,7 @@ function mapDispatchToProps(dispatch,ownProps){
 
 export default Dimensions({
   getHeight: function() { //element
-    return window.innerHeight - 250;
+    return window.innerHeight - 290;
   },
   getWidth: function() { //element
     return window.innerWidth - 24;

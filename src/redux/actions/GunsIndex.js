@@ -4,7 +4,7 @@
 export const INITGUNSDATA = "INITGUNSDATA";
 export const CHOOSEDATA = "CHOOSEDATA";
 
-import {api,isEmpty,successToast,errorToast,getNowFormatDate,NetWorkPOST} from "static/utils.js"
+import {api,isEmpty,successToast,errorToast,getNowFormatDate,NetWorkPOST,ajax} from "static/utils.js"
 
 /**
  * @Author   Winstin
@@ -84,16 +84,27 @@ export function emptyData(){
  * @param    {Number}   pageno [description]
  * @return   {[type]}          [description]
  */
-export function lockChants(mchId=''){
+export function lockChants(mchId='',status=0){
+    let sta = "";
+    if(status== "NORMAL"){
+        sta = 1;
+    }else{
+        sta = 0;
+    }
     return (dispatch)=>{
-        api({
-            method:'/merchants/lock',
-            mode:'jsonp',
+        ajax({
+            method:'/merchants/status',
+            mode:'json',
             args:{
-                mchId:mchId
+                url:"/"+mchId+"/"+sta
             },
             callback:(rsp)=>{
-                successToast('操作成功')
+                console.log(rsp);
+                if(sta == 0){
+                    successToast('启用成功')
+                }else{
+                    successToast('冻结成功')
+                }
             },
             errCallback:(msg)=>{
                 errorToast('操作失败')

@@ -16,8 +16,9 @@ import Dimensions from 'react-dimensions';
 import TimePicker from 'qnui/lib/time-picker';
 
 import {FormatDateTime,promptToast,getNowFormatDate} from "static/utils.js";
-
 import Dialog from 'qnui/lib/dialog';
+
+import Headers from '../../components/Header/index.js'
 
 
 const onRowClick = function(record, index, e) {
@@ -150,7 +151,7 @@ class GunsIndex extends Component {
             promptToast("请选择冻结商户！");
             return;
         }
-        lockChants(this.lockId);
+        lockChants(this.lockId,this.oldData.status);
         this.reLoad();
 
     }
@@ -195,54 +196,58 @@ class GunsIndex extends Component {
 
         return (
             <div>
-                <div className="paddingTop paddingLeft-12">
-                    <span className='top-sumtext-bold'>查询条件：</span>
-                    <Input placeholder="商户名称" size="large"   style={{width:'160px'}}  onChange={(e)=>{this.merchantName = e}}/>
-                    <Input placeholder="商户编号" size="large"  style={{width:'160px',marginLeft:'12px'}} onChange={(e)=>{this.mchId = e}}/>
-                    {/*<span style={{fontSize:'14px',marginTop:'7px',width:'70px',marginLeft:'12px'}}>时间选择：</span>
-                    <RangePicker  onChange={(a, b) => {
-                        // console.log(b[0]);
-                        this.startDate = b[0];
-                        this.endDate = b[1];
-                    }} />
-                    <Button type="primary" size="large" style={{width:'100px',marginLeft:'10px'}}  onClick={this.onSearch.bind(this)}>搜索</Button>
-                    <Button type="secondary" size="large" style={{width:'100px',marginLeft:'10px'}} onClick={this.onLock.bind(this)}>冻结</Button>*/}
-                    
-                </div>
-                <div className='marginTop-20 paddingLeft-12'>
-                    <span className='top-sumtext-bold'>时间选择：</span>
-                    <RangePicker  size="large" onChange={(a, b) => {
-                        // console.log(b[0]);
-                        this.startDate = b[0];
-                        this.endDate = b[1];
-                    }} />
-                </div>
-                <div className='marginTop-20 paddingLeft-12'>
-                    <Button type="primary" size="large" style={{width:'100px'}}  onClick={this.onSearch.bind(this)}>搜索</Button>
-                    <Button type="normal" size="large" style={{width:'100px',marginLeft:'10px'}} onClick={this.openDaiog.bind(this)}>修改</Button>
-                    <Button type="secondary" size="large" style={{width:'100px',marginLeft:'10px'}} onClick={this.onLock.bind(this)}>冻结</Button>
-                    <Button type="normal" size="large" style={{width:'100px',marginLeft:'10px'}} onClick={this.reSetData.bind(this)}>重置</Button>
-                </div>
-                <div style={{marginTop:'20px'}}>
-                    <Table dataSource={dataSources} fixedHeader maxBodyHeight={containerHeight} rowSelection={{onChange: this.onRowClick,mode:'single'}}>
-                        <Table.Column title="商户号" dataIndex="mchId"/>
-                        <Table.Column title="商户名称" dataIndex="name"/>
-                        <Table.Column title="渠道编号" dataIndex="channelAgent.appId"/>
-                        <Table.Column title="渠道名称" dataIndex="agentName" />
-                        <Table.Column title="建档时间" dataIndex="createTime" cell={this.cellTime} width="90"/>
-                        <Table.Column title="身份证号" dataIndex="idCard"/>
-                        <Table.Column title="结算卡号" dataIndex="cardNumber"/>
-                        <Table.Column title="商户类型" dataIndex="mchType" cell={this.cellType} width="90"/>
-                        <Table.Column title="电话" dataIndex="tel" width="120"/>
-                        <Table.Column title="费率（‰）" dataIndex="fee0" width="95"/>
-                        <Table.Column title="代付费" dataIndex="d0fee" cell={this.cellRender} width="70"/>
-                        <Table.Column title="状态" dataIndex="status" cell={this.cellStatus} width={100}/>
-                    </Table>
-                </div>
-                <div style={{marginTop:'20px',float:'right'}}>
-                    <Pagination current={this.state.current} size="large" total={total} pageSize={20} onChange={this.changePageno.bind(this)} />
-                </div>
+                <Headers title="商户管理"/>
+                <div className="padding-10">
+                    <div className="paddingTop paddingLeft-12">
+                        <span className='top-sumtext-bold'>查询条件：</span>
+                        <Input placeholder="商户名称" size="large"   style={{width:'160px'}}  onChange={(e)=>{this.merchantName = e}}/>
+                        <Input placeholder="商户编号" size="large"  style={{width:'160px',marginLeft:'12px'}} onChange={(e)=>{this.mchId = e}}/>
+                        {/*<span style={{fontSize:'14px',marginTop:'7px',width:'70px',marginLeft:'12px'}}>时间选择：</span>
+                        <RangePicker  onChange={(a, b) => {
+                            // console.log(b[0]);
+                            this.startDate = b[0];
+                            this.endDate = b[1];
+                        }} />
+                        <Button type="primary" size="large" style={{width:'100px',marginLeft:'10px'}}  onClick={this.onSearch.bind(this)}>搜索</Button>
+                        <Button type="secondary" size="large" style={{width:'100px',marginLeft:'10px'}} onClick={this.onLock.bind(this)}>冻结</Button>*/}
+                        
+                    </div>
+                    <div className='marginTop-20 paddingLeft-12'>
+                        <span className='top-sumtext-bold'>时间选择：</span>
+                        <RangePicker  size="large" onChange={(a, b) => {
+                            // console.log(b[0]);
+                            this.startDate = b[0];
+                            this.endDate = b[1];
+                        }} />
+                    </div>
+                    <div className='marginTop-20 paddingLeft-12'>
+                        <Button type="primary" size="large" style={{width:'100px'}}  onClick={this.onSearch.bind(this)}>搜索</Button>
+                        <Button type="normal" size="large" style={{width:'100px',marginLeft:'10px'}} onClick={this.openDaiog.bind(this)}>修改</Button>
 
+                        <Button type="secondary" size="large" style={{width:'120px',marginLeft:'10px'}} onClick={this.onLock.bind(this)}>冻结/启用</Button>
+
+                        <Button type="normal" size="large" style={{width:'100px',marginLeft:'10px'}} onClick={this.reSetData.bind(this)}>重置</Button>
+                    </div>
+                    <div style={{marginTop:'20px'}}>
+                        <Table dataSource={dataSources} fixedHeader maxBodyHeight={containerHeight} rowSelection={{onChange: this.onRowClick,mode:'single'}}>
+                            <Table.Column title="商户号" dataIndex="mchId"/>
+                            <Table.Column title="商户名称" dataIndex="name"/>
+                            <Table.Column title="渠道编号" dataIndex="channelAgent.appId"/>
+                            <Table.Column title="渠道名称" dataIndex="agentName" />
+                            <Table.Column title="建档时间" dataIndex="createTime" cell={this.cellTime} width="90"/>
+                            <Table.Column title="身份证号" dataIndex="idCard"/>
+                            <Table.Column title="结算卡号" dataIndex="cardNumber"/>
+                            <Table.Column title="商户类型" dataIndex="mchType" cell={this.cellType} width="90"/>
+                            <Table.Column title="电话" dataIndex="tel" width="120"/>
+                            <Table.Column title="费率（‰）" dataIndex="fee0" width="95"/>
+                            <Table.Column title="代付费" dataIndex="d0fee" cell={this.cellRender} width="70"/>
+                            <Table.Column title="状态" dataIndex="status" cell={this.cellStatus} width={100}/>
+                        </Table>
+                    </div>
+                    <div style={{marginTop:'20px',float:'right'}}>
+                        <Pagination current={this.state.current} size="large" total={total} pageSize={20} onChange={this.changePageno.bind(this)} />
+                    </div>
+                </div>
 
                 <Dialog visible={this.state.visible}
                         onOk={this.changeInfo}
@@ -295,7 +300,7 @@ function mapDispatchToProps(dispatch,ownProps){
 
 export default Dimensions({
   getHeight: function() { //element
-    return window.innerHeight - 290;
+    return window.innerHeight - 330;
   },
   getWidth: function() { //element
     return window.innerWidth - 24;

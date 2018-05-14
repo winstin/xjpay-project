@@ -8,7 +8,12 @@ const initialState = {
     'allData':[],
     'dataSource':[],
     'isLoad':true,
-    'total':0
+    'total':0,
+    countMerchantNum:0,
+    countOrderNum:0,
+    totalMoney:'',
+    totalProfit:'',
+    sum_agent_profit:0
 }
 export default function PrintDialog(state = initialState, action){
     switch (action.type) {
@@ -17,6 +22,11 @@ export default function PrintDialog(state = initialState, action){
                 return Object.assign({},state,{
                     dataSource:action.dataSource,
                     total:action.total,
+                    countMerchantNum:action.countMerchantNum,
+                    countOrderNum:action.countOrderNum,
+                    totalMoney:action.totalMoney,
+                    totalProfit:action.totalProfit,
+                    sum_agent_profit:action.sum_agent_profit,
                 });
             break;
 

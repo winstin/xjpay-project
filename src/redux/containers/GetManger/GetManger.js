@@ -13,6 +13,7 @@ import Dimensions from 'react-dimensions';
 import * as GetManger from '../../actions/GetManger'
 import {FormatDateTime} from "static/utils.js"
 import './GetManger.css'
+import Headers from '../../components/Header/index.js'
 
 // const change = function(value) {
 //     console.log(value);
@@ -68,8 +69,9 @@ class GetMangers extends Component {
         const {add, value, switchState ,changeSwitchState,containerHeight,dataSource,sumTotalFee,sumOrderNum,sumD0fee,sumProfit,sumTotalProfit} = this.props;
         const TabPane = Tab.TabPane;
         return(
-            <div className="paddingTop">
-                <div className="display-flex-100 paddingLeft-12">
+            <div >
+                <Headers title="收益管理"/>
+                <div className="display-flex-100 paddingLeft-12 paddingTop">
                     <div className="display-flex">
                         <span className='top-width'>总交易金额:</span>
                         <span className="text-width">{sumTotalFee}</span>

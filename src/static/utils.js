@@ -386,9 +386,8 @@ var Tools = {
       $.ajax(data).done(function(e) {
           callback(e);
       }).fail(function(data,status,xhr) {
-          console.error(data);
-          console.error(status);
-          console.error(xhr);
+          console.error(data.responseJSON);
+          errCallback(data.responseJSON)
       });
 
      

@@ -34,13 +34,22 @@ export function getInitData(pageno = 1,startDate=getNowFormatDate(),endDate=getN
                     dispatch({
                         type:INITGUNSDATA,
                         dataSource: [],
-                        total:0
+                        total:0,
+                        countMerchantNum:0,
+                        countOrderNum:0,
+                        totalMoney:0,
+                        totalProfit:0,
                     });
                 }else{
                     dispatch({
                         type:INITGUNSDATA,
                         dataSource: rsp.data.data,
-                        total:Number(rsp.data.total)
+                        total:Number(rsp.data.total),
+                        countMerchantNum:rsp.data.sum.sum_d0fee,
+                        countOrderNum:rsp.data.sum.count_order_num,
+                        sum_agent_profit:rsp.data.sum.sum_agent_profit,
+                        totalMoney:rsp.data.sum.sum_total_fee,
+                        totalProfit:rsp.data.sum.sum_total_profit,
                     });
                 }
                 

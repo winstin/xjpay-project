@@ -14,6 +14,7 @@ import Input from 'qnui/lib/input';
 import Pagination from 'qnui/lib/pagination';
 import Dimensions from 'react-dimensions';
 import {FormatDateTime,getNowFormatDate} from "static/utils.js"
+import Headers from '../../components/Header/index.js'
 
 const onRowClick = function(record, index, e) {
         console.log(record, index, e);
@@ -65,36 +66,36 @@ class GunsIndex extends Component {
   }
 
   render() {
-        const {containerHeight,dataSource,total} = (this.props);
+        const {containerHeight,dataSource,total,sum_agent_profit,countMerchantNum,countOrderNum,totalMoney,totalProfit} = (this.props);
         return (
-            <div className='paddingTop'>
-                <div className="display-flex-100 paddingLeft-12">
+            <div >
+                <Headers title="渠道分润统计"/>
+                <div className="display-flex-100 paddingLeft-12 paddingTop">
                     <div className="display-flex">
                         <span className='top-width'>总交易金额:</span>
-                        <span className="text-width"></span>
+                        <span className="text-width">{totalMoney}</span>
                     </div>
                     <div className="display-flex">
                         <span className='top-width'>总交易笔数:</span>
-                        <span className="text-width"></span>
+                        <span className="text-width">{countOrderNum}</span>
                     </div>
                     <div className="display-flex">
                         <span className='top-width'>总交易手续费分成:</span>
-                        <span className="text-width"></span>
+                        <span className="text-width">{totalProfit}</span>
                     </div>
                     <div className="display-flex">
                         <span className='top-width'>总D0手续费:</span>
-                        <span className="text-width"></span>
+                        <span className="text-width">{countMerchantNum}</span>
                     </div>
                 </div>
                 <div className='paddingTop paddingLeft-12'></div>
                 <div className="display-flex-100 paddingLeft-12">
                     <div className="display-flex">
                         <span className='top-width'>总应结分润:</span>
-                        <span className="text-width"></span>
+                        <span className="text-width">{sum_agent_profit}</span>
                     </div>
                     <div className="display-flex">
-                        <span className='top-width'>总收益:</span>
-                        <span className="text-width"></span>
+                       
                     </div>
                     <div className="display-flex">
                        
@@ -149,7 +150,12 @@ class GunsIndex extends Component {
 function mapStateToProps(state, ownProps){
     return {
         dataSource:state.ChannelStatistics.dataSource || [],
-        total:state.ChannelStatistics.total
+        total:state.ChannelStatistics.total,
+        countMerchantNum:state.ChannelStatistics.countMerchantNum,
+        countOrderNum:state.ChannelStatistics.countOrderNum,
+        totalMoney:state.ChannelStatistics.totalMoney,
+        totalProfit:state.ChannelStatistics.totalProfit,
+        sum_agent_profit:state.ChannelStatistics.sum_agent_profit
     }
 }
 
@@ -160,7 +166,7 @@ function mapDispatchToProps(dispatch,ownProps){
 
 export default Dimensions({
   getHeight: function() { //element
-    return window.innerHeight - 330;
+    return window.innerHeight - 370;
   },
   getWidth: function() { //element
     return window.innerWidth - 24;

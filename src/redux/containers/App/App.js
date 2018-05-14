@@ -152,7 +152,7 @@ class App extends Component {
     checkInfo(value){
         switch(value){
             case"商户管理":
-              return {icon:'account',link:'/dist/'}
+              return {icon:'account',link:'/dist/GunsIndex'}
               break;
             case"交易流水查询":
               return {icon:'store',link:'/dist/BatchPage'}

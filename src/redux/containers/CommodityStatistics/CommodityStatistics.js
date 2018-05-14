@@ -11,6 +11,7 @@ import Input from 'qnui/lib/input';
 import Pagination from 'qnui/lib/pagination';
 import Dimensions from 'react-dimensions';
 import {getNowFormatDate} from "static/utils.js"
+import Headers from '../../components/Header/index.js'
 
 
 
@@ -59,8 +60,9 @@ class GunsIndex extends Component {
     render() {
         const {containerHeight,dataSource,total} = (this.props);
         return (
-            <div className="paddingTop">
-                <div className="display-flex-100 paddingLeft-12">
+            <div >
+                <Headers title="商户手续费统计"/>
+                {/*<div className="display-flex-100 paddingLeft-12 paddingTop">
                     <div className="display-flex">
                         <span className='top-width'>总交易金额:</span>
                         <span className="text-width"></span>
@@ -92,7 +94,7 @@ class GunsIndex extends Component {
                     </div>
                     <div className="display-flex">
                     </div>
-                </div>
+                </div>*/}
                 <div className="marginTop-20 paddingLeft-12">
                     <span className='top-sumtext-bold'>查询条件：</span>
                     <Input placeholder="商户名称" size="large"   style={{width:'120px'}} onChange={(e)=>{this.merchantName = e}}/>
@@ -144,7 +146,7 @@ function mapDispatchToProps(dispatch,ownProps){
 
 export default Dimensions({
   getHeight: function() { //element
-    return window.innerHeight - 330;
+    return window.innerHeight - 290;
   },
   getWidth: function() { //element
     return window.innerWidth - 24;

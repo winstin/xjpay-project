@@ -94,7 +94,12 @@ export function addData(data = {}){
                 successToast('添加成功！')
             },
             errCallback:(msg)=>{
-                errorToast('添加失败！')
+                if(msg.message){
+                    errorToast(msg.message)
+                }else{
+                    errorToast('添加失败！')
+                }
+                
             }
         });
        
@@ -112,7 +117,11 @@ export function updateData(oldData){
                 successToast('修改成功！')
             },
             errCallback:(msg)=>{
-                errorToast('修改失败！')
+                if(msg.message){
+                    errorToast(msg.message);
+                }else{
+                    errorToast('添加失败！');
+                }
             }
         });
        
