@@ -85,8 +85,8 @@ class RoleDialog extends Component {
 
     renderPane(upData,downDetails){
         if(window.userType == "管理员"){
-            return <Tab >
-                    <TabPane tab="上游信息" key="1" >
+            return <Tab style={{height:600,overflow: 'auto'}}>
+                    {/*<TabPane tab="上游信息" key="1" >
                         <Table dataSource={upData} onRowClick={onRowClick} fixedHeader maxBodyHeight={600}>
                             <Table.Column title="渠道编号" dataIndex="appId" />
                             <Table.Column title="渠道名称" dataIndex="appName" />
@@ -94,9 +94,9 @@ class RoleDialog extends Component {
                             <Table.Column title="鉴权费" dataIndex="rates" cell={this.cellMode}/>
                             <Table.Column title="结算费率" dataIndex="rates" cell={this.cellFee}/>
                         </Table>
-                    </TabPane>
+                    </TabPane>*/}
                     <TabPane tab="下游信息" key="2">
-                        <Table dataSource={downDetails} onRowClick={onRowClick} maxBodyHeight={600}>
+                        <Table dataSource={downDetails} onRowClick={onRowClick} >
                             <Table.Column title="层级" dataIndex="Num" />
                             <Table.Column title="上游渠道编号" dataIndex="up_appId" />
                             <Table.Column title="渠道编号" dataIndex="appId" />

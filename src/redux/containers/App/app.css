@@ -555,3 +555,8 @@ th .next-table-cell-wrapper{
 .height-20 .next-table-row{
     height: 40px;
 }
+
+.maxHeight .next-tabs-medium .next-tabs-content {
+    height: 500px;
+    overflow: auto;
+}
