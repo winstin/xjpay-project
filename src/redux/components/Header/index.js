@@ -19,7 +19,7 @@ class RoleDialog extends Component {
     }
 
     componentWillMount(){
-        //去掉默认的contextmenu事件，否则会和右键事件同时出现。
+        
        
         
         let menus = localStorage.getItem("History");
@@ -41,9 +41,10 @@ class RoleDialog extends Component {
 
 
     close(value,e){
-      /*document.oncontextmenu = function(e){
-         e.preventDefault();
-      };*/
+      //去掉默认的contextmenu事件，否则会和右键事件同时出现。
+      // document.oncontextmenu = function(e){
+      //     e.preventDefault();
+      // };
       if(e.button ==2){
            // alert("你点了右键");
            this.delete(value);
@@ -121,7 +122,7 @@ class RoleDialog extends Component {
         let url = this.checkInfo(value);
 
         if(url.link == window.location.pathname){
-            if(newData.length>=1){
+            if(newData.length>=2){
                 let url = this.checkInfo(newData[newData.length-1]);
                 window.location.href = url.link
             }else{

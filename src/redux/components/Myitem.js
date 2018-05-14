@@ -5,8 +5,10 @@ import { Link } from 'react-router'
 import { select,active } from '../actions/Myitem'
 import _ from 'lodash';
 
-
-
+let backcolor = '#3189DC';
+  
+// let backcolor = '#404040';
+let hovercolor = '#4EA2E7';
 class Myitem extends Component {
     constructor(props) {
         super(props);
@@ -16,9 +18,6 @@ class Myitem extends Component {
         let myItem = kind == 'navigation_min'?this.showItem_min():this.showItem_max();
         return myItem;
     }
-
-
-
 
     showItem_min(){
         const { kind, icon, text, link, itemId, router, selectType, activeId, activeType, itemMouseOver, itemActive, itemUnline } = this.props;
@@ -54,7 +53,7 @@ class Myitem extends Component {
         const { kind, icon, text, link, itemId, router, selectType, activeId, activeType, itemMouseOver, itemActive, itemUnline } = this.props;
         //是否处于激活状态
         let active = selectType ? 'nav_link_active next-navigation-item-content-inner ' : 'nav_link next-navigation-item-content-inner';
-        let color = selectType ? '#4EA2E7' : '#3189DC';
+        let color = selectType ? hovercolor : backcolor;
         //是否包含2级目录
         let ishavachildren = false;
         let sub_activeType = false;
@@ -78,12 +77,12 @@ class Myitem extends Component {
         let copy_actvieType = activeId == itemId ? activeType : false;
         //父级导航栏
         let activeType_div = (sub_activeType || selectType)?(
-            <div style={{backgroundColor:'#3189DC'}} className="nav_link_unlink next-navigation-item-content-inner" >
+            <div style={{backgroundColor:backcolor}} className="nav_link_unlink next-navigation-item-content-inner" >
                 {sub_img}
                 <span style={{color:'#ffffff'}} className="next-navigation-item-text">{text}</span>
                 <i style={{color:'#ffffff'}} className="next-icon next-icon-arrow-down next-icon-medium next-navigation-item-icon next-navigation-item-leaf-icon"></i>
             </div>):(
-                <div style={{backgroundColor:'#3189DC'}} onClick={()=>{itemActive(copy_actvieType)}}  className={active} >
+                <div style={{backgroundColor:backcolor}} onClick={()=>{itemActive(copy_actvieType)}}  className={active} >
                     {sub_img}
                     <span  style={{color:'#ffffff'}} className="next-navigation-item-text">{text}</span>
                     <i style={{color:'#ffffff'}} className="next-icon next-icon-arrow-down next-icon-medium next-navigation-item-icon next-navigation-item-leaf-icon"></i>
@@ -94,7 +93,7 @@ class Myitem extends Component {
                 {sub_img}
                 <span style={{color:'#ffffff'}} className="next-navigation-item-text"> {text}</span>
             </div>):(
-                <Link to={link} onClick={itemMouseOver} className={active} style={{backgroundColor:'#3189DC'}}>
+                <Link to={link} onClick={itemMouseOver} className={active} style={{backgroundColor:backcolor}}>
                     {sub_img}
                     <span style={{color:'#ffffff'}} className="next-navigation-item-text"> {text}</span>
                 </Link>);
@@ -116,7 +115,7 @@ class Myitem extends Component {
         let next_navigation_item_open = copy_actvieType || sub_activeType || selectType? 'next-navigation-item-opened':'';
         // console.log(itemId+'当前活跃状态：'+copy_actvieType+'   是否子目录:'+sub_activeType +' 是否含有子目录：'+ishavachildren)
         return (
-            <li style={{backgroundColor:'#3189DC'}} className={`next-navigation-item ${next_navigation_item_open}`} onClick={this.props.onClick} >
+            <li style={{backgroundColor:backcolor}} className={`next-navigation-item ${next_navigation_item_open}`} onClick={this.props.onClick} >
                 <div className="next-navigation-item-content">
                         {span_sub_icon(ishavachildren)}
                 </div>

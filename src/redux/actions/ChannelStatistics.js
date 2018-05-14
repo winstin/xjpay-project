@@ -5,7 +5,7 @@ export const INITGUNSDATA = "INITGUNSDATA";
 export const CHOOSEDATA = "CHOOSEDATA";
 export const GETDATA = "GETDATA";
 
-import {api,isEmpty,getNowFormatDate} from "static/utils.js"
+import {api,isEmpty,getNowFormatDate,buildStr} from "static/utils.js"
 
 /**
  * @Author   Winstin
@@ -73,6 +73,41 @@ export function emptyData(){
     }
 }
 
+
+/**
+ * @Author   Winstin
+ * @DateTime 2018-05-14
+ * @param    string
+ * @license  导出渠道分润
+ * @version  [version]
+ * @param    {Number}   pageno       [description]
+ * @param    {String}   startDate    [description]
+ * @param    {String}   endDate      [description]
+ * @param    {String}   orderNo      [description]
+ * @param    {String}   agentOrderNo [description]
+ * @param    {String}   agentName    [description]
+ * @param    {String}   filterAppId  [description]
+ * @param    {String}   merchantName [description]
+ * @param    {String}   mchId        [description]
+ * @param    {String}   orderState   [description]
+ * @param    {String}   result       [description]
+ * @return   {[type]}                [description]
+ */
+export function exportData(pageno = 1,startDate='',endDate='',agentName='',filterAppId=''){
+    return (dispatch)=>{ 
+        let params = {
+                startDate: startDate,
+                endDate: endDate,
+                agentName: agentName,
+                filterAppId: filterAppId,
+            };
+        params = buildStr(params);
+        if(params!=''){
+            params = '?'+params;
+        }    
+        document.location.href = "http://localhost:3000/profits/agent/export" + params;
+    }
+}
 
 export function getData(pageno){
     return (dispatch)=>{

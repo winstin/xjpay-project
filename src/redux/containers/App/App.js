@@ -22,7 +22,9 @@ import * as Login from '../../actions/Login'
 
 import Menu from 'qnui/lib/menu';  
 
+let backcolor = '#3189DC';
 
+// let backcolor = '#404040';
 function clearAllCookie() {  
     var keys = document.cookie.match(/[^ =;]+(?=\=)/g);  
     if(keys) {  
@@ -262,8 +264,6 @@ class App extends Component {
                       <span className="index-title">星洁科技</span>
                     </div>
                   </li>
-                  
-
                   <li className="navigation-toolbar" style={{marginRight:"15%"}}>
                     <ul>
                       <li>
@@ -337,14 +337,14 @@ class App extends Component {
         }else{
           return(
               <div id="container">
-                  <div id="navigation" style={{backgroundColor:"#3189DC"}} className="navigation_max">
+                  <div id="navigation" style={{backgroundColor:backcolor}} className="navigation_max">
 
                       <Navigation
-                      style={{height:'100%',borderWidth:1, borderStyle:"solid ", borderColor:"#3189DC"}}
+                      style={{height:'100%',borderWidth:1, borderStyle:"solid ", borderColor:backcolor}}
                       type="tree"
                       activeDirection="right"
                       >
-                          <div className="qn-navigation-vertical" style={{background:"#3189DC"}}>
+                          <div className="qn-navigation-vertical" style={{background:backcolor}}>
                             <Icon type ="account" />
                             <span>{appname}</span>
                           </div>

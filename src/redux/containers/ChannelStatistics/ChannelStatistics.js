@@ -37,6 +37,11 @@ class GunsIndex extends Component {
       getInitData(1,this.startDate,this.endDate,this.agentName,this.filterAppId);
   }
 
+  onExport(){
+      const {exportData} = (this.props);
+      exportData(this.startDate,this.endDate,this.agentName,this.filterAppId); 
+  }
+
 
   componentWillMount() {
       // console.log('Component WILL MOUNT!');
@@ -136,6 +141,7 @@ class GunsIndex extends Component {
                         this.endDate = b[1];
                     }}/>
                     <Button type="primary" style={{width:'100px',marginLeft:'10px'}} size="large" onClick={this.onSearch.bind(this)}>搜索</Button>
+                    <Button type="secondary" style={{width:'80px',marginLeft:'10px'}} size="large" onClick={this.onExport.bind(this)}>导出</Button>
                     <Button type="normal" size="large" style={{width:'100px',marginLeft:'10px'}} onClick={this.reSetData.bind(this)}>重置</Button>
                 </Row>
 
