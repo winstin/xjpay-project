@@ -107,7 +107,7 @@ export function getDetailData(appId,pageno=1){
  * @param    {[type]}   appId [description]
  * @return   {[type]}         [description]
  */
-export function freezeData(appId,status){
+export function freezeData(appId,status,callback){
     let sta = "";
     if(status == 0){
         sta = 1;
@@ -122,7 +122,8 @@ export function freezeData(appId,status){
                 url:"/"+appId+"/"+sta,
             },
             callback:(rsp)=>{
-                successToast(rsp.message)
+                successToast(rsp.message);
+                callback(sta);
             },
             errCallback:(msg)=>{
                 errorToast('操作失败！')

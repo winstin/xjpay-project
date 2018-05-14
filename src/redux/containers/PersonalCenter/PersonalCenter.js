@@ -378,7 +378,7 @@ class PersonalCenter extends Component {
                                     <span></span>
                                     <span style={{fontSize:'14px',marginTop:'7px'}}>公司邮箱：</span>
                                 </div>
-                                <span style={{fontSize:'14px',marginTop:'7px'}} className="input-width">{userInfo.linkman}</span>
+                                <span style={{fontSize:'14px',marginTop:'7px'}} className="input-width">792282qq.com</span>
                                 <div className="flexStyles hide">
                                 </div>
                                 <Input className='input-width hide' />

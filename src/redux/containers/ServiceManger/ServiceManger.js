@@ -144,6 +144,7 @@ class ServiceMangers extends Component {
     onRowClick = (index,record)=>{
         const {setData} = this.props;
         setData(index,record);
+        this.oldData = record[0];
     }
 
 
@@ -179,8 +180,15 @@ class ServiceMangers extends Component {
             errorToast('请选择一条记录！');
             return;
         }
-        // console.log(chooseDatas);
-        freezeData(chooseDatas[0].appId,chooseDatas[0].status);
+
+
+        freezeData(chooseDatas[0].appId,this.oldData.status,(e)=>{
+            if(e == 0){
+                this.oldData.status = 0
+            }else{
+                this.oldData.status = 1
+            }
+        });
         this.reLoad();
     }
 
