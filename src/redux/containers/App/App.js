@@ -259,7 +259,7 @@ class App extends Component {
                   <li className="navigation-logo-zone" style={{marginLeft:"15%"}}>
                     <div className="middle-center">
                       <img src={testImg} className="loginImg1"/>
-                      <span className="index-title">{appname}</span>
+                      <span className="index-title">星洁科技</span>
                     </div>
                   </li>
                   
