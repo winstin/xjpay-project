@@ -503,6 +503,7 @@ export const successToast = Tools.successToast.bind(Tools);
 export const FormatDateTime = Tools.FormatDateTime.bind(Tools);
 export const promptToast = Tools.promptToast.bind(Tools);
 export const getNowFormatDate = Tools.getNowFormatDate.bind(Tools);
+export const buildStr = Tools.buildStr.bind(Tools);
 
 
 

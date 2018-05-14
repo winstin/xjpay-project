@@ -230,7 +230,7 @@ class ServiceMangers extends Component {
     }
 
     render() {
-        const {containerHeight,dataSource,total,chooseDatas,downDetails,upDetail} = (this.props);
+        const {containerHeight,dataSource,total,chooseDatas,downDetails,upDetail,feeDataSource} = (this.props);
 
         return (
             <div>
@@ -285,7 +285,7 @@ class ServiceMangers extends Component {
                 </div>
 
 
-                <DetailsDialog  visible={this.state.visible0} index={this} downDetails={downDetails} upDetail={upDetail}/>
+                <DetailsDialog  visible={this.state.visible0} index={this} downDetails={downDetails} upDetail={upDetail} feeDataSource={feeDataSource}/>
 
                 <ServiceMangerDialog  visible={this.state.visible} index={this} title={this.state.tip} dataSource={chooseDatas[0]}/>
                 
@@ -302,6 +302,7 @@ function mapStateToProps(state, ownProps){
         chooseDatas:state.ServiceManger.chooseDatas,
         downDetails:state.ServiceManger.downDetails,
         upDetail:state.ServiceManger.upDetail,
+        feeDataSource:state.ServiceManger.feeDataSource
     }
 }
 

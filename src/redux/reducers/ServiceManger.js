@@ -12,6 +12,7 @@ const initialState = {
     chooseIndex:[],
     'downDetails':[],
     'upDetail':[],
+    feeDataSource:[]
 }
 export default function PrintDialog(state = initialState, action){
     switch (action.type) {
@@ -27,7 +28,7 @@ export default function PrintDialog(state = initialState, action){
                 return Object.assign({},state,{
                     'downDetails':action.downDetails==""?[]:action.downDetails,
                     'upDetail':action.upDetail==""?[]:action.upDetail,
-                    
+                    feeDataSource:action.feeDataSource==""?[]:action.feeDataSource
                 });
             break;
 

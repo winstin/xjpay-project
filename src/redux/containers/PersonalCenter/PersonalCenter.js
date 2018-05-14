@@ -192,196 +192,198 @@ class PersonalCenter extends Component {
                 return (
                     <div className="PersonalCenter">
                         <Headers title="首页"/>
-                        <div className="space-bottom paddingTop">
-                            <span className='tips-title'>基础信息</span>
-                        </div>
-                        <Row className="marginTop text-center">
-                            <div className="flexStyles" >
-                                <span></span>
-                                <span className="personal-text">公司名称：</span>
+                        <div className="overflow">
+                            <div className="space-bottom paddingTop">
+                                <span className='tips-title'>基础信息</span>
                             </div>
-                            <div className="input-width-l"> {userInfo.name}</div>
-                            {/*<Input disabled value={userInfo.name} className="input-width"   />*/}
-                            <div className="flexStyles">
-                                <span></span>
-                                <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>执照编号：</span>
-                            </div>
-                            <div className="input-width-l"> {userInfo.accountcity}</div>
-                        </Row>
-                        <Row className="marginTop text-center border-bottom">
-                            <div className="flexStyles">
-                                <span></span>
-                                <span className="personal-text">签约时间：</span>
-                            </div>
-                            <div className="input-width-l"> {userInfo.signdate}</div>
-                            <div className="flexStyles">
-                                <span></span>
-                                <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>到期时间：</span>
-                            </div>
-                            <div className="input-width-l"> {userInfo.expiredate}</div>
-                        </Row>
-                        <Row className="marginTop text-center">
-                            <div className="flexStyles">
-                                <span></span>
-                                <span className="personal-text">法人姓名：</span>
-                            </div>
-                            <div className="input-width-l"> {userInfo.principal}</div>
-                            <div className="flexStyles">
-                                <span></span>
-                                <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>法人电话：</span>
-                            </div>
-                            <div className="input-width-l"> {userInfo.phone}</div>
-                        </Row>
-                        <Row className="marginTop text-center">
-                            <div className="flexStyles">
-                                <span></span>
-                                <span className="personal-text">所在省份：</span>
-                            </div>
-                            <div className="input-width-l"> {userInfo.province}</div>
-                            <div className="flexStyles">
-                                <span></span>
-                                <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>所在城市：</span>
-                            </div>
-                            <div className="input-width-l"> {userInfo.city}</div>
-                        </Row>
-                        <Row className="marginTop text-center border-bottom">
-                            <div className="flexStyles">
-                                <span></span>
-                                <span className="personal-text">详细地址：</span>
-                            </div>
-                            <div className="input-width-l"> {userInfo.address}</div>
-                            <div className="flexStyles hide">
-                            </div>
-                            <Input className='input-width hide' />
-                        </Row>
-                        <Row className="marginTop text-center">
-                            <div className="flexStyles">
-                                <span></span>
-                                <span className="personal-text">法人邮箱：</span>
-                            </div>
-                            <div className="input-width-l"> {userInfo.linkman}</div>
-                            <div className="flexStyles">
-                                <span></span>
-                                <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>商务邮箱：</span>
-                            </div>
-                            <div className="input-width-l"> {userInfo.linkmantel}</div>
-                        </Row>
+                            <Row className="marginTop text-center">
+                                <div className="flexStyles" >
+                                    <span></span>
+                                    <span className="personal-text">公司名称：</span>
+                                </div>
+                                <div className="input-width-l"> {userInfo.name}</div>
+                                {/*<Input disabled value={userInfo.name} className="input-width"   />*/}
+                                <div className="flexStyles">
+                                    <span></span>
+                                    <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>执照编号：</span>
+                                </div>
+                                <div className="input-width-l"> {userInfo.accountcity}</div>
+                            </Row>
+                            <Row className="marginTop text-center border-bottom">
+                                <div className="flexStyles">
+                                    <span></span>
+                                    <span className="personal-text">签约时间：</span>
+                                </div>
+                                <div className="input-width-l"> {userInfo.signdate}</div>
+                                <div className="flexStyles">
+                                    <span></span>
+                                    <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>到期时间：</span>
+                                </div>
+                                <div className="input-width-l"> {userInfo.expiredate}</div>
+                            </Row>
+                            <Row className="marginTop text-center">
+                                <div className="flexStyles">
+                                    <span></span>
+                                    <span className="personal-text">法人姓名：</span>
+                                </div>
+                                <div className="input-width-l"> {userInfo.principal}</div>
+                                <div className="flexStyles">
+                                    <span></span>
+                                    <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>法人电话：</span>
+                                </div>
+                                <div className="input-width-l"> {userInfo.phone}</div>
+                            </Row>
+                            <Row className="marginTop text-center">
+                                <div className="flexStyles">
+                                    <span></span>
+                                    <span className="personal-text">所在省份：</span>
+                                </div>
+                                <div className="input-width-l"> {userInfo.province}</div>
+                                <div className="flexStyles">
+                                    <span></span>
+                                    <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>所在城市：</span>
+                                </div>
+                                <div className="input-width-l"> {userInfo.city}</div>
+                            </Row>
+                            <Row className="marginTop text-center border-bottom">
+                                <div className="flexStyles">
+                                    <span></span>
+                                    <span className="personal-text">详细地址：</span>
+                                </div>
+                                <div className="input-width-l"> {userInfo.address}</div>
+                                <div className="flexStyles hide">
+                                </div>
+                                <Input className='input-width hide' />
+                            </Row>
+                            <Row className="marginTop text-center">
+                                <div className="flexStyles">
+                                    <span></span>
+                                    <span className="personal-text">法人邮箱：</span>
+                                </div>
+                                <div className="input-width-l"> {userInfo.linkman}</div>
+                                <div className="flexStyles">
+                                    <span></span>
+                                    <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>商务邮箱：</span>
+                                </div>
+                                <div className="input-width-l"> {userInfo.linkmantel}</div>
+                            </Row>
 
-                        <Row className="marginTop text-center">
-                            <div className="flexStyles">
-                                <span></span>
-                                <span className="personal-text">财务邮箱：</span>
-                            </div>
-                            <div className="input-width-l"> {userInfo.idtype}</div>
-                            <div className="flexStyles">
-                                <span></span>
-                                <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>APP名称：</span>
-                            </div>
-                            <div className="input-width-l"> {userInfo.appname}</div>
-                        </Row>
+                            <Row className="marginTop text-center">
+                                <div className="flexStyles">
+                                    <span></span>
+                                    <span className="personal-text">财务邮箱：</span>
+                                </div>
+                                <div className="input-width-l"> {userInfo.idtype}</div>
+                                <div className="flexStyles">
+                                    <span></span>
+                                    <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>APP名称：</span>
+                                </div>
+                                <div className="input-width-l"> {userInfo.appname}</div>
+                            </Row>
 
-                        <Row className="marginTop text-center border-bottom">
-                            <div className="flexStyles">
-                                <span></span>
-                                <span className="personal-text">官网地址：</span>
-                            </div>
-                            <div className="input-width-l"> {userInfo.website}</div>
-                            <div className="flexStyles hide">
-                            </div>
-                            <Input className='input-width hide' />
-                        </Row>
+                            <Row className="marginTop text-center border-bottom">
+                                <div className="flexStyles">
+                                    <span></span>
+                                    <span className="personal-text">官网地址：</span>
+                                </div>
+                                <div className="input-width-l"> {userInfo.website}</div>
+                                <div className="flexStyles hide">
+                                </div>
+                                <Input className='input-width hide' />
+                            </Row>
 
 
-                        <div className="space-bottom">
-                            <span className='tips-title'>结算信息</span>
-                        </div>
-                        <Row className="marginTop text-center">
-                            <div className="flexStyles">
-                                <span></span>
-                                <span className="personal-text">账户类型：</span>
+                            <div className="space-bottom">
+                                <span className='tips-title'>结算信息</span>
                             </div>
+                            <Row className="marginTop text-center">
+                                <div className="flexStyles">
+                                    <span></span>
+                                    <span className="personal-text">账户类型：</span>
+                                </div>
+                                
+                                <div className="input-width-l"> {this.checkInfo(userInfo.accounttype)}</div>
+                                <div className="flexStyles">
+                                    <span></span>
+                                    <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>收款户名：</span>
+                                </div>
+                                <div className="input-width-l"> {userInfo.accountname}</div>
+                            </Row>
+                            <Row className="marginTop text-center border-bottom">
+                                <div className="flexStyles">
+                                    <span></span>
+                                    <span className="personal-text">开户行：</span>
+                                </div>
+                                <div className="input-width-l"> {userInfo.bank}</div>
+                                <div className="flexStyles">
+                                    <span></span>
+                                    <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>收款账户：</span>
+                                </div>
+                                <div className="input-width-l"> {userInfo.account}</div>
+                            </Row>
+
+
+                            <div className="space-bottom">
+                                <span className='tips-title'>业务类型</span>
+                            </div>
+                            <Table dataSource={this.state.dataSource} onRowClick={onRowClick}  hasBorder={true} fixedHeader className="text-left height-20">
+                                <Table.Column title={<b>业务名称</b>} dataIndex="code" cell={this.cellRender}/>
+                                <Table.Column title={<b>渠道名称</b>} dataIndex="upstream" cell={this.cellUpstream}/>
+                                <Table.Column title={<b>交易类型</b>} dataIndex="pointType" cell={this.cellPointType}/>
+                                <Table.Column title={<b>结算费率</b>} dataIndex="fee0" />
+                                <Table.Column title={<b>代付费</b>} dataIndex="d0fee" />
+                                <Table.Column title={<b>鉴权费</b>} dataIndex="mode" />
+                                <Table.Column title={<b>是否开通</b>} dataIndex="type" cell={this.cellIsOpen}/>
+                            </Table>
+
+
+                            <div className="space-bottom marginTop">
+                                <span className='tips-title'>渠道管理</span>
+                            </div>
+                            <Row className="marginTop text-center">
+                                <div className="flexStyles">
+                                    <span></span>
+                                    <span className="personal-text">管理后台地址：</span>
+                                </div>
+
+                                <span className="personal-text" className="input-width">https://web.xjpay.cc</span>
+                                <div className="flexStyles hide">
+                                </div>
+                                <Input className='input-width hide' />
+                            </Row>
+                            <Row className="marginTop text-center">
+                                <div className="flexStyles">
+                                    <span></span>
+                                    <span className="personal-text">请求地址：</span>
+                                </div>
+                                <span className="personal-text" className="input-width">https://api.xjpay.cc</span>
+                                <div className="flexStyles hide">
+                                </div>
+                                <Input className='input-width hide' />
+                            </Row>
+                            <Row className="marginTop text-center border-bottom">
+                                <div className="flexStyles">
+                                    <span></span>
+                                    <span className="personal-text" >密钥：</span>
+                                </div>
+                                <span  className="input-width" style={{fontSize:'14px',marginTop:'4px'}}>{userInfo.appSecret}</span>
+                                <div className="flexStyles hide">
+                                </div>
+                                <Input className='input-width hide' />
+                            </Row>
+
                             
-                            <div className="input-width-l"> {this.checkInfo(userInfo.accounttype)}</div>
-                            <div className="flexStyles">
-                                <span></span>
-                                <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>收款户名：</span>
-                            </div>
-                            <div className="input-width-l"> {userInfo.accountname}</div>
-                        </Row>
-                        <Row className="marginTop text-center border-bottom">
-                            <div className="flexStyles">
-                                <span></span>
-                                <span className="personal-text">开户行：</span>
-                            </div>
-                            <div className="input-width-l"> {userInfo.bank}</div>
-                            <div className="flexStyles">
-                                <span></span>
-                                <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>收款账户：</span>
-                            </div>
-                            <div className="input-width-l"> {userInfo.account}</div>
-                        </Row>
-
-
-                        <div className="space-bottom">
-                            <span className='tips-title'>业务类型</span>
+                            <Row className="marginTop text-center">
+                                <div className="flexStyles">
+                                    <span></span>
+                                    <span style={{fontSize:'14px',marginTop:'7px'}}>公司邮箱：</span>
+                                </div>
+                                <span style={{fontSize:'14px',marginTop:'7px'}} className="input-width">{userInfo.linkman}</span>
+                                <div className="flexStyles hide">
+                                </div>
+                                <Input className='input-width hide' />
+                            </Row>
                         </div>
-                        <Table dataSource={this.state.dataSource} onRowClick={onRowClick}  hasBorder={true} fixedHeader className="text-left height-20">
-                            <Table.Column title={<b>业务名称</b>} dataIndex="code" cell={this.cellRender}/>
-                            <Table.Column title={<b>渠道名称</b>} dataIndex="upstream" cell={this.cellUpstream}/>
-                            <Table.Column title={<b>交易类型</b>} dataIndex="pointType" cell={this.cellPointType}/>
-                            <Table.Column title={<b>结算费率</b>} dataIndex="fee0" />
-                            <Table.Column title={<b>代付费</b>} dataIndex="d0fee" />
-                            <Table.Column title={<b>鉴权费</b>} dataIndex="mode" />
-                            <Table.Column title={<b>是否开通</b>} dataIndex="type" cell={this.cellIsOpen}/>
-                        </Table>
-
-
-                        <div className="space-bottom marginTop">
-                            <span className='tips-title'>渠道管理</span>
-                        </div>
-                        <Row className="marginTop text-center">
-                            <div className="flexStyles">
-                                <span></span>
-                                <span className="personal-text">管理后台地址：</span>
-                            </div>
-
-                            <span className="personal-text" className="input-width">https://web.xjpay.cc</span>
-                            <div className="flexStyles hide">
-                            </div>
-                            <Input className='input-width hide' />
-                        </Row>
-                        <Row className="marginTop text-center">
-                            <div className="flexStyles">
-                                <span></span>
-                                <span className="personal-text">请求地址：</span>
-                            </div>
-                            <span className="personal-text" className="input-width">https://api.xjpay.cc</span>
-                            <div className="flexStyles hide">
-                            </div>
-                            <Input className='input-width hide' />
-                        </Row>
-                        <Row className="marginTop text-center border-bottom">
-                            <div className="flexStyles">
-                                <span></span>
-                                <span className="personal-text" >密钥：</span>
-                            </div>
-                            <span  className="input-width" style={{fontSize:'14px',marginTop:'4px'}}>{userInfo.appSecret}</span>
-                            <div className="flexStyles hide">
-                            </div>
-                            <Input className='input-width hide' />
-                        </Row>
-
-                        
-                        <Row className="marginTop text-center">
-                            <div className="flexStyles">
-                                <span></span>
-                                <span style={{fontSize:'14px',marginTop:'7px'}}>公司邮箱：</span>
-                            </div>
-                            <span style={{fontSize:'14px',marginTop:'7px'}} className="input-width">{userInfo.linkman}</span>
-                            <div className="flexStyles hide">
-                            </div>
-                            <Input className='input-width hide' />
-                        </Row>
                     </div>
                 );
         }else{

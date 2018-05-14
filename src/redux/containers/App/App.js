@@ -325,11 +325,11 @@ class App extends Component {
               </div>
               <div id="footer">
                   <div className="bottom-10">关于我们 服务协议 运营中心 辟谣中心 星洁科技 联系邮箱 侵权投诉</div>
-                  {/*<div className="bottom-10">
-                      <span>粤公网安备44010602002022号</span><span>&nbsp;|&nbsp;</span>
+                  <div className="bottom-10">
+                      <span>苏ICP备16064746号</span><span>&nbsp;|&nbsp;</span>
                       <span>星洁科技</span><span>&nbsp;|&nbsp;</span>
-                      <span>粤公网安备44010602002022号</span>
-                  </div>*/}
+                      <span>江苏星洁科技有限公司</span>
+                  </div>
                   <div>Powered by XjPay Winstin.</div>
               </div>
             </div>

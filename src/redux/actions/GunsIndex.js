@@ -15,7 +15,7 @@ import {api,isEmpty,successToast,errorToast,getNowFormatDate,NetWorkPOST,ajax} f
  * @param    {Number}   pageno [description]
  * @return   {[type]}          [description]
  */
-export function getInitData(pageno = 1,merchantName='',mchId='',startDate=getNowFormatDate(),endDate=getNowFormatDate(),isloading=true){
+export function getInitData(pageno = 1,merchantName='',mchId='',agentName='',filterAppId='',startDate=getNowFormatDate(),endDate=getNowFormatDate(),isloading=true){
     return (dispatch)=>{
         api({
             method:'/merchants/page',
@@ -23,8 +23,8 @@ export function getInitData(pageno = 1,merchantName='',mchId='',startDate=getNow
             args:{
                 startDate: startDate,
                 endDate: endDate,
-                // agentName: '',
-                // filterAppId: '',
+                agentName: agentName.trim(),
+                filterAppId: filterAppId.trim(),
                 merchantName: merchantName.trim(),
                 mchId: mchId.trim(),
                 pageIndex:pageno,
@@ -84,7 +84,7 @@ export function emptyData(){
  * @param    {Number}   pageno [description]
  * @return   {[type]}          [description]
  */
-export function lockChants(mchId='',status=0){
+export function lockChants(mchId='',status=0,callback){
     let sta = "";
     if(status== "NORMAL"){
         sta = 1;
@@ -101,9 +101,11 @@ export function lockChants(mchId='',status=0){
             callback:(rsp)=>{
                 console.log(rsp);
                 if(sta == 0){
-                    successToast('启用成功')
+                    successToast('启用成功');
+                    callback("LOCK");
                 }else{
-                    successToast('冻结成功')
+                    successToast('冻结成功');
+                    callback("NORMAL");
                 }
             },
             errCallback:(msg)=>{

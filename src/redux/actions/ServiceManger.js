@@ -55,25 +55,44 @@ export function getInitData(pageno = 1,appId='',appName='',isloading=true){
  * @param    {[type]}   appId [description]
  * @return   {[type]}         [description]
  */
-export function getDetailData(appId){
+export function getDetailData(appId,pageno=1){
     return (dispatch)=>{
-        ajax({
-            method:'/agents/levelAll',
-            mode:'json',
+
+         api({
+            method:'/rates/page',
+            mode:'jsonp',
             args:{
-                url:"/"+appId,
+                appId:appId,
+                appName:'',
+                pageIndex:pageno,
+                pageSize:20
             },
-            callback:(rsp)=>{
-                dispatch({
-                    type:DetailDATA,
-                    downDetails: rsp.data.downDetails,
-                    upDetail:rsp.data.upDetail
+            isloading:false,
+            callback:(e)=>{
+                ajax({
+                    method:'/agents/levelAll',
+                    mode:'json',
+                    args:{
+                        url:"/"+appId,
+                    },
+                    callback:(rsp)=>{
+                        dispatch({
+                            type:DetailDATA,
+                            downDetails: rsp.data.downDetails,
+                            upDetail:rsp.data.upDetail,
+                            feeDataSource: e.data.records,
+                        });
+                    },
+                    errCallback:(msg)=>{
+                        // console.log(msg)
+                    }
                 });
             },
             errCallback:(msg)=>{
-                // console.log(msg)
+            
             }
         });
+        
       
     }
 }

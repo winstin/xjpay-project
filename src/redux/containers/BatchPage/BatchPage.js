@@ -107,6 +107,10 @@ class BatchPage extends Component {
         return <span onClick={this.onRowClick.bind(this,record)}>{value}</span>;
     }
 
+    cellMoney = (value, index, record, context) => {
+        return <span onClick={this.onRowClick.bind(this,record)}>{(value/100).toFixed(2)}</span>;
+    }
+
 
     handleChange(current) {
         this.current =current;
@@ -133,19 +137,20 @@ class BatchPage extends Component {
                 <Row className="paddingTop">
                     <div className="display-flex">
                         <span className='top-sumtext-bold'>总商户数:</span>
-                        <span className="text-center">{countMerchantNum}</span>
+                        {<span className="text-center new-border" >{countMerchantNum}</span>}
+
                     </div>
                     <div className="display-flex">
                         <span className='top-sumtext'>总订单数:</span>
-                        <span className="text-center">{countOrderNum}</span>
+                        <span className="text-center new-border">{countOrderNum}</span>
                     </div>
                     <div className="display-flex">
                         <span className='top-sumtext'>总金额:</span>
-                        <span className="text-center">{totalMoney}</span>
+                        <span className="text-center new-border">{totalMoney}</span>
                     </div>
                     <div className="display-flex">
-                        <span className='top-sumtext'>总分润:</span>
-                        <span className="text-center">{totalProfit}</span>
+                        <span className='top-sumtext '>总分润:</span>
+                        <span className="text-center new-border">{totalProfit}</span>
                     </div>
                 </Row>
                 
@@ -218,7 +223,7 @@ class BatchPage extends Component {
                         <Table.Column title="商户号" dataIndex="merchantId"  width={90}/>
                         <Table.Column title="商户名称" dataIndex="name"  width={100}/>
                         <Table.Column title="交易时间" dataIndex="createTime"  width={100} cell={this.cellTime}/>
-                        <Table.Column title="交易金额" dataIndex="totalFee"  width={100} cell={this.cellClick}/>
+                        <Table.Column title="交易金额(元)" dataIndex="totalFee"  width={100} cell={this.cellMoney}/>
                         <Table.Column title="费率（‰）" dataIndex="fee0"  width={95} cell={this.cellClick}/>
                         <Table.Column title="代付费" dataIndex="d0fee"  width={70} cell={this.cellRender}/>
                         <Table.Column title="交易手续费" dataIndex="totalProfit"  width={100} cell={this.cellRender}/>

@@ -71,48 +71,70 @@ class GetMangers extends Component {
         return(
             <div >
                 <Headers title="收益管理"/>
-                <div className="display-flex-100 paddingLeft-12 paddingTop">
+
+                <Row className="paddingTop">
+                    <div className="display-flex">
+                        <span className='top-sumtext-bold'>总交易金额:</span>
+                        {<span className="text-center new-border" >{sumTotalFee}</span>}
+
+                    </div>
+                    <div className="display-flex">
+                        <span className='top-sumtext'>总交易笔数:</span>
+                        <span className="text-center new-border">{sumOrderNum}</span>
+                    </div>
+                    <div className="display-flex">
+                        <span className='top-sumtext'>总手续费分成:</span>
+                        <span className="text-center new-border">{sumProfit}</span>
+                    </div>
+                    <div className="display-flex">
+                        <span className='top-sumtext '>总D0手续费:</span>
+                        <span className="text-center new-border">{sumD0fee}</span>
+                    </div>
+                </Row>
+                {/*<div className="display-flex-100 paddingLeft-12 paddingTop">
                     <div className="display-flex">
                         <span className='top-width'>总交易金额:</span>
-                        <span className="text-width">{sumTotalFee}</span>
+                        <span className="text-width new-border">{sumTotalFee}</span>
                     </div>
                     <div className="display-flex">
                         <span className='top-width'>总交易笔数:</span>
-                        <span className="text-width">{sumOrderNum}</span>
+                        <span className="text-width new-border">{sumOrderNum}</span>
                     </div>
                     <div className="display-flex">
                         <span className='top-width'>总交易手续费分成:</span>
-                        <span className="text-width">{sumProfit}</span>
+                        <span className="text-width new-border">{sumProfit}</span>
                     </div>
                     <div className="display-flex">
                         <span className='top-width'>总D0手续费:</span>
-                        <span className="text-width">{sumD0fee}</span>
+                        <span className="text-width new-border">{sumD0fee}</span>
                     </div>
-                </div>
+                </div>*/}
                 <div className="marginTop paddingLeft-12"></div>
-                <div className="display-flex-100 paddingLeft-12">
-                    
+                <Row className="paddingTop">
                     <div className="display-flex">
-                        <span className='top-width'>总收益:</span>
-                        <span className="text-width">{sumTotalProfit}</span>
+                        <span className='top-sumtext-bold'>总收益:</span>
+                        {<span className="text-center new-border" >{sumTotalProfit}</span>}
+
                     </div>
                     <div className="display-flex">
                         
                     </div>
                     <div className="display-flex">
-                        
+                       
                     </div>
-                </div>
-
-
-                <div className="marginTop-20 paddingLeft-12">
+                    <div className="display-flex">
+                       
+                    </div>
+                </Row>
+                
+                <Row className="marginTop-20">
                     <span className='top-sumtext-bold'>时间选择：</span>
                     <RangePicker size="large" onChange={(a, b) => {
                         this.startDate = b[0];
                         this.endDate = b[1];
                     }} />
                     <Button type="primary" style={{width:'100px',marginLeft:'10px'}} size="large" onClick={this.onSearch.bind(this)}>搜索</Button>
-                </div>
+                </Row>
                 <div style={{marginTop:'20px',marginBottom:'10px'}}>
                     <Table dataSource={dataSource} fixedHeader maxBodyHeight={containerHeight}>
                         <Table.Column title='交易日期' dataIndex="sumDate" />

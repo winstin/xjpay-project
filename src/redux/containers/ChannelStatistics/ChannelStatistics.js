@@ -70,53 +70,66 @@ class GunsIndex extends Component {
         return (
             <div >
                 <Headers title="渠道分润统计"/>
-                <div className="display-flex-100 paddingLeft-12 paddingTop">
+                <Row className="paddingTop">
                     <div className="display-flex">
-                        <span className='top-width'>总交易金额:</span>
-                        <span className="text-width">{totalMoney}</span>
+                        <span className='top-sumtext-bold'>总交易金额:</span>
+                        {<span className="text-center new-border" >{totalMoney}</span>}
+
                     </div>
                     <div className="display-flex">
-                        <span className='top-width'>总交易笔数:</span>
-                        <span className="text-width">{countOrderNum}</span>
+                        <span className='top-sumtext'>总交易笔数:</span>
+                        <span className="text-center new-border">{countOrderNum}</span>
                     </div>
                     <div className="display-flex">
-                        <span className='top-width'>总交易手续费分成:</span>
-                        <span className="text-width">{totalProfit}</span>
+                        <span className='top-sumtext'>总手续费分成:</span>
+                        <span className="text-center new-border">{totalProfit}</span>
                     </div>
                     <div className="display-flex">
-                        <span className='top-width'>总D0手续费:</span>
-                        <span className="text-width">{countMerchantNum}</span>
+                        <span className='top-sumtext '>总D0手续费:</span>
+                        <span className="text-center new-border">{countMerchantNum}</span>
                     </div>
-                </div>
+                </Row>
                 <div className='paddingTop paddingLeft-12'></div>
-                <div className="display-flex-100 paddingLeft-12">
+                <Row className="paddingTop">
                     <div className="display-flex">
-                        <span className='top-width'>总应结分润:</span>
-                        <span className="text-width">{sum_agent_profit}</span>
+                        <span className='top-sumtext-bold'>总应结分润:</span>
+                        {<span className="text-center new-border" >{sum_agent_profit}</span>}
+
+                    </div>
+                    <div className="display-flex">
+                        
+                    </div>
+                    <div className="display-flex">
+                        
                     </div>
                     <div className="display-flex">
                        
                     </div>
+                </Row>
+                
+                <Row className="marginTop-20">
                     <div className="display-flex">
-                       
+                        <span className='top-sumtext-bold'>查询条件:</span>
+                        <Input placeholder="所属渠道" size="large"  style={{width:'120px'}} onChange={(e)=>{this.agentName = e}}/>
+                        <Input placeholder="渠道编号" size="large"  style={{width:'120px',marginLeft:'12px'}} onChange={(e)=>{this.filterAppId = e}}/>
+                    </div>
+                    <div className="display-flex">
+
+                    </div>
+                    <div className="display-flex">
+                        
                     </div>
                     <div className="display-flex">
                        
                     </div>
-                </div>
-                <div className="marginTop-20 paddingLeft-12">
+                </Row>
+                {/*<div className="marginTop-20 paddingLeft-12">
                     <span className='top-sumtext-bold'>查询条件：</span>
                     <Input placeholder="所属渠道" size="large"  style={{width:'120px'}} onChange={(e)=>{this.agentName = e}}/>
                     <Input placeholder="渠道编号" size="large"  style={{width:'120px',marginLeft:'12px'}} onChange={(e)=>{this.filterAppId = e}}/>
-                   {/* <span style={{fontSize:'14px',marginTop:'7px',width:'70px',marginLeft:'12px'}}>时间选择：</span>
-                    <RangePicker onChange={(a, b) => {
-                        this.startDate = b[0];
-                        this.endDate = b[1];
-                    }}/>
-                    <Button type="primary" style={{width:'100px',marginLeft:'10px'}} onClick={this.onSearch.bind(this)}>搜索</Button>*/}
-                </div>
+                </div>*/}
 
-                <div className="marginTop-20 paddingLeft-12">
+                <Row className="marginTop-20" >
                     <span className='top-sumtext-bold'>时间选择：</span>
                     <RangePicker size="large" onChange={(a, b) => {
                         this.startDate = b[0];
@@ -124,7 +137,7 @@ class GunsIndex extends Component {
                     }}/>
                     <Button type="primary" style={{width:'100px',marginLeft:'10px'}} size="large" onClick={this.onSearch.bind(this)}>搜索</Button>
                     <Button type="normal" size="large" style={{width:'100px',marginLeft:'10px'}} onClick={this.reSetData.bind(this)}>重置</Button>
-                </div>
+                </Row>
 
                 <div style={{marginTop:'20px'}}>
                     <Table dataSource={dataSource} onRowClick={onRowClick} fixedHeader maxBodyHeight={containerHeight}>

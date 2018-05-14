@@ -83,18 +83,57 @@ class RoleDialog extends Component {
     }
 
 
-    renderPane(upData,downDetails){
+    cellRender = (value, index, record, context) => {
+        if(value == 1){
+            return '银联快捷';
+        }else{
+            return value;
+        }
+    }
+
+    cellUpstream = (value, index, record, context) => {
+        if(value == 'KFT_SERVICE'){
+            return 'Q3';
+        }else if(value == 'HF_SERVICE'){
+            return 'Q1';
+        }else if(value == 'CONGYU_SERVICE'){
+            return 'Q2';
+        }
+
+    }
+
+    cellPointType = (value, index, record, context) => {
+       if(value == 0){
+            return '商旅类';
+        }else if(value == 2){
+            return '一般类';
+        }else{
+            
+            return '-';
+        }
+    }
+
+
+    cellType = (value, index, record, context) => {
+        if(value == 0){
+            return 'D0';
+        }else{
+            return 'T1';
+        }
+    }
+
+    cellMode0 = (value, index, record, context) => {
+        return (value/100).toFixed(2)+"分";
+    }
+
+    cellFee0 = (value, index, record, context) => {
+        return value;
+    }
+
+
+    renderPane(feeDataSource,downDetails){
         if(window.userType == "管理员"){
             return <Tab style={{height:600,overflow: 'auto'}}>
-                    {/*<TabPane tab="上游信息" key="1" >
-                        <Table dataSource={upData} onRowClick={onRowClick} fixedHeader maxBodyHeight={600}>
-                            <Table.Column title="渠道编号" dataIndex="appId" />
-                            <Table.Column title="渠道名称" dataIndex="appName" />
-                            <Table.Column title="代付费" dataIndex="rates" cell={this.cellDee}/>
-                            <Table.Column title="鉴权费" dataIndex="rates" cell={this.cellMode}/>
-                            <Table.Column title="结算费率" dataIndex="rates" cell={this.cellFee}/>
-                        </Table>
-                    </TabPane>*/}
                     <TabPane tab="下游信息" key="2">
                         <Table dataSource={downDetails} onRowClick={onRowClick} >
                             <Table.Column title="层级" dataIndex="Num" />
@@ -105,6 +144,21 @@ class RoleDialog extends Component {
                             <Table.Column title="鉴权费" dataIndex="rates" cell={this.cellMode}/>
                             <Table.Column title="结算费率" dataIndex="rates" cell={this.cellFee}/>
 
+                        </Table>
+                    </TabPane>
+                    <TabPane tab="服务商费率" key="1" >
+                        <Table dataSource={feeDataSource} onRowClick={onRowClick} fixedHeader maxBodyHeight={600}>
+                            <Table.Column title="编号" dataIndex="id"/>
+                            <Table.Column title="创建时间" dataIndex="createTime"/>
+                            <Table.Column title="服务商编号" dataIndex="appid"/>
+                            <Table.Column title="服务商名称" dataIndex="agentName"/>
+                            <Table.Column title="业务类型" dataIndex="code" cell={this.cellRender}/>
+                            <Table.Column title="上游渠道" dataIndex="upstream" cell={this.cellUpstream}/>
+                            <Table.Column title="交易类型" dataIndex="pointType" cell={this.cellPointType}/>
+                            <Table.Column title="结算类型" dataIndex="type" cell={this.cellType}/>
+                            <Table.Column title="鉴权费" dataIndex="mode" cell={this.cellMode0}/>
+                            <Table.Column title="结算费率(‰)" dataIndex="fee0" cell={this.cellFee0}/>
+                            <Table.Column title="代付费" dataIndex="d0fee"/>
                         </Table>
                     </TabPane>
                 </Tab>
@@ -124,12 +178,13 @@ class RoleDialog extends Component {
     }
 
     render() {
-        const {visible,downDetails,upDetail} = this.props;
+        const {visible,downDetails,upDetail,feeDataSource} = this.props;
         let upData = [];
         if(upDetail.appId != undefined){
             upData = [upDetail];
         }
 
+        console.log(feeDataSource)
         let downDetailsData = [];
         for(let a in downDetails){
             downDetails[a].Num = "1";
@@ -158,9 +213,7 @@ class RoleDialog extends Component {
                     }
                 }
             }
-        }
-        console.log(downDetailsData)
-        
+        }        
         return (
             <Dialog visible={visible}
                     onOk={this.setRoleid}
@@ -171,7 +224,7 @@ class RoleDialog extends Component {
                     className="Dialog-height"
                     footer={false}
                     >
-                {this.renderPane(upData,downDetailsData)}
+                {this.renderPane(feeDataSource,downDetailsData)}
             </Dialog>
         );
     }

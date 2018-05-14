@@ -356,8 +356,13 @@
     justify-content: center;
     border: 1px solid #eee;
     height: 100%;
-    overflow: auto;
+    overflow: hidden;
     /*padding: 10px*/
+}
+
+.overflow{
+    height: 100%;
+    overflow: auto;
 }
 
 .input-width{
@@ -441,7 +446,7 @@
     /*overflow: hidden;*/
 }
 .next-table-row{
-    height: 70px
+    height: 50px
 }
 
 .next-table-row{
@@ -472,7 +477,7 @@ th .next-table-cell-wrapper{
 .top-sumtext{
     font-size:14px;
     margin-top:7px;
-    width:85px;
+    width:90px;
     margin-left:12px;
     font-weight: bold;
 }
@@ -480,7 +485,7 @@ th .next-table-cell-wrapper{
 .top-sumtext-bold{
     font-size:14px;
     margin-top:7px;
-    width:85px;
+    width:90px;
     font-weight: bold;
     /*flex: 1*/
 }
@@ -559,4 +564,8 @@ th .next-table-cell-wrapper{
 .maxHeight .next-tabs-medium .next-tabs-content {
     height: 500px;
     overflow: auto;
+}
+
+.new-border{
+    width:160px;text-align:left;border: 1px solid #e1e1e1;line-height: 30px;background: #fff;margin-top: 0px;padding-left: 5px
 }

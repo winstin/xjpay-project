@@ -10,7 +10,26 @@ let onMouseLeave = (id, item, nav) => {
     console.log('onMouseLeave')
 }
 
-
+function whichButton(event={})
+{
+  var btnNum = event.button;
+  if (btnNum==2)
+  {
+  alert("您点击了鼠标右键！")
+  }
+  else if(btnNum==0)
+  {
+  alert("您点击了鼠标左键！")
+  }
+  else if(btnNum==1)
+  {
+  alert("您点击了鼠标中键！");
+  }
+  else
+  {
+  alert("您点击了" + btnNum+ "号键，我不能确定它的名称。");
+  }
+}
 class RoleDialog extends Component {
     constructor(props) {
         super(props);
@@ -20,6 +39,9 @@ class RoleDialog extends Component {
     }
 
     componentWillMount(){
+        //去掉默认的contextmenu事件，否则会和右键事件同时出现。
+       
+        
         let menus = localStorage.getItem("History");
         let text = this.props.title;
 
@@ -35,6 +57,22 @@ class RoleDialog extends Component {
             localStorage.setItem("History",JSON.stringify(menu));
         }
         this.setState({context:JSON.parse(menus)})
+    }
+
+
+    close(value,e){
+      /*document.oncontextmenu = function(e){
+         e.preventDefault();
+      };*/
+      if(e.button ==2){
+           // alert("你点了右键");
+           this.delete(value);
+       }else if(e.button ==0){
+           // alert("你点了左键");
+           
+       }else if(e.button ==1){
+           // alert("你点了滚轮");
+       }
     }
 
     linkUrl(value){
@@ -118,7 +156,7 @@ class RoleDialog extends Component {
             let url = this.checkInfo(item);
             if(item == "首页"){
                 if("/dist/" != window.location.pathname){
-                    return  <div className="nav-border">
+                    return  <div className="nav-border" >
                             <span onClick={this.linkUrl.bind(this,"/dist/")} className="paddtingRight-5">{item}</span>
                         </div>
 
@@ -130,13 +168,13 @@ class RoleDialog extends Component {
                 
             }else{
                 if(url.link != window.location.pathname){
-                    return  <div className="nav-border">
+                    return  <div className="nav-border" onMouseDown={this.close.bind(this,item)}>
                             <span onClick={this.linkUrl.bind(this,url.link)} className="paddtingRight-5">{item}</span>
                             <i className="next-icon next-icon-error next-icon-mediums topicon" onClick={this.delete.bind(this,item)}></i>
                         </div>
 
                 }else{
-                    return  <div className="nav-border-active">
+                    return  <div className="nav-border-active" onMouseDown={this.close.bind(this,item)}>
                             <span onClick={this.linkUrl.bind(this,url.link)} className="paddtingRight-5">{item}</span>
                             <i className="next-icon next-icon-error next-icon-mediums topicon" onClick={this.delete.bind(this,item)}></i>
                         </div>

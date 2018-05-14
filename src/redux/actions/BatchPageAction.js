@@ -5,7 +5,7 @@ export const INITGUNSDATA = "INITGUNSDATA";
 export const CHOOSEDATA = "CHOOSEDATA";
 export const GETDATA = "GETDATA";
 
-import {api,isEmpty,getNowFormatDate} from "static/utils.js"
+import {api,isEmpty,getNowFormatDate,buildStr} from "static/utils.js"
 
 /**
  * @Author   Winstin
@@ -85,32 +85,48 @@ export function getInitData(pageno = 1,startDate=getNowFormatDate(),endDate=getN
 
 
 export function exportData(pageno = 1,startDate='',endDate='',orderNo='',agentOrderNo='',agentName='',filterAppId='',merchantName='',mchId='',orderState='',result=''){
-    return (dispatch)=>{  
-    api({
-        method:'/orders/export',
-        mode:'jsonp',
-        args:{
-            s1:1,
-            startDate: startDate,
-            endDate: endDate,
-            orderNo: orderNo,
-            agentOrderNo: agentOrderNo,
-            agentName: agentName,
-            filterAppId: filterAppId,
-            merchantName: merchantName,
-            mchId: mchId,
-            orderState: orderState,
-            result: result,
-        },
-        callback:(rsp)=>{
+    return (dispatch)=>{ 
+        let params = {
+                s1:1,
+                startDate: startDate,
+                endDate: endDate,
+                orderNo: orderNo,
+                agentOrderNo: agentOrderNo,
+                agentName: agentName,
+                filterAppId: filterAppId,
+                merchantName: merchantName,
+                mchId: mchId,
+                orderState: orderState,
+                result: result,
+            };
+        params = buildStr(params);
+        if(params!=''){
+            params = '?'+params;
+        }    
+        document.location.href = "http://localhost:3000/orders/export?s1=1" + params;
+    // api({
+    //     method:'/orders/export',
+    //     mode:'jsonp',
+    //     args:{
+    //         s1:1,
+    //         startDate: startDate,
+    //         endDate: endDate,
+    //         orderNo: orderNo,
+    //         agentOrderNo: agentOrderNo,
+    //         agentName: agentName,
+    //         filterAppId: filterAppId,
+    //         merchantName: merchantName,
+    //         mchId: mchId,
+    //         orderState: orderState,
+    //         result: result,
+    //     },
+    //     callback:(rsp)=>{
            
-        },
-        errCallback:(msg)=>{
-            // console.log(msg)
-        }
-    });
-            
-
+    //     },
+    //     errCallback:(msg)=>{
+    //         // console.log(msg)
+    //     }
+    // });
     }
 }
 

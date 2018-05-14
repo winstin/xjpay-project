@@ -57,12 +57,14 @@ class GunsIndex extends Component {
         this.lockId = "";
         this.current = 1;
         this.oldData = {};
+        this.agentName='';
+        this.filterAppId=""
     }
 
     onSearch() {
         this.setState({current:1})
         const {getInitData} = (this.props);
-        getInitData(1,this.merchantName,this.mchId,this.startDate,this.endDate);
+        getInitData(1,this.merchantName,this.mchId,this.agentName,this.filterAppId,this.startDate,this.endDate);
     }
 
 
@@ -96,7 +98,7 @@ class GunsIndex extends Component {
         const{getInitData} = this.props;
         setTimeout(
             function(){
-                getInitData(self.state.current,self.merchantName,self.mchId,self.startDate,self.endDate,false);
+                getInitData(self.state.current,self.merchantName,self.mchId,self.agentName,self.filterAppId,self.startDate,self.endDate,false);
             }
         ,500)
     }
@@ -151,8 +153,15 @@ class GunsIndex extends Component {
             promptToast("请选择冻结商户！");
             return;
         }
-        lockChants(this.lockId,this.oldData.status);
+        lockChants(this.lockId,this.oldData.status,(e)=>{
+            if(e == "LOCK"){
+                this.oldData.status = "NORMAL";
+            }else if(e == "NORMAL"){
+                this.oldData.status = "LOCK";
+            }            
+        });
         this.reLoad();
+        
 
     }
 
@@ -202,6 +211,9 @@ class GunsIndex extends Component {
                         <span className='top-sumtext-bold'>查询条件：</span>
                         <Input placeholder="商户名称" size="large"   style={{width:'160px'}}  onChange={(e)=>{this.merchantName = e}}/>
                         <Input placeholder="商户编号" size="large"  style={{width:'160px',marginLeft:'12px'}} onChange={(e)=>{this.mchId = e}}/>
+
+                        <Input placeholder="渠道名称" size="large"   style={{width:'160px',marginLeft:'12px'}}  onChange={(e)=>{this.agentName = e}}/>
+                        <Input placeholder="渠道编号" size="large"  style={{width:'160px',marginLeft:'12px'}} onChange={(e)=>{this.filterAppId = e}}/>
                         {/*<span style={{fontSize:'14px',marginTop:'7px',width:'70px',marginLeft:'12px'}}>时间选择：</span>
                         <RangePicker  onChange={(a, b) => {
                             // console.log(b[0]);
