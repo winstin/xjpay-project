@@ -2,8 +2,9 @@ import fetchJsonp from 'fetch-jsonp';
 
 // import fetch from 'whatwg-fetch';
 
-
 import Feedback from 'qnui/lib/feedback';
+import copy from 'copy-to-clipboard';
+
 const Toast = Feedback.toast;
 
 const webUrl = "http://localhost:3000";
@@ -486,6 +487,11 @@ var Tools = {
         }
         var currentdate = year + seperator1 + month + seperator1 + strDate;
         return currentdate;
+  },
+
+  copyValue:function(value){
+      copy(value);
+      successToast('复制成功');
   }
 
 };
@@ -504,7 +510,6 @@ export const FormatDateTime = Tools.FormatDateTime.bind(Tools);
 export const promptToast = Tools.promptToast.bind(Tools);
 export const getNowFormatDate = Tools.getNowFormatDate.bind(Tools);
 export const buildStr = Tools.buildStr.bind(Tools);
-
-
+export const copyValue = Tools.copyValue.bind(Tools);
 
 export default Tools;

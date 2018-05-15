@@ -14,7 +14,7 @@ import {FormatDateTime} from "static/utils.js"
 import Menu from 'qnui/lib/menu';
 import Config from 'static/config.js'
 import Dropdown from 'qnui/lib/dropdown';
-import {getNowFormatDate} from "static/utils.js"
+import {getNowFormatDate,copyValue} from "static/utils.js"
 import Headers from '../../components/Header/index.js'
 
 
@@ -124,6 +124,17 @@ class BatchPage extends Component {
             visibles:visibles
         })
     };
+
+    copyData(){
+        const {dataSource} = (this.props);
+
+        let str = "";
+
+        for(let i in dataSource){
+            str = str +dataSource[i].orderNo+","+dataSource[i].agentOrderNo+","+(dataSource[i].result||"")+'\r\n';
+        }
+        copyValue(str)
+    }
     
 
     render() {
@@ -213,6 +224,8 @@ class BatchPage extends Component {
                     <Button type="primary" style={{width:'80px'}} size="large" onClick={this.onSearch.bind(this)}>搜索</Button>
                     <Button type="secondary" style={{width:'80px',marginLeft:'10px'}} size="large" onClick={this.onExport.bind(this)}>导出</Button>
                     <Button type="normal" size="large" style={{width:'100px',marginLeft:'10px'}} onClick={this.reSetData.bind(this)}>重置</Button>
+
+                    <Button type="normal" size="large" style={{width:'100px',marginLeft:'10px'}} onClick={this.copyData.bind(this)}>复制</Button>
                 </Row>
                 <div style={{marginTop:'20px'}}>
                     <Table dataSource={dataSource}  fixedHeader maxBodyHeight={containerHeight}>
