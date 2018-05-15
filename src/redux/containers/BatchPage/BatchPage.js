@@ -127,12 +127,11 @@ class BatchPage extends Component {
 
     copyData(){
         const {dataSource} = (this.props);
-
         let str = "";
-
         for(let i in dataSource){
-            str = str +dataSource[i].orderNo+","+dataSource[i].agentOrderNo+","+(dataSource[i].result||"")+'\r\n';
+            str = str +dataSource[i].orderNo+"&&&&&&"+dataSource[i].agentOrderNo+"&&&&&&"+FormatDateTime(dataSource[i].createTime)+"&&&&&&"+(dataSource[i].result||"")+'\r\n\r\n';
         }
+        str = str.replace(/\&/g," ");
         copyValue(str)
     }
     
