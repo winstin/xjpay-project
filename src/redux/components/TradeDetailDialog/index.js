@@ -7,7 +7,7 @@ const { Group: CheckboxGroup } = Checkbox;
 import Config from 'static/config.js'
 import Input from 'qnui/lib/input';
 import Dropdown from 'qnui/lib/dropdown';
-
+import {FormatDateTime} from "static/utils.js"
 
 class TradeDetailDialog extends Component {
   constructor(props) {
@@ -118,25 +118,145 @@ class TradeDetailDialog extends Component {
                         <span style={{fontSize:'14px'}}>渠道订单号   ：</span>
                     </div>
 
-                    <span className="detail-width"  >{dataSource.orderNo}</span>
+                    <span className="detail-width"  >{dataSource.agentOrderNo}</span>
                    
                 </Row>
+
                 <Row className="marginTop-20">
                     <div className="flex-end">
                         <span></span>
-                        <span style={{fontSize:'14px'}}>交易时间：</span>
+                        <span style={{fontSize:'14px'}}>渠道编号：</span>
                     </div>
+                    <span className="detail-width"  >{dataSource && dataSource.channelAgent && dataSource.channelAgent.appId}</span>
 
-                    <span className="detail-width"  >{dataSource.createTime}</span>
+                    <div className="flex-end">
+                        <span></span>
+                        <span style={{fontSize:'14px'}}>所属渠道：</span>
+                    </div>
+                    <span className="detail-width"  >{dataSource.channelAgent && dataSource.channelAgent.name}</span>
+                </Row>
+                
+                <Row className="marginTop-20">
                     <div className="flex-end">
                         <span></span>
                         <span style={{fontSize:'14px'}}>商户号：</span>
                     </div>
 
                     <span className="detail-width"  >{dataSource.merchantId}</span>
+
+                    <div className="flex-end">
+                        <span></span>
+                        <span style={{fontSize:'14px'}}>商户名称：</span>
+                    </div>
+                    <span className="detail-width"  >{dataSource.name}</span>
                 </Row>
-                
+
+
                 <Row className="marginTop-20">
+                    <div className="flex-end">
+                        <span></span>
+                        <span style={{fontSize:'14px'}}>交易时间：</span>
+                    </div>
+
+                    <span className="detail-width"  >{FormatDateTime(dataSource.createTime)}</span>
+                    <div className="flex-end">
+                        <span></span>
+                        <span style={{fontSize:'14px'}}>交易金额：</span>
+                    </div>
+
+                    <span className="detail-width"  >{dataSource.totalFee}</span>
+                </Row>
+
+                <Row className="marginTop-20">
+                    <div className="flex-end">
+                        <span></span>
+                        <span style={{fontSize:'14px'}}>费率（‰)：</span>
+                    </div>
+                    <span className="detail-width"  >{dataSource.fee0}</span>
+                    <div className="flex-end">
+                        <span></span>
+                        <span style={{fontSize:'14px'}}>代付费：</span>
+                    </div>
+                    <span className="detail-width"  >{dataSource.d0fee}</span>
+                </Row>
+
+                <Row className="marginTop-20">
+                    <div className="flex-end">
+                        <span></span>
+                        <span style={{fontSize:'14px'}}>上游渠道：</span>
+                    </div>
+                    <span className="detail-width"  >{this.getTrade(dataSource.upstream)}</span>
+                    <div className="flex-end">
+                        <span></span>
+                        <span style={{fontSize:'14px'}}>交易手续费   ：</span>
+                    </div>
+                    <span className="detail-width"  >{dataSource.totalProfit}  </span>
+                </Row>
+
+
+                <Row className="marginTop-20">
+                    <div className="flex-end">
+                        <span></span>
+                        <span style={{fontSize:'14px'}}>身份证号：</span>
+                    </div>
+                    <span className="detail-width"  >{dataSource.merchant && dataSource.merchant.idCard}</span>
+                    <div className="flex-end">
+                        <span></span>
+                        <span style={{fontSize:'14px'}}>手机号：</span>
+                    </div>
+                    <span className="detail-width"  >{dataSource.merchant && dataSource.merchant.tel}  </span>
+                </Row>
+
+
+
+                <Row className="marginTop-20">
+                    <div className="flex-end">
+                        <span></span>
+                        <span style={{fontSize:'14px'}}>交易类型：</span>
+                    </div>
+                    <span className="detail-width"  >{this.fmtPointsType(dataSource.merchant)}</span>
+                    <div className="flex-end">
+                        <span></span>
+                        <span style={{fontSize:'14px'}}>结算卡号：</span>
+                    </div>
+                    <span className="detail-width"  >{dataSource.merchant && dataSource.merchant.cardNumber}</span>
+                </Row>
+
+
+                <Row className="marginTop-20">
+                    <div className="flex-end">
+                        <span></span>
+                        <span style={{fontSize:'14px'}}>银行名称：</span>
+                    </div>
+                    <span className="detail-width"  >{dataSource.bankName} </span>
+
+                    <div className="flex-end">
+                        <span></span>
+                        <span style={{fontSize:'14px'}}>交易卡号：</span>
+                    </div>
+                    <span className="detail-width"  >{dataSource.cardNumber}</span>
+                    
+                </Row>
+
+
+
+                <Row className="marginTop-20">
+                    <div className="flex-end">
+                        <span></span>
+                        <span style={{fontSize:'14px'}}>交易结果：</span>
+                    </div>
+                    <span className="detail-width"  >{dataSource.result}</span>
+                    <div className="flex-end">
+                        <span></span>
+                        <span style={{fontSize:'14px'}}>交易状态：</span>
+                    </div>
+                    <span className="detail-width"  >{state}</span>
+                </Row>
+
+
+
+                
+                {/*<Row className="marginTop-20">
                     <div className="flex-end">
                         <span></span>
                         <span style={{fontSize:'14px'}}>商户名称：</span>
@@ -231,7 +351,7 @@ class TradeDetailDialog extends Component {
                         <span style={{fontSize:'14px'}}>结算卡号：</span>
                     </div>
                     <span className="detail-width"  >{dataSource.merchant && dataSource.merchant.cardNumber}</span>
-                </Row>
+                </Row>*/}
 
               
             </Dialog>
