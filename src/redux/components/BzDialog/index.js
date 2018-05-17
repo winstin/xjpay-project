@@ -70,7 +70,6 @@ class RoleDialog extends Component {
 
 
     remove(index){
-        console.log(index);
         let {dataSource} = this.props;
         let updateData = [];
         for(let i in dataSource){

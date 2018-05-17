@@ -10,11 +10,10 @@ import Input from 'qnui/lib/input';
 import Pagination from 'qnui/lib/pagination';
 import Dimensions from 'react-dimensions';
 import TradeDetailDialog from '../../components/TradeDetailDialog/index.js'
-import {FormatDateTime,isEmpty} from "static/utils.js"
 import Menu from 'qnui/lib/menu';
 import Config from 'static/config.js'
 import Dropdown from 'qnui/lib/dropdown';
-import {getNowFormatDate,copyValue} from "static/utils.js"
+import {getNowFormatDate,copyValue,FormatDateTime,isEmpty,promptToast,successToast} from "static/utils.js"
 import Headers from '../../components/Header/index.js'
 import BzDialog from '../../components/BzDialog/index.js'
 
@@ -135,11 +134,15 @@ class BatchPage extends Component {
             oldBz.push(bzData);
         }else{
             oldBz = JSON.parse(oldBz);
-
-            
-
+            for(let i in oldBz){
+                if(oldBz[i].agentOrderNo == bzData.agentOrderNo){
+                    promptToast('重复订单！');
+                    return;
+                }
+            }
             oldBz.push(bzData);
         }   
+        successToast('添加成功！');
         localStorage.setItem("bzData"+window.userNick,JSON.stringify(oldBz));
         
     }
