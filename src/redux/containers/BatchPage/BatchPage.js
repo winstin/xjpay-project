@@ -135,6 +135,9 @@ class BatchPage extends Component {
             oldBz.push(bzData);
         }else{
             oldBz = JSON.parse(oldBz);
+
+            
+
             oldBz.push(bzData);
         }   
         localStorage.setItem("bzData"+window.userNick,JSON.stringify(oldBz));

@@ -69,21 +69,21 @@ class RoleDialog extends Component {
     }
 
 
-    remove(value){
-        console.log(value);
+    remove(index){
+        console.log(index);
         let {dataSource} = this.props;
         let updateData = [];
         for(let i in dataSource){
-            if(dataSource[i].agentOrderNo!=value){
+            if(i!=index){
                 updateData.push(dataSource[i]);
             }
         }
-
         this.props.index.setState({bzData:updateData});
+        localStorage.setItem("bzData"+window.userNick,JSON.stringify(updateData));
     }
 
     cellRemove= (value, index, record, context) => {
-        return <span className="blue-text" onClick={this.remove.bind(this,value)}>删除</span>
+        return <span className="blue-text" onClick={this.remove.bind(this,index)}>删除</span>
     }
 
 
