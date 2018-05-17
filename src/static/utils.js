@@ -1,13 +1,13 @@
-import fetchJsonp from 'fetch-jsonp';
+// import fetchJsonp from 'fetch-jsonp';
 
 // import fetch from 'whatwg-fetch';
 
 import Feedback from 'qnui/lib/feedback';
 import copy from 'copy-to-clipboard';
-
+import config from 'static/config.js'
 const Toast = Feedback.toast;
-
-const webUrl = "http://localhost:3000";
+const webUrl = config.webUrl;
+// const webUrl = "http://localhost:3000";
 
 var Tools = {
   /**
@@ -130,125 +130,125 @@ var Tools = {
     return formData;
   },
 
-    /**
-   * 调用接口方法 fecth
-   * author: wp
-   * @param  {[type]}   method   [接口名称]
-   * @param  {String}   args     [参数 默认为空]
-   * @param  {String}   mode     [默认jsonp 否则为json]
-   * @param  {Function} callback [成功回调]
-   * @return {[type]}            [description]
-   */
-  apis: function({method,args='',mode='jsonp',callback,errCallback = undefined,isloading = true}){
-    var self = this;
+  //   /**
+  //  * 调用接口方法 fecth
+  //  * author: wp
+  //  * @param  {[type]}   method   [接口名称]
+  //  * @param  {String}   args     [参数 默认为空]
+  //  * @param  {String}   mode     [默认jsonp 否则为json]
+  //  * @param  {Function} callback [成功回调]
+  //  * @return {[type]}            [description]
+  //  */
+  // apis: function({method,args='',mode='jsonp',callback,errCallback = undefined,isloading = true}){
+  //   var self = this;
     
     
-    if (mode == 'jsonp') {
-      // args = this.buildStr(args);
-      // if(args!=''){
-      //     args = '?'+args;
-      // }
-      // fetchJsonp('https://web.xjpay.cc' + method + args, {
-      // // fetchJsonp(host + method + args, {
-      //   jsonpCallback: 'callback'
-      // })
-      // .then((response) => console.log(response))//返回数据类型json
-      // .then((responseText) => {
-      //   if(responseText == 'fail'){
-      //     //遇见错误时弹框提示   by Mothpro
-      //     //session获取失败登录失效
-      //   }else{
-      //       try {
-      //           callback(responseText);
-      //       } catch (e) {
-      //           // console.error("后台php调用失败"+method,e);
-      //       }
-      //   }
-      // })
-      // .catch((error) => {
+  //   if (mode == 'jsonp') {
+  //     // args = this.buildStr(args);
+  //     // if(args!=''){
+  //     //     args = '?'+args;
+  //     // }
+  //     // fetchJsonp('https://web.xjpay.cc' + method + args, {
+  //     // // fetchJsonp(host + method + args, {
+  //     //   jsonpCallback: 'callback'
+  //     // })
+  //     // .then((response) => console.log(response))//返回数据类型json
+  //     // .then((responseText) => {
+  //     //   if(responseText == 'fail'){
+  //     //     //遇见错误时弹框提示   by Mothpro
+  //     //     //session获取失败登录失效
+  //     //   }else{
+  //     //       try {
+  //     //           callback(responseText);
+  //     //       } catch (e) {
+  //     //           // console.error("后台php调用失败"+method,e);
+  //     //       }
+  //     //   }
+  //     // })
+  //     // .catch((error) => {
          
 
-      //     //错误处理，待补充
-      //     // console.log(error);
-      //     if (errCallback) {
-      //       errCallback(error);
-      //     } else {
+  //     //     //错误处理，待补充
+  //     //     // console.log(error);
+  //     //     if (errCallback) {
+  //     //       errCallback(error);
+  //     //     } else {
 
-      //     }
-      // });
-      // 
-      if(isloading){
-         showLoading('加载数据中...');
-      }
-      // var formData = new FormData();
-      //   formData = this.buildArgs(formData,args);
-        args = this.buildStr(args);
-        if(args!=''){
-            args = '?'+args;
-        }
-        fetch(`${webUrl+method+args}`, {
-        // fetch(`${host}${method}`, {
-            method : 'GET',
-            mode : 'json',
-            credentials: 'include',//携带cookies
+  //     //     }
+  //     // });
+  //     // 
+  //     if(isloading){
+  //        showLoading('加载数据中...');
+  //     }
+  //     // var formData = new FormData();
+  //     //   formData = this.buildArgs(formData,args);
+  //       args = this.buildStr(args);
+  //       if(args!=''){
+  //           args = '?'+args;
+  //       }
+  //       fetch(`${webUrl+method+args}`, {
+  //       // fetch(`${host}${method}`, {
+  //           method : 'GET',
+  //           mode : 'json',
+  //           credentials: 'include',//携带cookies
                
-            // body : formData,
-        }).then((res)=>res.json()).then(function(responseText){
-            if(isloading){
-                hideLoading();
-            }
+  //           // body : formData,
+  //       }).then((res)=>res.json()).then(function(responseText){
+  //           if(isloading){
+  //               hideLoading();
+  //           }
 
-            if(responseText == 'fail'){
-                //遇见错误时弹框提示   by Mothpro
-                //session获取失败登录失效
-            }else{
-                callback(responseText);
-            }
-        }, function(error){
-            if(isloading){
-                hideLoading();
-            }
-            //错误处理，待补充
-            // console.log(error);
-            promptToast('登录超时，请退出重新登录！',2000)
+  //           if(responseText == 'fail'){
+  //               //遇见错误时弹框提示   by Mothpro
+  //               //session获取失败登录失效
+  //           }else{
+  //               callback(responseText);
+  //           }
+  //       }, function(error){
+  //           if(isloading){
+  //               hideLoading();
+  //           }
+  //           //错误处理，待补充
+  //           // console.log(error);
+  //           promptToast('登录超时，请退出重新登录！',2000)
             
-            if (errCallback) {
-                errCallback(error);
-            } else {
+  //           if (errCallback) {
+  //               errCallback(error);
+  //           } else {
 
-            }
-        });
-    } else {
-        var formData = new FormData();
-        formData = this.buildArgs(formData,args);
-        args = this.buildStr(args);
-        if(args!=''){
-            args = '?'+args;
-        }
-        fetch(`${webUrl+method+args}`, {
-        // fetch(`${host}${method}`, {
-            method : 'GET',
-            mode : 'json',
-            credentials: 'include',//携带cookies
-            // body : formData,
-        }).then((res)=>res.json()).then(function(responseText){
-            if(responseText == 'fail'){
-                //遇见错误时弹框提示   by Mothpro
-                //session获取失败登录失效
-            }else{
-                callback(responseText);
-            }
-        }, function(error){
-            //错误处理，待补充
-            // console.log(error);
-            if (errCallback) {
-                errCallback(error);
-            } else {
+  //           }
+  //       });
+  //   } else {
+  //       var formData = new FormData();
+  //       formData = this.buildArgs(formData,args);
+  //       args = this.buildStr(args);
+  //       if(args!=''){
+  //           args = '?'+args;
+  //       }
+  //       fetch(`${webUrl+method+args}`, {
+  //       // fetch(`${host}${method}`, {
+  //           method : 'GET',
+  //           mode : 'json',
+  //           credentials: 'include',//携带cookies
+  //           // body : formData,
+  //       }).then((res)=>res.json()).then(function(responseText){
+  //           if(responseText == 'fail'){
+  //               //遇见错误时弹框提示   by Mothpro
+  //               //session获取失败登录失效
+  //           }else{
+  //               callback(responseText);
+  //           }
+  //       }, function(error){
+  //           //错误处理，待补充
+  //           // console.log(error);
+  //           if (errCallback) {
+  //               errCallback(error);
+  //           } else {
 
-            }
-        });
-    }
-  },
+  //           }
+  //       });
+  //   }
+  // },
 
 
 

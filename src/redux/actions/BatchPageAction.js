@@ -6,7 +6,8 @@ export const CHOOSEDATA = "CHOOSEDATA";
 export const GETDATA = "GETDATA";
 
 import {api,isEmpty,getNowFormatDate,buildStr} from "static/utils.js"
-
+import config from 'static/config.js'
+const webUrl = config.webUrl;
 /**
  * @Author   Winstin
  * @DateTime 2018-05-04
@@ -103,7 +104,7 @@ export function exportData(pageno = 1,startDate='',endDate='',orderNo='',agentOr
         if(params!=''){
             params = '?'+params;
         }    
-        document.location.href = "http://localhost:3000/orders/export?s1=1" + params;
+        document.location.href = webUrl+"/orders/export?s1=1" + params;
     // api({
     //     method:'/orders/export',
     //     mode:'jsonp',

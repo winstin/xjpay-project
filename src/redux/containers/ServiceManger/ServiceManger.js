@@ -57,6 +57,7 @@ class ServiceMangers extends Component {
         this.appname='';
         this.website
         this.current = 1;
+        this.index = "";
     }
 
     onSearch(appId,appName) {
@@ -78,10 +79,10 @@ class ServiceMangers extends Component {
 
     reLoad(){
         let self = this;
-        const{getInitData} = this.props;
+        const{getInitData,setData} = this.props;
         setTimeout(
             function(){
-                getInitData(self.current,self.appId,self.appName,false);
+                getInitData(self.current,self.appId,self.appName,false);    
             }
         ,500)
     }
@@ -143,6 +144,7 @@ class ServiceMangers extends Component {
 
     onRowClick = (index,record)=>{
         const {setData} = this.props;
+        this.index = index;
         setData(index,record);
         this.oldData = record[0];
     }
@@ -180,8 +182,6 @@ class ServiceMangers extends Component {
             errorToast('请选择一条记录！');
             return;
         }
-
-
         freezeData(chooseDatas[0].appId,this.oldData.status,(e)=>{
             if(e == 0){
                 this.oldData.status = 0

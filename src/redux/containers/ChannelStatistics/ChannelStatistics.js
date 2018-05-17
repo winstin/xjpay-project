@@ -77,27 +77,27 @@ class GunsIndex extends Component {
                 <Headers title="渠道分润统计"/>
                 <Row className="paddingTop">
                     <div className="display-flex">
-                        <span className='top-sumtext-bold'>总交易金额:</span>
+                        <span className='top-sumtext-bold'>订单金额:</span>
                         {<span className="text-center new-border" >{totalMoney}</span>}
 
                     </div>
                     <div className="display-flex">
-                        <span className='top-sumtext'>总交易笔数:</span>
+                        <span className='top-sumtext'>交易笔数:</span>
                         <span className="text-center new-border">{countOrderNum}</span>
                     </div>
                     <div className="display-flex">
-                        <span className='top-sumtext'>总手续费分成:</span>
+                        <span className='top-sumtext'>手续费金额:</span>
                         <span className="text-center new-border">{totalProfit}</span>
                     </div>
                     <div className="display-flex">
-                        <span className='top-sumtext '>总D0手续费:</span>
+                        <span className='top-sumtext '>代付费金额:</span>
                         <span className="text-center new-border">{countMerchantNum}</span>
                     </div>
                 </Row>
                 <div className='paddingTop paddingLeft-12'></div>
                 <Row className="paddingTop">
                     <div className="display-flex">
-                        <span className='top-sumtext-bold'>总应结分润:</span>
+                        <span className='top-sumtext-bold'>应结分润:</span>
                         {<span className="text-center new-border" >{sum_agent_profit}</span>}
 
                     </div>

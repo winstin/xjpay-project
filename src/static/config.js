@@ -4,6 +4,8 @@ const Appconfig = {
     'url':'web.xjpay.cc'
 }
 
+const webUrl = "http://localhost:3000";
+
 
 //部门
 const Department =[
@@ -136,7 +138,7 @@ const PayState = [
 
 
 
-export default {Appconfig,Department,RolePlayer,Orderment,PayState}
+export default {Appconfig,Department,RolePlayer,Orderment,PayState,webUrl}
 /**
 项目常理存放地址
 **/

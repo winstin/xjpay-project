@@ -154,10 +154,6 @@ export function addData(name,pName,deptid,num,tips,pid = ''){
 
 
 export function changeData(oldData,newData){
-
-    console.log(oldData);
-    console.log(newData)
-
     return (dispatch)=>{
         api({
             method:'/roles/edit',

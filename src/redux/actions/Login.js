@@ -28,6 +28,8 @@ export function Login(username="",password="",callback){
                 localStorage.setItem("userInfo",JSON.stringify(rsp.data.userDetail));
 
                 localStorage.setItem("History",JSON.stringify(["首页"]));
+
+                window.userNick = username;
                 /*ajax({
                     method:'/users/view',
                     mode:'json',

@@ -169,11 +169,7 @@ export function freezeData(appId,status,callback){
  * @return   {[type]}           [description]
  */
 export function updateData(oldData,newData){
-    return (dispatch)=>{
-        api({
-            method:'/agents/update',
-            mode:'jsonp',
-            args:{
+    let updateData = {
                 id: newData.id == undefined ? oldData[0].id : newData.id,
                 name: newData.name == undefined ? oldData[0].name : newData.name,
                 signdate: newData.signdate == undefined ? oldData[0].signdate : newData.signdate,
@@ -195,9 +191,18 @@ export function updateData(oldData,newData){
                 linkmantel: newData.linkmantel == undefined ? oldData[0].linkmantel : newData.linkmantel,
                 appname: newData.appname == undefined ? oldData[0].appname : newData.appname,
                 website: newData.website == undefined ? oldData[0].website : newData.website,
-            },
+            };
+    return (dispatch)=>{
+        api({
+            method:'/agents/update',
+            mode:'jsonp',
+            args:updateData,
             callback:(rsp)=>{
                 successToast('修改成功！');
+                dispatch({
+                    type: CHOOSEDATA,
+                    chooseDatas:[updateData],
+                });
             },
             errCallback:(msg)=>{
                 errorToast('修改失败！原因：'+JSON.stringify(msg));

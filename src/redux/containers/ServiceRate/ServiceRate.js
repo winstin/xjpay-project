@@ -147,9 +147,16 @@ class ServiceRates extends Component {
             promptToast('请选择操作项！');
             return;
         }
-        const {deleteData} = this.props;
-        deleteData(this.appid);
-        this.reLoad();
+        let self = this;
+        Dialog.confirm({
+            content: '是否删除'+this.appid+'帐号？',
+            title: '删除',
+            onOk:()=>{
+                const {deleteData} = self.props;
+                deleteData(self.appid);
+                self.reLoad();
+            }
+        });
     }
 
     onClose = () => {

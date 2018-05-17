@@ -1,24 +1,22 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-
-//import routes from './routes'
 import {Router, browserHistory} from 'react-router'
 import { syncHistoryWithStore } from 'react-router-redux';
 
 
 import { Provider } from 'react-redux'
 import configureStore from './redux/stores/configureStore'
-import {api} from './redux/actions/AY_API'
 
 class App extends React.Component {
     render(){
     const {history,routes, store} = this.props
 
-    return (
-      <Provider store={store}>
-          <Router history={history} children={routes} />
-      </Provider>
-    )
+
+      return (
+        <Provider store={store}>
+            <Router history={history} children={routes} />
+        </Provider>
+      )
     }
 }
 
@@ -79,6 +77,8 @@ if (__DEV__) {
       })
     )
   }
+}else{
+  console.log("开发状态！");
 }
 
 

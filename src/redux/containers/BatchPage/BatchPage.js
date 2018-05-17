@@ -10,12 +10,13 @@ import Input from 'qnui/lib/input';
 import Pagination from 'qnui/lib/pagination';
 import Dimensions from 'react-dimensions';
 import TradeDetailDialog from '../../components/TradeDetailDialog/index.js'
-import {FormatDateTime} from "static/utils.js"
+import {FormatDateTime,isEmpty} from "static/utils.js"
 import Menu from 'qnui/lib/menu';
 import Config from 'static/config.js'
 import Dropdown from 'qnui/lib/dropdown';
 import {getNowFormatDate,copyValue} from "static/utils.js"
 import Headers from '../../components/Header/index.js'
+import BzDialog from '../../components/BzDialog/index.js'
 
 
 class BatchPage extends Component {
@@ -24,7 +25,9 @@ class BatchPage extends Component {
         this.state = {
             detailvisible:false,
             orderdata:{},
-            visibles:false
+            visibles:false,
+            visible:false,
+            bzData:[]
         };
         this.startDate=getNowFormatDate();
         this.endDate=getNowFormatDate();
@@ -84,7 +87,6 @@ class BatchPage extends Component {
 
 
     cellState = (value, index, record, context) => {
-
         switch (value) {
             case "A":
                 return <span style={{color:'orange'}} onClick={this.onRowClick.bind(this,record)}>支付中</span>;
@@ -109,6 +111,50 @@ class BatchPage extends Component {
 
     cellMoney = (value, index, record, context) => {
         return <span onClick={this.onRowClick.bind(this,record)}>{(value/100).toFixed(2)}</span>;
+    }
+
+    cellBz = (value, index, record, context) => {
+        return  <div>
+                    <span >{value}</span><br/>
+                    <span className="blue-text" onClick={this.addBz.bind(this,record)}>添加备注</span>
+                </div>;
+    }
+
+    addBz(value){
+        console.log(value);
+        let bzData = {
+            agentOrderNo:value.agentOrderNo,
+            name:value.channelAgent.name,
+            orderState:value.orderState,
+            result:value.result,
+        }
+
+        let oldBz = localStorage.getItem("bzData"+window.userNick);
+        if(isEmpty(oldBz)){
+            oldBz = [];
+            oldBz.push(bzData);
+        }else{
+            oldBz = JSON.parse(oldBz);
+            oldBz.push(bzData);
+        }   
+        localStorage.setItem("bzData"+window.userNick,JSON.stringify(oldBz));
+        
+    }
+
+
+    showBz(){
+        let oldBz = localStorage.getItem("bzData"+window.userNick);
+        if(isEmpty(oldBz)){
+            oldBz = [];
+        }else{
+            oldBz = JSON.parse(oldBz);
+        }
+
+
+        this.setState({
+            visible:true,
+            bzData:oldBz
+        })
     }
 
 
@@ -146,20 +192,20 @@ class BatchPage extends Component {
                 <Headers title="交易管理"/>
                 <Row className="paddingTop">
                     <div className="display-flex">
-                        <span className='top-sumtext-bold'>总商户数:</span>
+                        <span className='top-sumtext-bold'>商户数:</span>
                         {<span className="text-center new-border" >{countMerchantNum}</span>}
 
                     </div>
                     <div className="display-flex">
-                        <span className='top-sumtext'>总订单数:</span>
+                        <span className='top-sumtext'>订单笔数:</span>
                         <span className="text-center new-border">{countOrderNum}</span>
                     </div>
                     <div className="display-flex">
-                        <span className='top-sumtext'>总金额:</span>
+                        <span className='top-sumtext'>订单金额:</span>
                         <span className="text-center new-border">{totalMoney}</span>
                     </div>
                     <div className="display-flex">
-                        <span className='top-sumtext '>总分润:</span>
+                        <span className='top-sumtext '>手续费:</span>
                         <span className="text-center new-border">{totalProfit}</span>
                     </div>
                 </Row>
@@ -223,12 +269,12 @@ class BatchPage extends Component {
                     <Button type="primary" style={{width:'80px'}} size="large" onClick={this.onSearch.bind(this)}>搜索</Button>
                     <Button type="secondary" style={{width:'80px',marginLeft:'10px'}} size="large" onClick={this.onExport.bind(this)}>导出</Button>
                     <Button type="normal" size="large" style={{width:'100px',marginLeft:'10px'}} onClick={this.reSetData.bind(this)}>重置</Button>
-
                     <Button type="normal" size="large" style={{width:'100px',marginLeft:'10px'}} onClick={this.copyData.bind(this)}>复制</Button>
+                    <Button type="secondary" style={{width:'80px',marginLeft:'10px'}} size="large" onClick={this.showBz.bind(this)}>备注</Button>
                 </Row>
                 <div style={{marginTop:'20px'}}>
                     <Table dataSource={dataSource}  fixedHeader maxBodyHeight={containerHeight}>
-                        <Table.Column title="订单号" dataIndex="orderNo" width={130}/>
+                        <Table.Column title="订单号" dataIndex="orderNo" width={130} cell={this.cellBz}/>
                         <Table.Column title="渠道订单号" dataIndex="agentOrderNo" width={180}/>
                         <Table.Column title="渠道编号" dataIndex="channelAgent.appId"  width={90}/>
                         <Table.Column title="所属渠道" dataIndex="channelAgent.name"  width={100}/>
@@ -249,10 +295,11 @@ class BatchPage extends Component {
                     </Table>
                 </div>
                 <div style={{marginTop:'20px',float:'right'}}>
-
                     <Pagination current={this.current} size="large" total={total} pageSize={20} onChange={this.handleChange.bind(this)} />
                 </div>
                 <TradeDetailDialog visible={this.state.detailvisible} index={this} title="交易流水详情" dataSource={this.state.orderdata}/>
+
+                <BzDialog visible={this.state.visible} index={this} title="备注" dataSource={this.state.bzData}/>
             </div>
         );
     }

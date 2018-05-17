@@ -56,11 +56,14 @@ class App extends Component {
 
 
     componentDidMount(){
+        
         let self = this; 
         let now = new Date();
         let loginTime = localStorage.getItem("loginTime");//登录超时参数
         window.userType = localStorage.getItem("userType");//用户身份
+        window.userNick = localStorage.getItem("appId");
         let userInfo = localStorage.getItem("userInfo");//用户信息
+        console.log(window.userNick)
         if (!isEmpty(loginTime)) {
           let res = compareTime(loginTime,now);
           if(res.minutes >= 30){
@@ -115,6 +118,8 @@ class App extends Component {
                   callback:(rsp)=>{
                       window.location.href="/dist/";
                       window.userType = localStorage.getItem("userType");
+                      
+
                       localStorage.setItem("menus",JSON.stringify(rsp.data));
                       self.setState({context:rsp.data,isLogin:true,msg:''});
                   },
@@ -135,7 +140,11 @@ class App extends Component {
             title: '退出',
             onOk:()=>{
               clearAllCookie();
-              localStorage.clear();
+              localStorage.setItem("loginTime","");
+              localStorage.setItem("appId","");
+              localStorage.setItem("userType","");
+              localStorage.setItem("userInfo","");
+
               self.setState({isLogin:false});
             }
         });
