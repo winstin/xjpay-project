@@ -103,7 +103,7 @@ class RoleDialog extends Component {
                 filterAppId: '',
                 merchantName: '',
                 mchId: '',
-                orderState: '',
+                orderState: "D",
                 result: result,
                 pageIndex:1,
                 pageSize:20
@@ -177,7 +177,7 @@ class RoleDialog extends Component {
     }
 
     cellTime = (value, index, record, context) => {
-        return <span >{FormatDateTime(value)}</span>;
+        return <span>{FormatDateTime(value)}</span>;
     }
 
 
