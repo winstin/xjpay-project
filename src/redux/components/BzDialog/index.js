@@ -6,7 +6,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import Table from 'qnui/lib/table';
 import * as Login from '../../actions/Login'
-import {api,getNowFormatDate} from "static/utils.js"
+import {api,getNowFormatDate,FormatDateTime} from "static/utils.js"
 import Button from 'qnui/lib/button';
 
 const onRowClick = function(record, index, e) {
@@ -95,7 +95,7 @@ class RoleDialog extends Component {
             method:'/orders/page',
             mode:'jsonp',
             args:{
-                startDate: getNowFormatDate(),
+                startDate: '2018-03-01',
                 endDate: getNowFormatDate(),
                 orderNo: '',
                 agentOrderNo: '',
@@ -176,6 +176,10 @@ class RoleDialog extends Component {
                 </div>
     }
 
+    cellTime = (value, index, record, context) => {
+        return <span >{FormatDateTime(value)}</span>;
+    }
+
 
     render() {
         const {visible,title} = this.props;
@@ -195,7 +199,8 @@ class RoleDialog extends Component {
 
                     <Table dataSource={dataSource}  maxBodyHeight={600}>
                         <Table.Column title="渠道编号" dataIndex="agentOrderNo" />
-                        <Table.Column title="渠道名称" dataIndex="name" />
+                        <Table.Column title="渠道名称" dataIndex="channelAgent.name" />
+                        <Table.Column title="交易时间" dataIndex="createTime"  width={100} cell={this.cellTime}/>
                         <Table.Column title="交易状态" dataIndex="orderState" cell={this.cellState}/>
                         <Table.Column title="交易结果" dataIndex="result" />
                         {/*<Table.Column title="操作" dataIndex="agentOrderNo" cell={this.cellRemove}/>*/}
