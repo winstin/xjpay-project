@@ -121,7 +121,7 @@ class BatchPage extends Component {
     cellBz = (value, index, record, context) => {
         return  <div>
                     <span >{value}</span><br/>
-                    <span className="blue-text" onClick={this.addBz.bind(this,record)}>添加备注</span>
+                   {/* <span className="blue-text" onClick={this.addBz.bind(this,record)}>添加备注</span>*/}
                 </div>;
     }
 
