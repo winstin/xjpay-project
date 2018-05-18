@@ -63,12 +63,14 @@ class App extends Component {
         window.userType = localStorage.getItem("userType");//用户身份
         window.userNick = localStorage.getItem("appId");
         let userInfo = localStorage.getItem("userInfo");//用户信息
-        console.log(window.userNick)
         if (!isEmpty(loginTime)) {
           let res = compareTime(loginTime,now);
           if(res.minutes >= 30){
-              localStorage.clear();
-              self.setState({msg:'登录超时!'})
+              localStorage.setItem("loginTime","");
+              localStorage.setItem("appId","");
+              localStorage.setItem("userType","");
+              localStorage.setItem("userInfo","");
+              self.setState({msg:'登录超时!'});
           }else{
               let context = [];
               try{
@@ -144,7 +146,6 @@ class App extends Component {
               localStorage.setItem("appId","");
               localStorage.setItem("userType","");
               localStorage.setItem("userInfo","");
-
               self.setState({isLogin:false});
             }
         });

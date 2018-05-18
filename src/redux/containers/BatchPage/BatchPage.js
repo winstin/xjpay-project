@@ -48,6 +48,13 @@ class BatchPage extends Component {
         getInitData(1,this.startDate,this.endDate,this.orderNo,this.agentOrderNo,this.agentName,this.filterAppId,this.merchantName,this.mchId,this.orderState,this.result);
     }
 
+
+    onSearch(value) {
+        this.current =1;
+        const {getInitData} = (this.props);
+        getInitData(1,this.startDate,this.endDate,this.orderNo,this.agentOrderNo,this.agentName,this.filterAppId,this.merchantName,this.mchId,this.orderState,this.result);
+    }
+
     onExport(){
         const {exportData} = (this.props);
         exportData(1,this.startDate,this.endDate,this.orderNo,this.agentOrderNo,this.agentName,this.filterAppId,this.merchantName,this.mchId,this.orderState,this.result); 
@@ -59,7 +66,6 @@ class BatchPage extends Component {
     }
 
     componentDidMount(){
-
         const {getInitData,emptyData} = (this.props);
         emptyData();
         getInitData();

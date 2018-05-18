@@ -21,65 +21,50 @@ export function getInitData(pageno = 1,startDate=getNowFormatDate(),endDate=getN
     let appId = localStorage.getItem("appId");
     return (dispatch)=>{
         api({
-            method:'/orders/total',
+            method:'/orders/page',
             mode:'jsonp',
             args:{
                 startDate: startDate,
                 endDate: endDate,
-                appId:appId
+                orderNo: orderNo.trim(),
+                agentOrderNo: agentOrderNo.trim(),
+                agentName: agentName.trim(),
+                filterAppId: filterAppId.trim(),
+                merchantName: merchantName.trim(),
+                mchId: mchId.trim(),
+                orderState: orderState,
+                result: result.trim(),
+                pageIndex:pageno,
+                pageSize:20
             },
-            callback:(e)=>{
-                 api({
-                    method:'/orders/page',
-                    mode:'jsonp',
-                    args:{
-                        startDate: startDate,
-                        endDate: endDate,
-                        orderNo: orderNo.trim(),
-                        agentOrderNo: agentOrderNo.trim(),
-                        agentName: agentName.trim(),
-                        filterAppId: filterAppId.trim(),
-                        merchantName: merchantName.trim(),
-                        mchId: mchId.trim(),
-                        orderState: orderState,
-                        result: result.trim(),
-                        pageIndex:pageno,
-                        pageSize:20
-                    },
-                    callback:(rsp)=>{
-                        if(rsp.data.data == ""){
-                            dispatch({
-                                type:INITGUNSDATA,
-                                dataSource: [],
-                                total:0,
-                                countMerchantNum:0,
-                                countOrderNum:0,
-                                totalMoney:0,
-                                totalProfit:0,
-                            });
-                        }else{
-                            dispatch({
-                                type:INITGUNSDATA,
-                                dataSource: rsp.data.data,
-                                total:Number(rsp.data.total),
-                                countMerchantNum:rsp.data.countMerchant,
-                                countOrderNum:rsp.data.countOrderNum,
-                                totalMoney:rsp.data.totalMoney,
-                                totalProfit:rsp.data.totalProfit,
-                            });
-                        }
-                        
-                    },
-                    errCallback:(msg)=>{
-                        // console.log(msg)
-                    }
-                });
+            callback:(rsp)=>{
+                if(rsp.data.data == ""){
+                    dispatch({
+                        type:INITGUNSDATA,
+                        dataSource: [],
+                        total:0,
+                        countMerchantNum:0,
+                        countOrderNum:0,
+                        totalMoney:0,
+                        totalProfit:0,
+                    });
+                }else{
+                    dispatch({
+                        type:INITGUNSDATA,
+                        dataSource: rsp.data.data,
+                        total:Number(rsp.data.total),
+                        countMerchantNum:rsp.data.countMerchant,
+                        countOrderNum:rsp.data.countOrderNum,
+                        totalMoney:rsp.data.totalMoney,
+                        totalProfit:rsp.data.totalProfit,
+                    });
+                }
+                
             },
             errCallback:(msg)=>{
                 // console.log(msg)
             }
         });
-      
     }
 }
 
