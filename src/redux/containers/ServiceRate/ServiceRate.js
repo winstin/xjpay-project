@@ -247,7 +247,7 @@ class ServiceRates extends Component {
             userData = JSON.parse(userData);
             let falg = "";
             for(let i in userData){
-                if(userData[i].upstream == this.state.newData.upstream){
+                if(userData[i].upstream == this.oldData.upstream){
                     falg = i;
                 }
             }
