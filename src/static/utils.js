@@ -1,4 +1,4 @@
-// import fetchJsonp from 'fetch-jsonp';
+import fetchJsonp from 'fetch-jsonp';
 
 // import fetch from 'whatwg-fetch';
 
@@ -357,8 +357,75 @@ var Tools = {
      
   },
 
+
+
   NetWorkPOST: function({method,args={},mode='jsonp',type="POST",dataType="",callback,errCallback}){
-      
+      let m = new FormData(args);
+      // m = this.buildArgs(m,args);
+      // var formData = new FormData();
+      // formData = this.buildArgs(formData,args);
+      // args = this.buildStr(args);
+      // if(args!=''){
+      //     args = '?'+args;
+      // }
+      console.log(args)
+      // name: newData.name,
+      // signdate: newData.signdate  ,
+      // expiredate: newData.expiredate  ,
+      // principal: newData.principal  ,
+      // phone: newData.phone  ,
+      // province: newData.province  ,
+      // city:newData.city  ,
+      // address: newData.address  ,
+      // accountname: newData.accountname  ,
+      // account: newData.account  ,
+      // bank: newData.bank  ,
+      // accounttype: newData.accounttype  ,
+      // accountprovince: newData.accountprovince  ,
+      // accountcity: newData.accountcity  ,
+      // accountaddress: newData.accountaddress  ,
+      // idtype: newData.idtype  ,
+      // linkman: newData.linkman  ,
+      // linkmantel: newData.linkmantel  ,
+      // appname: newData.appname  ,
+      // website: newData.website  ,
+      // m.append("name", args.name);
+      // m.append("signdate", args.signdate);
+
+      // m.append("expiredate", args.expiredate);
+      // m.append("principal", args.principal);
+
+      // m.append("idtype", args.idtype);
+      // m.append("accounttype", args.accounttype);
+
+      // m.append("accountprovince", args.accountprovince);
+      // fetch(`${webUrl+method}`, {
+      // // fetch(`${host}${method}`, {
+      //     method : 'POST',
+      //     mode : 'json',
+      //     credentials: 'include',//携带cookies
+      //     headers: {
+      //       "Content-Type": "multipart/form-data",
+      //       "Accept": "application/json",
+      //       "type": "formData"
+      //     },
+      //     body: m
+      // }).then((res)=>res.json()).then(function(responseText){
+      //     if(responseText == 'fail'){
+      //         //遇见错误时弹框提示   by Mothpro
+      //         //session获取失败登录失效
+      //     }else{
+      //         callback(responseText);
+      //     }
+      // }, function(error){
+      //     //错误处理，待补充
+      //     // console.log(error);
+      //     if (errCallback) {
+      //         errCallback(error);
+      //     } else {
+
+      //     }
+      // });
       const uri = webUrl+method;
       let data = {};
       data.url = uri;
@@ -369,9 +436,10 @@ var Tools = {
           }
           data.data = JSON.stringify(args);
       }else{
+          // var formData = new FormData(args)
           data.data = args;
       }
-      
+            
       data.dataType = mode;
       data.type = type;
       data.credentials='include';

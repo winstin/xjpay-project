@@ -35,6 +35,9 @@ const upstreamMent = [{
 },{
     name:'Q3',
     value:'KFT_SERVICE'
+},{
+    name:'Q4',
+    value:'HJ_SERVICE'
 }]
 
 const pointTypeMent = [{
@@ -243,6 +246,8 @@ class ServiceRates extends Component {
     updateRates = () =>{
         const {updateData} = this.props;
         let userData = localStorage.getItem("userFee0");
+
+        console.log(userData)
         if(userData!=undefined || userData!=null){
             userData = JSON.parse(userData);
             let falg = "";
@@ -321,6 +326,8 @@ class ServiceRates extends Component {
             return 'Q1';
         }else if(value == 'CONGYU_SERVICE'){
             return 'Q2';
+        }else if(value == 'HJ_SERVICE'){
+            return 'Q4';
         }
 
     }

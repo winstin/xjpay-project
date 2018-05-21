@@ -19,6 +19,12 @@ import Menu from 'qnui/lib/menu';
 import Config from 'static/config.js'
 import '../components.scss';
 import {api,isEmpty,promptToast} from "static/utils.js"
+import Form from 'qnui/lib/form';
+import Field from 'qnui/lib/field';
+import axios, { post } from 'axios';
+import config from 'static/config.js'
+
+const webUrl = config.webUrl;
 
 
 const onRowClick = function(record, index, e) {
@@ -95,11 +101,15 @@ class CustomDialog extends Component {
             newData:{},
             visibles1:false,
             visibles2:false,
-            visibles3:false
+            visibles3:false,
+
         };
+         this.field = new Field(this);
     }
 
-    
+    componentDidMount(){
+
+    }
     onOpen = () => {
         this.props.index.setState({
             visible: true
@@ -144,77 +154,75 @@ class CustomDialog extends Component {
     // website: 
     
     addData = () => {
-        this.props.index.setState({
-            visible: false
-        });
+       
+        
+        // if(this.state.newData.name == "" || this.state.newData.name == undefined){
+        //     promptToast("请填写完整信息！");
+        //     return;
+        // }
 
-        if(this.state.newData.name == "" || this.state.newData.name == undefined){
-            promptToast("请填写完整信息！");
-            return;
-        }
+        // if(this.state.newData.idtype == "" || this.state.newData.name == undefined){
+        //     promptToast("请填写完整信息！");
+        //     return;
+        // }
 
-        if(this.state.newData.idtype == "" || this.state.newData.name == undefined){
-            promptToast("请填写完整信息！");
-            return;
-        }
+        // if(this.state.newData.linkmantel == "" || this.state.newData.name == undefined){
+        //     promptToast("请填写完整信息！");
+        //     return;
+        // }
 
-        if(this.state.newData.linkmantel == "" || this.state.newData.name == undefined){
-            promptToast("请填写完整信息！");
-            return;
-        }
+        // if(this.state.newData.linkman == "" || this.state.newData.name == undefined){
+        //     promptToast("请填写完整信息！");
+        //     return;
+        // }
 
-        if(this.state.newData.linkman == "" || this.state.newData.name == undefined){
-            promptToast("请填写完整信息！");
-            return;
-        }
+        // if(this.state.newData.address == "" || this.state.newData.name == undefined){
+        //     promptToast("请填写完整信息！");
+        //     return;
+        // }
 
-        if(this.state.newData.address == "" || this.state.newData.name == undefined){
-            promptToast("请填写完整信息！");
-            return;
-        }
+        // if(this.state.newData.principal == "" || this.state.newData.principal == undefined){
+        //     promptToast("请填写完整信息！");return;
+        // }
 
-        if(this.state.newData.principal == "" || this.state.newData.principal == undefined){
-            promptToast("请填写完整信息！");return;
-        }
+        // if(this.state.newData.province == "" || this.state.newData.province == undefined){
+        //     promptToast("请填写完整信息！");return;
+        // }
 
-        if(this.state.newData.province == "" || this.state.newData.province == undefined){
-            promptToast("请填写完整信息！");return;
-        }
+        // if(this.state.newData.city == "" || this.state.newData.city == undefined){
+        //     promptToast("请填写完整信息！");return;
+        // }
 
-        if(this.state.newData.city == "" || this.state.newData.city == undefined){
-            promptToast("请填写完整信息！");return;
-        }
+        // if(this.state.newData.accountname == "" || this.state.newData.accountname == undefined){
+        //     promptToast("请填写完整信息！");return;
+        // }
 
-        if(this.state.newData.accountname == "" || this.state.newData.accountname == undefined){
-            promptToast("请填写完整信息！");return;
-        }
+        // if(this.state.newData.account == "" || this.state.newData.account == undefined){
+        //     promptToast("请填写完整信息！");return;
+        // }
 
-        if(this.state.newData.account == "" || this.state.newData.account == undefined){
-            promptToast("请填写完整信息！");return;
-        }
+        // if(this.state.newData.bank == "" || this.state.newData.bank == undefined){
+        //     promptToast("请填写完整信息！");return;
+        // }
 
-        if(this.state.newData.bank == "" || this.state.newData.bank == undefined){
-            promptToast("请填写完整信息！");return;
-        }
+        // if(this.state.newData.accounttype == "" || this.state.newData.accounttype == undefined){
+        //     promptToast("请填写完整信息！");return;
+        // }
 
-        if(this.state.newData.accounttype == "" || this.state.newData.accounttype == undefined){
-            promptToast("请填写完整信息！");return;
-        }
+        // if(this.state.newData.accountprovince == "" || this.state.newData.accountprovince == undefined){
+        //     promptToast("请填写完整信息！");return;
+        // }
 
-        if(this.state.newData.accountprovince == "" || this.state.newData.accountprovince == undefined){
-            promptToast("请填写完整信息！");return;
-        }
+        // if(this.state.newData.accountcity == "" || this.state.newData.accountcity == undefined){
+        //     promptToast("请填写完整信息！");return;
+        // }
 
-        if(this.state.newData.accountcity == "" || this.state.newData.accountcity == undefined){
-            promptToast("请填写完整信息！");return;
-        }
-
-        if(this.state.newData.appname == "" || this.state.newData.appname == undefined){
-            promptToast("请填写完整信息！");return;
-        }
+        // if(this.state.newData.appname == "" || this.state.newData.appname == undefined){
+        //     promptToast("请填写完整信息！");return;
+        // }
 
         this.props.index.addData(this.state.newData);
-        this.state.newData={};
+        // this.state.newData={};
     }
 
     toggleVisible = () => {
@@ -241,14 +249,96 @@ class CustomDialog extends Component {
         this.setState({visiblesex:false})
     }
 
+    onFormSubmit(e){
+        e.preventDefault() // Stop form submit
+        this.fileUpload(this.state.file).then((response)=>{
+          console.log(response.data);
+        })
+    }
+
+    fileUpload(file){
+        this.props.index.setState({
+            visible: false
+        });
+        const url = webUrl+'/agents/add';
+;
+        const formData = new FormData();
+        // id: '',
+        // name: newData.name,
+        // signdate: newData.signdate  ,
+        // expiredate: newData.expiredate  ,
+        // principal: newData.principal  ,
+        // phone: newData.phone  ,
+        // province: newData.province  ,
+        // city:newData.city  ,
+        // address: newData.address  ,
+        // accountname: newData.accountname  ,
+        // account: newData.account  ,
+        // bank: newData.bank  ,
+        // accounttype: newData.accounttype  ,
+        // accountprovince: newData.accountprovince  ,
+        // accountcity: newData.accountcity  ,
+        // accountaddress: newData.accountaddress  ,
+        // idtype: newData.idtype  ,
+        // linkman: newData.linkman  ,
+        // linkmantel: newData.linkmantel  ,
+        // appname: newData.appname  ,
+        // website: newData.website  ,
+        formData.append('file',file);
+        formData.append("name", this.field.getValues().name);
+        formData.append("signdate", this.field.getValues().signdate);
+
+        formData.append("expiredate", this.field.getValues().expiredate);
+        formData.append("principal", this.field.getValues().principal);
+
+        formData.append("idtype", this.field.getValues().idtype);
+        formData.append("accounttype", this.field.getValues().accounttype);
+
+        formData.append("accountprovince", this.field.getValues().accountprovince);
+
+        formData.append("id", '');
+
+        formData.append("phone", this.field.getValues().phone);
+
+        formData.append("province", this.field.getValues().province);
+
+        formData.append("city", this.field.getValues().city);
+        formData.append("address", this.field.getValues().address);
+        formData.append("accountname", this.field.getValues().accountname);
+        formData.append("account", this.field.getValues().account);
+        formData.append("bank", this.field.getValues().bank);
+        formData.append("accountcity", this.field.getValues().accountcity);
+
+        formData.append("accountaddress", this.field.getValues().accountaddress);
+        formData.append("linkman", this.field.getValues().linkman);
+        formData.append("linkmantel", this.field.getValues().linkmantel);
+        formData.append("appname", this.field.getValues().appname);
+        formData.append("website", this.field.getValues().website);
+        formData.append("license", this.field.getValues().license);
+        formData.append("staffName", this.field.getValues().staffName);
+        formData.append("parentId", this.field.getValues().parentId);
+        
+        
+        
+        const config = {
+            headers: {
+                'content-type': 'multipart/form-data'
+            }
+        }
+        return  post(url, formData,config)
+    }
     render() {
-        const {dataSource,visible,title} = this.props;
+        let {dataSource,visible,title} = this.props;
+        const init = this.field.init;
         let province = accountprovince.map((item,index)=>{
             return  <Menu.Item onClick={
                         ()=>{
                             this.state.newData.accountprovince = item.value;
                             this.accountprovince=item.name
-                            dataSource.accountprovince = item.value
+                            if(dataSource){
+                                dataSource.accountprovince = item.value
+                            }
+                           
                             }}
                             >{item.name
                         }
@@ -259,7 +349,9 @@ class CustomDialog extends Component {
                 ()=>{
                     this.state.newData.accountaddress = item.value;
                     this.accountaddress=item.name
-                    dataSource.accountaddress = item.value
+                    if(dataSource){
+                        dataSource.accountaddress = item.value
+                    }
                 }
             }>{item.name}</Menu.Item>
         })
@@ -268,7 +360,9 @@ class CustomDialog extends Component {
                 ()=>{
                     this.state.newData.accounttype = item.value;
                     this.accounttype=item.name
-                    dataSource.accounttype = item.value
+                    if(dataSource){
+                        dataSource.accounttype = item.value
+                    }
                 }
             }>{item.name}</Menu.Item>
         })
@@ -287,19 +381,19 @@ class CustomDialog extends Component {
                                 <span style={{fontSize:'14px',marginTop:'7px'}}>公司名称：</span>
                             </div>
                             
-                            <Input placeholder="公司名称" className='classWidth'    defaultValue={dataSource.name} onChange={(e)=>{this.state.newData.name = e}}/>
+                            <Input placeholder="公司名称" className='classWidth'     defaultValue={dataSource.name} onChange={(e)=>{this.state.newData.name = e}}/>
                             <div className="flexStyle">
                                 <span></span>
                                 <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>执照编号：</span>
                             </div>
-                            <Input defaultValue={dataSource.accountcity} placeholder="执照编号" className='classWidth'   onChange={(e)=>{this.state.newData.accountcity = e}} />
+                            <Input defaultValue={dataSource.accountcity} placeholder="执照编号" className='classWidth'    onChange={(e)=>{this.state.newData.accountcity = e}} />
                         </Row>
                         <Row className="marginTop">
                             <div className="flexStyle">
                                 <span></span>
                                 <span style={{fontSize:'14px',marginTop:'7px'}}>渠道类型：</span>
                             </div>
-                            <Dropdown trigger={<Input  placeholder="渠道类型" className='classWidth'  value={dataSource.accountprovince ==1 ? "平台服务商" :"渠道服务商"}  />}
+                            <Dropdown trigger={<Input  placeholder="渠道类型" className='classWidth'   value={dataSource.accountprovince ==1 ? "平台服务商" :"渠道服务商"}  />}
                                       triggerType="click"
                                       visible={this.state.visibles1}
                                       onVisibleChange={this.onVisibleChange1}
@@ -312,7 +406,7 @@ class CustomDialog extends Component {
                                 <span></span>
                                 <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>渠道级别：</span>
                             </div>
-                            <Dropdown trigger={<Input  placeholder="渠道级别" className='classWidth'  value={dataSource.accountaddress == 1 ?'企业代理':'个人代理'}/>}
+                            <Dropdown trigger={<Input  placeholder="渠道级别" className='classWidth'   value={dataSource.accountaddress == 1 ?'企业代理':'个人代理'}/>}
                                       triggerType="click"
                                       visible={this.state.visibles2}
                                       onVisibleChange={this.onVisibleChange2}
@@ -328,49 +422,49 @@ class CustomDialog extends Component {
                                 <span style={{fontSize:'14px',marginTop:'7px'}}>签约时间：</span>
                             </div>
                             <DatePicker defaultValue={dataSource.signdate} className="time-width" onChange={(val, str) => {this.state.newData.signdate = str}} />
-                            {/*<Input defaultValue={dataSource.signdate} htmlType='date' placeholder="签约时间" className='classWidth'   onChange={(e)=>{this.state.newData.signdate = e}} />*/}
+                            {/*<Input defaultValue={dataSource.signdate} htmlType='date' placeholder="签约时间" className='classWidth'    onChange={(e)=>{this.state.newData.signdate = e}} />*/}
                             <div className="flexStyle">
                                 <span></span>
                                 <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>到期时间：</span>
                             </div>
                             <DatePicker defaultValue={dataSource.expiredate} className="time-width" onChange={(val, str) => {this.state.newData.expiredate = str}} />
-                            {/*<Input defaultValue={dataSource.expiredate} htmlType='date' placeholder="到期时间" className='classWidth'   onChange={(e)=>{this.state.newData.expiredate = e}} />*/}
+                            {/*<Input defaultValue={dataSource.expiredate} htmlType='date' placeholder="到期时间" className='classWidth'    onChange={(e)=>{this.state.newData.expiredate = e}} />*/}
                         </Row>
                         <Row className="marginTop">
                             <div className="flexStyle">
                                 <span></span>
                                 <span style={{fontSize:'14px',marginTop:'7px'}}>法人姓名：</span>
                             </div>
-                            <Input defaultValue={dataSource.principal} placeholder="法人姓名" className='classWidth'  onChange={(e)=>{this.state.newData.principal = e}}  />
+                            <Input defaultValue={dataSource.principal} placeholder="法人姓名" className='classWidth'   onChange={(e)=>{this.state.newData.principal = e}}  />
                             <div className="flexStyle">
                                 <span></span>
                                 <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>法人电话：</span>
                             </div>
-                            <Input defaultValue={dataSource.phone} placeholder="法人姓名" className='classWidth'  onChange={(e)=>{this.state.newData.phone = e}}  />
+                            <Input defaultValue={dataSource.phone} placeholder="法人姓名" className='classWidth'   onChange={(e)=>{this.state.newData.phone = e}}  />
                         </Row>
                         <Row className="marginTop">
                             <div className="flexStyle">
                                 <span></span>
                                 <span style={{fontSize:'14px',marginTop:'7px'}}>所在省份：</span>
                             </div>
-                            <Input defaultValue={dataSource.province} placeholder="所在省份" className='classWidth'  onChange={(e)=>{this.state.newData.province = e}}  />
+                            <Input defaultValue={dataSource.province} placeholder="所在省份" className='classWidth'   onChange={(e)=>{this.state.newData.province = e}}  />
                             <div className="flexStyle">
                                 <span></span>
                                 <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>所在城市：</span>
                             </div>
-                            <Input defaultValue={dataSource.city} placeholder="所在城市" className='classWidth'   onChange={(e)=>{this.state.newData.city = e}} />
+                            <Input defaultValue={dataSource.city} placeholder="所在城市" className='classWidth'    onChange={(e)=>{this.state.newData.city = e}} />
                         </Row>
                         <Row className="marginTop">
                             <div className="flexStyle">
                                 <span></span>
                                 <span style={{fontSize:'14px',marginTop:'7px'}}>详细地址：</span>
                             </div>
-                            <Input defaultValue={dataSource.address} placeholder="详细地址" className='classWidth'  onChange={(e)=>{this.state.newData.address = e}}  />
+                            <Input defaultValue={dataSource.address} placeholder="详细地址" className='classWidth'   onChange={(e)=>{this.state.newData.address = e}}  />
                             <div className="flexStyle">
                                 <span></span>
                                 <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>法人邮箱：</span>
                             </div>
-                            <Input defaultValue={dataSource.linkman} placeholder="法人邮箱" className='classWidth'     onChange={(e)=>{this.state.newData.linkman = e}}/>
+                            <Input defaultValue={dataSource.linkman} placeholder="法人邮箱" className='classWidth'      onChange={(e)=>{this.state.newData.linkman = e}}/>
                         </Row>
 
                         <Row className="marginTop">
@@ -378,12 +472,12 @@ class CustomDialog extends Component {
                                 <span></span>
                                 <span style={{fontSize:'14px',marginTop:'7px'}}>商务邮箱：</span>
                             </div>
-                            <Input defaultValue={dataSource.linkmantel} placeholder="商务邮箱" className='classWidth'   onChange={(e)=>{this.state.newData.linkmantel = e}} />
+                            <Input defaultValue={dataSource.linkmantel} placeholder="商务邮箱" className='classWidth'    onChange={(e)=>{this.state.newData.linkmantel = e}} />
                             <div className="flexStyle">
                                 <span></span>
                                 <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>财务邮箱：</span>
                             </div>
-                            <Input defaultValue={dataSource.idtype} placeholder="财务邮箱" className='classWidth'    onChange={(e)=>{this.state.newData.idtype = e}}/>
+                            <Input defaultValue={dataSource.idtype} placeholder="财务邮箱" className='classWidth'     onChange={(e)=>{this.state.newData.idtype = e}}/>
                         </Row>
 
                         <Row className="marginTop">
@@ -391,13 +485,41 @@ class CustomDialog extends Component {
                                 <span></span>
                                 <span style={{fontSize:'14px',marginTop:'7px'}}>APP名称：</span>
                             </div>
-                            <Input defaultValue={dataSource.appname} placeholder="APP名称" className='classWidth'   onChange={(e)=>{this.state.newData.appname = e}} />
+                            <Input defaultValue={dataSource.appname} placeholder="APP名称" className='classWidth'    onChange={(e)=>{this.state.newData.appname = e}} />
                             <div className="flexStyle">
                                 <span></span>
                                 <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>官网地址：</span>
                             </div>
-                            <Input defaultValue={dataSource.website} placeholder="官网地址" className='classWidth'   onChange={(e)=>{this.state.newData.website = e}} />
+                            <Input defaultValue={dataSource.website} placeholder="官网地址" className='classWidth'    onChange={(e)=>{this.state.newData.website = e}} />
                         </Row>
+
+
+                        <Row className="marginTop">
+                            <div className="flexStyle">
+                                <span></span>
+                                <span style={{fontSize:'14px',marginTop:'7px'}}>业务联系：</span>
+                            </div>
+                            <Input placeholder="业务联系" defaultValue={dataSource.staffName} className='classWidth'    onChange={(e)=>{this.state.newData.staffName = e}} />
+                            <div className="flexStyle">
+                                <span></span>
+                                <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>身份证号：</span>
+                            </div>
+                            <Input placeholder="身份证号" defaultValue={dataSource.license} className='classWidth'    onChange={(e)=>{this.state.newData.license = e}} />
+                        </Row>
+
+                        <Row className="marginTop">
+                            <div className="flexStyle">
+                                <span></span>
+                                <span style={{fontSize:'14px',marginTop:'7px'}}>上游appId：</span>
+                            </div>
+                            <Input placeholder="APP名称" className='classWidth'  defaultValue={dataSource.parentId}  onChange={(e)=>{this.state.newData.parentId = e}} />
+                            <div className="flexStyle hide">
+                                <span></span>
+                                <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>营业执照：</span>
+                            </div>
+                            <Input placeholder="官网地址" className='classWidth hide' id="Photo"  htmlType='file' />
+                        </Row>
+
 
                         <span style={{fontSize:'24px',lineHeight:'60px'}}>结算信息</span>
                         <Row>
@@ -406,7 +528,7 @@ class CustomDialog extends Component {
                                 <span style={{fontSize:'14px',marginTop:'7px'}}>账户类型：</span>
                             </div>
                             
-                            <Dropdown trigger={<Input  placeholder="账户类型" className='classWidth'   value={dataSource.accounttype==1?'对公':'对私'} />}
+                            <Dropdown trigger={<Input  placeholder="账户类型" className='classWidth'    value={dataSource.accounttype==1?'对公':'对私'} />}
                                       triggerType="click"
                                       visible={this.state.visibles3}
                                       onVisibleChange={this.onVisibleChange3}
@@ -419,19 +541,19 @@ class CustomDialog extends Component {
                                 <span></span>
                                 <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>收款户名：</span>
                             </div>
-                            <Input defaultValue={dataSource.accountname} placeholder="收款户名" className='classWidth'    onChange={(e)=>{this.state.newData.accountname = e}}/>
+                            <Input defaultValue={dataSource.accountname} placeholder="收款户名" className='classWidth'     onChange={(e)=>{this.state.newData.accountname = e}}/>
                         </Row>
                         <Row className="marginTop">
                             <div className="flexStyle">
                                 <span></span>
                                 <span style={{fontSize:'14px',marginTop:'7px'}}>开户行：</span>
                             </div>
-                            <Input defaultValue={dataSource.bank} placeholder="开户行" className='classWidth'   onChange={(e)=>{this.state.newData.bank = e}} />
+                            <Input defaultValue={dataSource.bank} placeholder="开户行" className='classWidth'    onChange={(e)=>{this.state.newData.bank = e}} />
                             <div className="flexStyle">
                                 <span></span>
                                 <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>收款账户：</span>
                             </div>
-                            <Input defaultValue={dataSource.account} placeholder="收款账户" className='classWidth'   onChange={(e)=>{this.state.newData.account = e}} />
+                            <Input defaultValue={dataSource.account} placeholder="收款账户" className='classWidth'    onChange={(e)=>{this.state.newData.account = e}} />
                         </Row>
 
                 </Dialog>
@@ -442,163 +564,194 @@ class CustomDialog extends Component {
                         onOk={this.addData}
                         closable="esc,mask,close"
                         onCancel={this.onClose}
+                        footer={false}
                         onClose={this.onClose} title={title}>
-                        <span style={{fontSize:'24px',marginTop:'7px',width:'80px'}}>基础信息</span>
+                        <form direction="ver" field={this.field} onSubmit={this.onFormSubmit.bind(this)}>
+                            <span style={{fontSize:'24px',marginTop:'7px',width:'80px'}}>基础信息</span>
 
-                        <Row className="marginTop">
-                            <div className="flexStyle">
-                                <span></span>
-                                <span style={{fontSize:'14px',marginTop:'7px'}}>公司名称：</span>
-                            </div>
-                            
-                            <Input placeholder="公司名称" className='classWidth' onChange={(e)=>{this.state.newData.name = e}}/>
-                            <div className="flexStyle">
-                                <span></span>
-                                <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>执照编号：</span>
-                            </div>
-                            <Input  placeholder="执照编号" className='classWidth'    onChange={(e)=>{this.state.newData.accountcity = e}}/>
-                        </Row>
-                        <Row className="marginTop">
-                            <div className="flexStyle">
-                                <span></span>
-                                <span style={{fontSize:'14px',marginTop:'7px'}}>渠道类型：</span>
-                            </div>
-                            <Dropdown trigger={<Input  placeholder="渠道类型" className='classWidth'  value={this.accountprovince}  />}
-                                      triggerType="click"
-                                      visible={this.state.visibles1}
-                                      onVisibleChange={this.onVisibleChange1}
-                                      safeNode={() => this.refs.button}>
-                                <Menu>
-                                    {province}
-                                </Menu>
-                            </Dropdown>
-                            
-                            <div className="flexStyle">
-                                <span></span>
-                                <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>渠道级别：</span>
-                            </div>
-                            <Dropdown trigger={<Input  placeholder="渠道级别" className='classWidth'   value={this.accountaddress}/>}
-                                      triggerType="click"
-                                      visible={this.state.visibles2}
-                                      onVisibleChange={this.onVisibleChange2}
-                                      safeNode={() => this.refs.button}>
-                                <Menu>
-                                    {address}
-                                </Menu>
-                            </Dropdown>
-                            
-                        </Row>
-                        <Row className="marginTop">
-                            <div className="flexStyle">
-                                <span></span>
-                                <span style={{fontSize:'14px',marginTop:'7px'}}>签约时间：</span>
-                            </div>
-                            <DatePicker className="time-width" onChange={(val, str) => {this.state.newData.signdate = str}} />
-                            {/*<Input  placeholder="签约时间" className='classWidth'  htmlType='date'  onChange={(e)=>{this.state.newData.signdate = e}}/>*/}
-                            <div className="flexStyle">
-                                <span></span>
-                                <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>到期时间：</span>
-                            </div>
-                            <DatePicker className="time-width" onChange={(val, str) => {this.state.newData.expiredate = str}} />
-                            {/*<Input  placeholder="到期时间" className='classWidth'  htmlType='date' onChange={(e)=>{this.state.newData.expiredate = e}}  />*/}
-                        </Row>
-                        <Row className="marginTop">
-                            <div className="flexStyle">
-                                <span></span>
-                                <span style={{fontSize:'14px',marginTop:'7px'}}>法人姓名：</span>
-                            </div>
-                            <Input placeholder="法人姓名" className='classWidth'   onChange={(e)=>{this.state.newData.principal = e}}  />
-                            <div className="flexStyle">
-                                <span></span>
-                                <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>法人电话：</span>
-                            </div>
-                            <Input placeholder="法人电话" className='classWidth'   onChange={(e)=>{this.state.newData.phone = e}} />
-                        </Row>
-                        <Row className="marginTop">
-                            <div className="flexStyle">
-                                <span></span>
-                                <span style={{fontSize:'14px',marginTop:'7px'}}>所在省份：</span>
-                            </div>
-                            <Input  placeholder="所在省份" className='classWidth'    onChange={(e)=>{this.state.newData.province = e}} />
-                            <div className="flexStyle">
-                                <span></span>
-                                <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>所在城市：</span>
-                            </div>
-                            <Input  placeholder="所在城市" className='classWidth'   onChange={(e)=>{this.state.newData.city = e}} />
-                        </Row>
-                        <Row className="marginTop">
-                            <div className="flexStyle">
-                                <span></span>
-                                <span style={{fontSize:'14px',marginTop:'7px'}}>详细地址：</span>
-                            </div>
-                            <Input  placeholder="详细地址" className='classWidth'    onChange={(e)=>{this.state.newData.address = e}}/>
-                            <div className="flexStyle">
-                                <span></span>
-                                <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>法人邮箱：</span>
-                            </div>
-                            <Input  placeholder="法人邮箱" className='classWidth'   onChange={(e)=>{this.state.newData.linkman = e}} />
-                        </Row>
+                            <Row className="marginTop">
+                                <div className="flexStyle">
+                                    <span></span>
+                                    <span style={{fontSize:'14px',marginTop:'7px'}}>公司名称：</span>
+                                </div>
+                                
+                                <Input placeholder="公司名称" {...init('name')} className='classWidth'  />
+                                <div className="flexStyle">
+                                    <span></span>
+                                    <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>执照编号：</span>
+                                </div>
+                                <Input  placeholder="执照编号" className='classWidth'   {...init('accountcity')}  />
+                            </Row>
+                            <Row className="marginTop">
+                                <div className="flexStyle">
+                                    <span></span>
+                                    <span style={{fontSize:'14px',marginTop:'7px'}}>渠道类型：</span>
+                                </div>
+                                <Dropdown trigger={<Input  placeholder="渠道类型" className='classWidth'   {...init('accountprovince')} value={this.accountprovince}  />}
+                                          triggerType="click"
+                                          visible={this.state.visibles1}
+                                          onVisibleChange={this.onVisibleChange1}
+                                          safeNode={() => this.refs.button}>
+                                    <Menu>
+                                        {province}
+                                    </Menu>
+                                </Dropdown>
+                                
+                                <div className="flexStyle">
+                                    <span></span>
+                                    <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>渠道级别：</span>
+                                </div>
+                                <Dropdown trigger={<Input  placeholder="渠道级别" className='classWidth'  {...init('accountaddress')}    value={this.accountaddress}/>}
+                                          triggerType="click"
+                                          visible={this.state.visibles2}
+                                          onVisibleChange={this.onVisibleChange2}
+                                          safeNode={() => this.refs.button}>
+                                    <Menu>
+                                        {address}
+                                    </Menu>
+                                </Dropdown>
+                                
+                            </Row>
+                            <Row className="marginTop">
+                                <div className="flexStyle">
+                                    <span></span>
+                                    <span style={{fontSize:'14px',marginTop:'7px'}}>签约时间：</span>
+                                </div>
+                                <DatePicker className="time-width"  {...init('signdate')} />
+                                {/*<Input  placeholder="签约时间" className='classWidth'   htmlType='date'  onChange={(e)=>{this.state.newData.signdate = e}}/>*/}
+                                <div className="flexStyle">
+                                    <span></span>
+                                    <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>到期时间：</span>
+                                </div>
+                                <DatePicker className="time-width" {...init('expiredate')} />
+                                {/*<Input  placeholder="到期时间" className='classWidth'   htmlType='date' onChange={(e)=>{this.state.newData.expiredate = e}}  />*/}
+                            </Row>
+                            <Row className="marginTop">
+                                <div className="flexStyle">
+                                    <span></span>
+                                    <span style={{fontSize:'14px',marginTop:'7px'}}>法人姓名：</span>
+                                </div>
+                                <Input placeholder="法人姓名" className='classWidth'   {...init('principal')}   />
+                                <div className="flexStyle">
+                                    <span></span>
+                                    <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>法人电话：</span>
+                                </div>
+                                <Input placeholder="法人电话" className='classWidth'   {...init('phone')}  />
+                            </Row>
+                            <Row className="marginTop">
+                                <div className="flexStyle">
+                                    <span></span>
+                                    <span style={{fontSize:'14px',marginTop:'7px'}}>所在省份：</span>
+                                </div>
+                                <Input  placeholder="所在省份" className='classWidth'   {...init('province')} />
+                                <div className="flexStyle">
+                                    <span></span>
+                                    <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>所在城市：</span>
+                                </div>
+                                <Input  placeholder="所在城市" className='classWidth'  {...init('city')}   />
+                            </Row>
+                            <Row className="marginTop">
+                                <div className="flexStyle">
+                                    <span></span>
+                                    <span style={{fontSize:'14px',marginTop:'7px'}}>详细地址：</span>
+                                </div>
+                                <Input  placeholder="详细地址" className='classWidth'  {...init('address')}  />
+                                <div className="flexStyle">
+                                    <span></span>
+                                    <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>法人邮箱：</span>
+                                </div>
+                                <Input  placeholder="法人邮箱" className='classWidth'   {...init('linkman')} />
+                            </Row>
 
-                        <Row className="marginTop">
-                            <div className="flexStyle">
-                                <span></span>
-                                <span style={{fontSize:'14px',marginTop:'7px'}}>商务邮箱：</span>
-                            </div>
-                            <Input  placeholder="商务邮箱" className='classWidth'    onChange={(e)=>{this.state.newData.linkmantel = e}}/>
-                            <div className="flexStyle">
-                                <span></span>
-                                <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>财务邮箱：</span>
-                            </div>
-                            <Input  placeholder="财务邮箱" className='classWidth'    onChange={(e)=>{this.state.newData.idtype = e}}/>
-                        </Row>
+                            <Row className="marginTop">
+                                <div className="flexStyle">
+                                    <span></span>
+                                    <span style={{fontSize:'14px',marginTop:'7px'}}>商务邮箱：</span>
+                                </div>
+                                <Input  placeholder="商务邮箱" className='classWidth'   {...init('linkmantel')}  />
+                                <div className="flexStyle">
+                                    <span></span>
+                                    <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>财务邮箱：</span>
+                                </div>
+                                <Input  placeholder="财务邮箱" className='classWidth'   {...init('idtype')}  />
+                            </Row>
 
-                        <Row className="marginTop">
-                            <div className="flexStyle">
-                                <span></span>
-                                <span style={{fontSize:'14px',marginTop:'7px'}}>APP名称：</span>
-                            </div>
-                            <Input placeholder="APP名称" className='classWidth'   onChange={(e)=>{this.state.newData.appname = e}} />
-                            <div className="flexStyle">
-                                <span></span>
-                                <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>官网地址：</span>
-                            </div>
-                            <Input placeholder="官网地址" className='classWidth'   onChange={(e)=>{this.state.newData.website = e}} />
-                        </Row>
+                            <Row className="marginTop">
+                                <div className="flexStyle">
+                                    <span></span>
+                                    <span style={{fontSize:'14px',marginTop:'7px'}}>APP名称：</span>
+                                </div>
+                                <Input placeholder="APP名称" className='classWidth'    {...init('appname')}  />
+                                <div className="flexStyle">
+                                    <span></span>
+                                    <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>官网地址：</span>
+                                </div>
+                                <Input placeholder="官网地址" className='classWidth'    {...init('website')}  />
+                            </Row>
 
-                        <span style={{fontSize:'24px',lineHeight:'60px'}}>结算信息</span>
-                        <Row>
-                            <div className="flexStyle">
-                                <span></span>
-                                <span style={{fontSize:'14px',marginTop:'7px'}}>账户类型：</span>
-                            </div>
-                            <Dropdown trigger={<Input  placeholder="账户类型" className='classWidth'   value={this.accounttype} />}
-                                      triggerType="click"
-                                      visible={this.state.visibles3}
-                                      onVisibleChange={this.onVisibleChange3}
-                                      safeNode={() => this.refs.button}>
-                                <Menu>
-                                    {type}
-                                </Menu>
-                            </Dropdown>
-                            <div className="flexStyle">
-                                <span></span>
-                                <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>收款户名：</span>
-                            </div>
-                            <Input placeholder="收款户名" className='classWidth'    onChange={(e)=>{this.state.newData.accountname = e}}/>
-                        </Row>
-                        <Row className="marginTop">
-                            <div className="flexStyle">
-                                <span></span>
-                                <span style={{fontSize:'14px',marginTop:'7px'}}>开户行：</span>
-                            </div>
-                            <Input  placeholder="开户行" className='classWidth'    onChange={(e)=>{this.state.newData.bank = e}} />
-                            <div className="flexStyle">
-                                <span></span>
-                                <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>收款账户：</span>
-                            </div>
-                            <Input  placeholder="收款账户" className='classWidth'   onChange={(e)=>{this.state.newData.account = e}} />
-                        </Row>
+                            <Row className="marginTop">
+                                <div className="flexStyle">
+                                    <span></span>
+                                    <span style={{fontSize:'14px',marginTop:'7px'}}>业务联系：</span>
+                                </div>
+                                <Input placeholder="业务联系" className='classWidth'  {...init('staffName')}   />
+                                <div className="flexStyle">
+                                    <span></span>
+                                    <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>身份证号：</span>
+                                </div>
+                                <Input placeholder="身份证号" className='classWidth'   {...init('license')}  />
+                            </Row>
 
+                            <Row className="marginTop">
+                                <div className="flexStyle">
+                                    <span></span>
+                                    <span style={{fontSize:'14px',marginTop:'7px'}}>上游appId：</span>
+                                </div>
+                                <Input placeholder="APP名称" className='classWidth'    {...init('parentId')}  />
+                                <div className="flexStyle">
+                                    <span></span>
+                                    <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>营业执照：</span>
+                                </div>
+                                <Input placeholder="官网地址" className='classWidth'  htmlType='file' {...init('file')} id="Photo" onChange={(e)=>{
+                                    this.setState({file:document.getElementById("Photo").files[0]})
+                                }} />
+                            </Row>
+
+                            <span style={{fontSize:'24px',lineHeight:'60px'}}>结算信息</span>
+                            <Row>
+                                <div className="flexStyle">
+                                    <span></span>
+                                    <span style={{fontSize:'14px',marginTop:'7px'}}>账户类型：</span>
+                                </div>
+                                <Dropdown trigger={<Input  placeholder="账户类型" className='classWidth'    {...init('accounttype')}  value={this.accounttype} />}
+                                          triggerType="click"
+                                          visible={this.state.visibles3}
+                                          onVisibleChange={this.onVisibleChange3}
+                                          safeNode={() => this.refs.button}>
+                                    <Menu>
+                                        {type}
+                                    </Menu>
+                                </Dropdown>
+                                <div className="flexStyle">
+                                    <span></span>
+                                    <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>收款户名：</span>
+                                </div>
+                                <Input placeholder="收款户名" className='classWidth'    {...init('accountname')}/>
+                            </Row>
+                            <Row className="marginTop">
+                                <div className="flexStyle">
+                                    <span></span>
+                                    <span style={{fontSize:'14px',marginTop:'7px'}}>开户行：</span>
+                                </div>
+                                <Input  placeholder="开户行" className='classWidth'    {...init('bank')}  />
+                                <div className="flexStyle">
+                                    <span></span>
+                                    <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>收款账户：</span>
+                                </div>
+                                <Input  placeholder="收款账户" className='classWidth'   {...init('account')}   />
+                            </Row>
+                            <button type="submit" className='submit-btn'>提交</button>
+                        </form>
                 </Dialog>
             );
         }

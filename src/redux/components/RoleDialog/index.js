@@ -1,7 +1,5 @@
 import React,{Component,PropTypes} from 'react'
-import { Row, Col } from 'qnui/lib/grid';
 import Dialog from 'qnui/lib/dialog';
-
 import Config from 'static/config.js'
 import Radio, { Group as RadioGroup } from 'qnui/lib/radio';
 
@@ -39,7 +37,7 @@ class RoleDialog extends Component {
 
     renderCheckbox(){
         let jsx = Config.RolePlayer.map((item,index)=>{
-            return  <div>
+            return  <div >
                         <Radio  value={item.id}>
                             {Config.RolePlayer[index].name}
                         </Radio>

@@ -576,3 +576,18 @@ th .next-table-cell-wrapper{
     color: #2E89DD;
     cursor: pointer;
 }
+
+.submit-btn{
+    display: flex;
+    margin: auto;
+    margin-top: 10px;
+    /* width: 100px; */
+    /* text-align: center; */
+    /* padding: 10px; */
+    padding: 5px;
+    padding-left: 30px;
+    padding-right: 30px;
+    background: #2E89DD;
+    color: #fff;
+
+}

@@ -5,7 +5,7 @@ export const INITDATA = "INITDATA";
 export const CHOOSEDATA = "CHOOSEDATA";
 export const DetailDATA = "DetailDATA";
 
-import {api,ajax,isEmpty,successToast,errorToast} from "static/utils.js"
+import {api,ajax,isEmpty,successToast,errorToast,NetWorkPOST} from "static/utils.js"
 
 /**
  * @Author   Winstin
@@ -191,6 +191,9 @@ export function updateData(oldData,newData){
                 linkmantel: newData.linkmantel == undefined ? oldData[0].linkmantel : newData.linkmantel,
                 appname: newData.appname == undefined ? oldData[0].appname : newData.appname,
                 website: newData.website == undefined ? oldData[0].website : newData.website,
+                staffName: newData.staffName == undefined ? oldData[0].staffName : newData.staffName,
+                license: newData.license == undefined ? oldData[0].license : newData.license,
+                parentId: newData.parentId == undefined ? oldData[0].parentId : newData.parentId,
             };
     return (dispatch)=>{
         api({
@@ -220,41 +223,59 @@ export function updateData(oldData,newData){
  * @param    {[type]}   newData [description]
  */
 export function addData(newData){
+
     return (dispatch)=>{
-        api({
+        newData.id = "";
+        NetWorkPOST({
             method:'/agents/add',
-            mode:'jsonp',
-            args:{
-                id: '',
-                name: newData.name,
-                signdate: newData.signdate  ,
-                expiredate: newData.expiredate  ,
-                principal: newData.principal  ,
-                phone: newData.phone  ,
-                province: newData.province  ,
-                city:newData.city  ,
-                address: newData.address  ,
-                accountname: newData.accountname  ,
-                account: newData.account  ,
-                bank: newData.bank  ,
-                accounttype: newData.accounttype  ,
-                accountprovince: newData.accountprovince  ,
-                accountcity: newData.accountcity  ,
-                accountaddress: newData.accountaddress  ,
-                idtype: newData.idtype  ,
-                linkman: newData.linkman  ,
-                linkmantel: newData.linkmantel  ,
-                appname: newData.appname  ,
-                website: newData.website  ,
-            },
+            mode:'json',
+            args:newData,
             callback:(rsp)=>{
-                console.log(rsp)
-                successToast('添加成功！');
+                successToast('添加成功！')
             },
             errCallback:(msg)=>{
-                errorToast('添加失败！原因：'+JSON.stringify(msg));
+                if(msg.message){
+                    errorToast(msg.message)
+                }else{
+                    errorToast('添加失败！')
+                }
+                
             }
         });
+    //     // api({
+    //     //     method:'/agents/add',
+    //     //     mode:'jsonp',
+    //     //     args:{
+    //     //         id: '',
+    //     //         name: newData.name,
+    //     //         signdate: newData.signdate  ,
+    //     //         expiredate: newData.expiredate  ,
+    //     //         principal: newData.principal  ,
+    //     //         phone: newData.phone  ,
+    //     //         province: newData.province  ,
+    //     //         city:newData.city  ,
+    //     //         address: newData.address  ,
+    //     //         accountname: newData.accountname  ,
+    //     //         account: newData.account  ,
+    //     //         bank: newData.bank  ,
+    //     //         accounttype: newData.accounttype  ,
+    //     //         accountprovince: newData.accountprovince  ,
+    //     //         accountcity: newData.accountcity  ,
+    //     //         accountaddress: newData.accountaddress  ,
+    //     //         idtype: newData.idtype  ,
+    //     //         linkman: newData.linkman  ,
+    //     //         linkmantel: newData.linkmantel  ,
+    //     //         appname: newData.appname  ,
+    //     //         website: newData.website  ,
+    //     //     },
+    //     //     callback:(rsp)=>{
+    //     //         console.log(rsp)
+    //     //         successToast('添加成功！');
+    //     //     },
+    //     //     errCallback:(msg)=>{
+    //     //         errorToast('添加失败！原因：'+JSON.stringify(msg));
+    //     //     }
+    //     // });
     }
 }
 
