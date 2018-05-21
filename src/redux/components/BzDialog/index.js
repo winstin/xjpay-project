@@ -158,8 +158,14 @@ class RoleDialog extends Component {
                     resolve(e);
                 })
             });
+
+        let f = new Promise(function(resolve, reject){        //做一些异步操作
+                self.getData('MA9112:转账失败-RJ90对方返回：其他',(e)=>{
+                    resolve(e);
+                })
+            });
         Promise
-        .all([a,b,c,d,e])
+        .all([a,b,c,d,e,f])
         .then(function(results){
             let data = [];
             for(let i in results){

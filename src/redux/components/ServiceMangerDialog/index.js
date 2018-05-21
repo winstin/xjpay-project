@@ -284,11 +284,86 @@ class CustomDialog extends Component {
         // linkmantel: newData.linkmantel  ,
         // appname: newData.appname  ,
         // website: newData.website  ,
+        
+
+        if(this.field.getValues().name == "" || this.field.getValues().name == undefined){
+            promptToast("请填写完整信息！");
+            return;
+        }
+
+        if(this.field.getValues().idtype == "" || this.field.getValues().idtype == undefined){
+            promptToast("请填写完整信息！");
+            return;
+        }
+
+        if(this.field.getValues().linkmantel == "" || this.field.getValues().linkmantel == undefined){
+            promptToast("请填写完整信息！");
+            return;
+        }
+
+        if(this.field.getValues().linkman == "" || this.field.getValues().linkman == undefined){
+            promptToast("请填写完整信息！");
+            return;
+        }
+
+        if(this.field.getValues().address == "" || this.field.getValues().address == undefined){
+            promptToast("请填写完整信息！");
+            return;
+        }
+
+        if(this.field.getValues().principal == "" || this.field.getValues().principal == undefined){
+            promptToast("请填写完整信息！");return;
+        }
+
+        if(this.field.getValues().province == "" || this.field.getValues().province == undefined){
+            promptToast("请填写完整信息！");return;
+        }
+
+        if(this.field.getValues().city == "" || this.field.getValues().city == undefined){
+            promptToast("请填写完整信息！");return;
+        }
+
+        if(this.field.getValues().accountname == "" || this.field.getValues().accountname == undefined){
+            promptToast("请填写完整信息！");return;
+        }
+
+        if(this.field.getValues().account == "" || this.field.getValues().account == undefined){
+            promptToast("请填写完整信息！");return;
+        }
+
+        if(this.field.getValues().bank == "" || this.field.getValues().bank == undefined){
+            promptToast("请填写完整信息！");return;
+        }
+
+        if(this.field.getValues().accounttype == "" || this.field.getValues().accounttype == undefined){
+            promptToast("请填写完整信息！");return;
+        }
+
+        if(this.field.getValues().accountprovince == "" || this.field.getValues().accountprovince == undefined){
+            promptToast("请填写完整信息！");return;
+        }
+
+        if(this.field.getValues().accountcity == "" || this.field.getValues().accountcity == undefined){
+            promptToast("请填写完整信息！");return;
+        }
+
+        if(this.field.getValues().appname == "" || this.field.getValues().appname == undefined){
+            promptToast("请填写完整信息！");return;
+        }
+
+        if(file == "" || file == undefined){
+            promptToast("请填写完整信息！");return;
+        }
+
+        if(this.field.getValues().staffName == "" || this.field.getValues().staffName == undefined){
+            promptToast("请填写完整信息！");return;
+        }
+
         formData.append('file',file);
         formData.append("name", this.field.getValues().name);
-        formData.append("signdate", this.field.getValues().signdate);
+        formData.append("signdate", this.state.newData.signdate);
 
-        formData.append("expiredate", this.field.getValues().expiredate);
+        formData.append("expiredate", this.state.newData.expiredate);
         formData.append("principal", this.field.getValues().principal);
 
         formData.append("idtype", this.field.getValues().idtype);
@@ -314,7 +389,7 @@ class CustomDialog extends Component {
         formData.append("linkmantel", this.field.getValues().linkmantel);
         formData.append("appname", this.field.getValues().appname);
         formData.append("website", this.field.getValues().website);
-        formData.append("license", this.field.getValues().license);
+        formData.append("staffIdCard", this.field.getValues().staffIdCard);
         formData.append("staffName", this.field.getValues().staffName);
         formData.append("parentId", this.field.getValues().parentId);
         
@@ -504,7 +579,7 @@ class CustomDialog extends Component {
                                 <span></span>
                                 <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>身份证号：</span>
                             </div>
-                            <Input placeholder="身份证号" defaultValue={dataSource.license} className='classWidth'    onChange={(e)=>{this.state.newData.license = e}} />
+                            <Input placeholder="身份证号" defaultValue={dataSource.staffIdCard} className='classWidth'    onChange={(e)=>{this.state.newData.staffIdCard = e}} />
                         </Row>
 
                         <Row className="marginTop">
@@ -617,13 +692,13 @@ class CustomDialog extends Component {
                                     <span></span>
                                     <span style={{fontSize:'14px',marginTop:'7px'}}>签约时间：</span>
                                 </div>
-                                <DatePicker className="time-width"  {...init('signdate')} />
+                                <DatePicker className="time-width"  {...init('signdate')} onChange={(val,e)=>{this.state.newData.signdate = e}}/>
                                 {/*<Input  placeholder="签约时间" className='classWidth'   htmlType='date'  onChange={(e)=>{this.state.newData.signdate = e}}/>*/}
                                 <div className="flexStyle">
                                     <span></span>
                                     <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>到期时间：</span>
                                 </div>
-                                <DatePicker className="time-width" {...init('expiredate')} />
+                                <DatePicker className="time-width" {...init('expiredate')} onChange={(val,e)=>{this.state.newData.expiredate = e}}/>
                                 {/*<Input  placeholder="到期时间" className='classWidth'   htmlType='date' onChange={(e)=>{this.state.newData.expiredate = e}}  />*/}
                             </Row>
                             <Row className="marginTop">
@@ -699,7 +774,7 @@ class CustomDialog extends Component {
                                     <span></span>
                                     <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>身份证号：</span>
                                 </div>
-                                <Input placeholder="身份证号" className='classWidth'   {...init('license')}  />
+                                <Input placeholder="身份证号" className='classWidth'   {...init('staffIdCard')}  />
                             </Row>
 
                             <Row className="marginTop">
