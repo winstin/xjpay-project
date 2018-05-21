@@ -36,13 +36,25 @@ export function getInitData(pageno = 1,startDate='',endDate=''){
                 let sumD0fee = 0;
                 let sumTotalProfit = 0;
                 for(let i in profitsData){
+                    if(profitsData[i].sumTotalFee){
+                        sumTotalFee = sumTotalFee + Number(profitsData[i].sumTotalFee.replace(/\,/g,""));
+                    }
 
+                    if(profitsData[i].sumOrderNum){
+                        sumOrderNum = sumOrderNum + Number(profitsData[i].sumOrderNum);
+                    }
 
-                    sumTotalFee = sumTotalFee + Number(profitsData[i].sumTotalFee.replace(/\,/g,""));
-                    sumOrderNum = sumOrderNum + Number(profitsData[i].sumOrderNum);
-                    sumProfit = sumProfit + Number(profitsData[i].sumProfit.replace(/\,/g,""));
-                    sumD0fee = sumD0fee + Number(profitsData[i].sumD0fee.replace(/\,/g,""));
-                    sumTotalProfit = sumTotalProfit + Number(profitsData[i].sumTotalProfit.replace(/\,/g,""));
+                    if(profitsData[i].sumProfit){
+                        sumProfit = sumProfit + Number(profitsData[i].sumProfit.replace(/\,/g,""));
+                    }
+
+                    if(profitsData[i].sumD0fee){
+                        sumD0fee = sumD0fee + Number(profitsData[i].sumD0fee.replace(/\,/g,""));
+                    }
+
+                    if(profitsData[i].sumTotalProfit){
+                        sumTotalProfit = sumTotalProfit + Number(profitsData[i].sumTotalProfit.replace(/\,/g,""));
+                    }
                 }
 
                 dispatch({
