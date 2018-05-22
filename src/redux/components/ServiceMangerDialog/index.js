@@ -385,35 +385,27 @@ class CustomDialog extends Component {
             promptToast("请填写完整信息！");return;
         }
 
-        if(file == "" || file == undefined){
-            promptToast("请填写完整信息！");return;
+
+        if(this.state.file!=""&&this.state.file!=undefined){
+            formData.append('licenseFile',this.state.file);
         }
 
-
-        if(this.state.idCardFront == "" || this.state.idCardFront == undefined){
-            promptToast("请填写完整信息！");return;
+        if(this.state.idCardFront!=""&&this.state.idCardFront!=undefined){
+            formData.append('idCardFrontFile',this.state.idCardFront);
         }
 
-        if(this.state.idCardBack == "" || this.state.idCardBack == undefined){
-            promptToast("请填写完整信息！");return;
-        }
-        if(this.state.cardBack == "" || this.state.cardBack == undefined){
-            promptToast("请填写完整信息！");return;
-        }
-        if(this.state.cardFront == "" || this.state.cardFront == undefined){
-            promptToast("请填写完整信息！");return;
+        if(this.state.idCardBack!=""&&this.state.idCardBack!=undefined){
+            formData.append('idCardBackFile',this.state.idCardBack);
         }
 
-        if(this.field.getValues().staffName == "" || this.field.getValues().staffName == undefined){
-            promptToast("请填写完整信息！");return;
+        if(this.state.cardFront!=""&&this.state.cardFront!=undefined){
+            formData.append('cardFrontFile',this.state.cardFront);
         }
 
-        formData.append('licenseFile',file);
-        formData.append('idCardFrontFile',this.state.idCardFront);
-        formData.append('idCardBackFile',this.state.idCardBack);
-        formData.append('cardFrontFile',this.state.cardFront);
-        formData.append('cardBackFile',this.state.cardBack);
-
+        if(this.state.cardBack!=""&&this.state.cardBack!=undefined){
+            formData.append('cardBackFile',this.state.cardBack);
+        }
+        
 
         formData.append("name", this.field.getValues().name);
         formData.append("signdate", this.signdate);
@@ -502,10 +494,8 @@ class CustomDialog extends Component {
                         closable="esc,mask,close"
                         onCancel={this.onClose}
                         onClose={this.onClose} title={title}>
-                        <Feedback title="上传图片小于1M" type="prompt"/>
                         <form direction="ver" field={this.field} onSubmit={this.onFormSubmit.bind(this,'change')}>
                             <span style={{fontSize:'24px',marginTop:'7px',width:'80px'}}>基础信息</span>
-
                             <Row className="marginTop">
                                 <div className="flexStyle">
                                     <span></span>
@@ -646,71 +636,20 @@ class CustomDialog extends Component {
                                
                             </Row>
 
-                            <Row className="marginTop">
-                                <div className="flexStyle">
-                                    <span></span>
-                                    <span style={{fontSize:'14px',marginTop:'7px'}}>上游appId：</span>
-                                </div>
-                                <Input placeholder="APP名称" className='classWidth'  defaultValue={dataSource.parentId}  onChange={(e)=>{this.state.newData.parentId = e}} />
-                                <div className="flexStyle">
-                                    <span></span>
-                                    <span style={{fontSize:'14px',marginTop:'7px'}}>营业执照：</span>
-                                </div>
-                                <div className="classWidth flexline">
-                                    <img src={dataSource.license != '' ? Appconfig+dataSource.license:noneImg} className="imgSize"/>
-                                    <Input  htmlType='file'  id="file"  onChange={(e)=>{
-                                        this.setState({file:document.getElementById("file").files[0]})
-                                    }} />
-                                </div>
-                            </Row>
-
-
-                            <Row className="marginTop">
-                                <div className="flexStyle">
-                                    <span></span>
-                                    <span style={{fontSize:'14px',marginTop:'7px'}}>身份证正面：</span>
-                                </div>
-                                <div className="classWidth flexline">
-                                    <img src={dataSource.idCardFront != '' ? Appconfig+dataSource.idCardFront:noneImg} className="imgSize"/>
-                                    <Input  htmlType='file'  id="idCardFront"  onChange={(e)=>{
-                                        this.setState({idCardFront:document.getElementById("idCardFront").files[0]})
-                                    }} />
-                                </div>
-
-                                <div className="flexStyle">
-                                    <span></span>
-                                    <span style={{fontSize:'14px',marginTop:'7px'}}>身份证反面：</span>
-                                </div>
-                                <div className="classWidth flexline">
-                                    <img src={dataSource.idCardBack != '' ? Appconfig+dataSource.idCardBack:noneImg} className="imgSize"/>
-                                    <Input  htmlType='file'  id="idCardBack"  onChange={(e)=>{
-                                        this.setState({idCardBack:document.getElementById("idCardBack").files[0]})
-                                    }} />
-                                </div>
-                            </Row>
-
-                            <Row className="marginTop">
-                                <div className="flexStyle">
-                                    <span></span>
-                                    <span style={{fontSize:'14px',marginTop:'7px'}}>结算卡正面：</span>
-                                </div>
-                                <div className="classWidth flexline">
-                                    <img src={dataSource.cardFront != '' ? Appconfig+dataSource.cardFront:noneImg} className="imgSize"/>
-                                    <Input  htmlType='file'  id="cardFront"  onChange={(e)=>{
-                                        this.setState({cardFront:document.getElementById("cardFront").files[0]})
-                                    }} />
-                                </div>
-                                <div className="flexStyle">
-                                    <span></span>
-                                    <span style={{fontSize:'14px',marginTop:'7px'}}>结算卡反面：</span>
-                                </div>
-                                <div className="classWidth flexline">
-                                    <img src={dataSource.cardBack != '' ? Appconfig+dataSource.cardBack:noneImg} className="imgSize"/>
-                                    <Input  htmlType='file'  id="cardBack"  onChange={(e)=>{
-                                        this.setState({cardBack:document.getElementById("cardBack").files[0]})
-                                    }} />
-                                </div>
-                            </Row>
+                            { window.userType=="管理员" ? <Row className="marginTop">
+                               <div className="flexStyle">
+                                   <span></span>
+                                   <span style={{fontSize:'14px',marginTop:'7px'}}>appId：</span>
+                               </div>
+                               <Input placeholder="APP名称" className='classWidth'  defaultValue={dataSource.parentId}  onChange={(e)=>{this.state.newData.parentId = e}} />
+                               <div className="flexStyle hide">
+                                   <span></span>
+                                   <span style={{fontSize:'14px',marginTop:'7px'}}>营业执照：</span>
+                               </div>
+                               <div className="classWidth hide">
+                                  
+                               </div>
+                           </Row> : ""}
 
                             <span style={{fontSize:'24px',lineHeight:'60px'}}>结算信息</span>
                             <Row>
@@ -747,8 +686,91 @@ class CustomDialog extends Component {
                                 <Input defaultValue={dataSource.account} placeholder="收款账户" className='classWidth'    onChange={(e)=>{this.state.newData.account = e}} />
                             </Row>
 
+                            <span style={{fontSize:'24px',lineHeight:'60px'}}>图片信息</span>
+                            <Feedback title="上传图片小于1M" type="prompt"/>
+                            <Row className="marginTop">
+                                <div className="flexStyle">
+                                    <span></span>
+                                    <span style={{fontSize:'14px',marginTop:'7px'}}>身份证正面：</span>
+                                </div>
+                                <div className="classWidth ">
+                                    {  dataSource.idCardFront != ''?
+                                            <a href={Appconfig+dataSource.idCardFront} target="view_window">
+                                                <img src={Appconfig+dataSource.idCardFront} className="imgSize"/>
+                                            </a>
+                                            : <img src={noneImg} className="imgSize"/>
+                                    }
+                                    <Input  htmlType='file'  id="idCardFront"  onChange={(e)=>{
+                                        this.setState({idCardFront:document.getElementById("idCardFront").files[0]})
+                                    }} />
+                                </div>
 
-                            {/*<button type="submit" className='submit-btn'>提交</button>*/}
+                                <div className="flexStyle">
+                                    <span></span>
+                                    <span style={{fontSize:'14px',marginTop:'7px'}}>身份证反面：</span>
+                                </div>
+                                <div className="classWidth ">
+                                    {  dataSource.idCardBack != ''?
+                                            <a href={Appconfig+dataSource.idCardBack} target="view_window"><img src={Appconfig+dataSource.idCardBack} className="imgSize"/></a>
+                                            : <img src={noneImg} className="imgSize"/>
+                                    }
+                                    <Input  htmlType='file'  id="idCardBack"  onChange={(e)=>{
+                                        this.setState({idCardBack:document.getElementById("idCardBack").files[0]})
+                                    }} />
+                                </div>
+                            </Row>
+
+                            <Row className="marginTop">
+                                <div className="flexStyle">
+                                    <span></span>
+                                    <span style={{fontSize:'14px',marginTop:'7px'}}>结算卡正面：</span>
+                                </div>
+                                <div className="classWidth ">
+                                    {  dataSource.cardFront != ''?
+                                            <a href={Appconfig+dataSource.cardFront} target="view_window"><img src={Appconfig+dataSource.cardFront} className="imgSize"/></a>
+                                            : <img src={noneImg} className="imgSize"/>
+                                    }
+                                    <Input  htmlType='file'  id="cardFront"  onChange={(e)=>{
+                                        this.setState({cardFront:document.getElementById("cardFront").files[0]})
+                                    }} />
+                                </div>
+                                <div className="flexStyle">
+                                    <span></span>
+                                    <span style={{fontSize:'14px',marginTop:'7px'}}>结算卡反面：</span>
+                                </div>
+                                <div className="classWidth ">
+                                    {  dataSource.cardBack != ''?
+                                            <a href={Appconfig+dataSource.cardBack} target="view_window"><img src={Appconfig+dataSource.cardBack} className="imgSize"/></a>
+                                            : <img src={noneImg} className="imgSize"/>
+                                    }                                    
+                                    <Input  htmlType='file'  id="cardBack"  onChange={(e)=>{
+                                        this.setState({cardBack:document.getElementById("cardBack").files[0]})
+                                    }} />
+                                </div>
+                            </Row>
+
+                             <Row className="marginTop">
+                                <div className="flexStyle">
+                                    <span></span>
+                                    <span style={{fontSize:'14px',marginTop:'7px'}}>营业执照：</span>
+                                </div>
+                                <div className="classWidth ">
+                                    {  dataSource.license != ''?
+                                            <a href={Appconfig+dataSource.license} target="view_window"><img src={Appconfig+dataSource.license} className="imgSize"/></a>
+                                            : <img src={noneImg} className="imgSize"/>
+                                    }      
+                                    <Input  htmlType='file'  id="file"  onChange={(e)=>{
+                                        this.setState({file:document.getElementById("file").files[0]})
+                                    }} />
+                                </div>
+
+                                <div className="flexStyle hide">
+                                    <span></span>
+                                    <span style={{fontSize:'14px',marginTop:'7px'}}>appId：</span>
+                                </div>
+                                <Input placeholder="APP名称" className='classWidth hide'  />
+                                
+                            </Row>
                         </form>
                 </Dialog>
             );
@@ -759,7 +781,7 @@ class CustomDialog extends Component {
                         onCancel={this.onClose}
                         onOk={this.onFormSubmit.bind(this,'add')}
                         onClose={this.onClose} title={title}>
-                        <Feedback title="上传图片小于1M" type="prompt"/>
+                       
                         <form direction="ver" field={this.field} onSubmit={this.onFormSubmit.bind(this,'add')}>
                             <span style={{fontSize:'24px',marginTop:'7px',width:'80px'}}>基础信息</span>
 
@@ -904,23 +926,60 @@ class CustomDialog extends Component {
                                 <Input placeholder="业务联系" className='classWidth'  {...init('staffName')}   />
                             </Row>
 
+                            { window.userType=="管理员" ?
+
+                                <Row className="marginTop">
+                                    <div className="flexStyle">
+                                        <span></span>
+                                        <span style={{fontSize:'14px',marginTop:'7px'}}>appId：</span>
+                                    </div>
+                                    <Input placeholder="APP名称" className='classWidth'    {...init('parentId')}  />
+                                    <div className="flexStyle hide">
+                                        <span></span>
+                                        <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>营业执照：</span>
+                                    </div>
+                                    
+                                   <Input placeholder="营业执照" className='classWidth hide'   />
+                                </Row>:''
+                            }
+
+
+                            <span style={{fontSize:'24px',lineHeight:'60px'}}>结算信息</span>
+                            <Row>
+                                <div className="flexStyle">
+                                    <span></span>
+                                    <span style={{fontSize:'14px',marginTop:'7px'}}>账户类型：</span>
+                                </div>
+                                <Dropdown trigger={<Input  placeholder="账户类型" className='classWidth'    {...init('accounttype')}  value={this.accounttype} />}
+                                          triggerType="click"
+                                          visible={this.state.visibles3}
+                                          onVisibleChange={this.onVisibleChange3}
+                                          safeNode={() => this.refs.button}>
+                                    <Menu>
+                                        {type}
+                                    </Menu>
+                                </Dropdown>
+                                <div className="flexStyle">
+                                    <span></span>
+                                    <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>收款户名：</span>
+                                </div>
+                                <Input placeholder="收款户名" className='classWidth'    {...init('accountname')}/>
+                            </Row>
                             <Row className="marginTop">
                                 <div className="flexStyle">
                                     <span></span>
-                                    <span style={{fontSize:'14px',marginTop:'7px'}}>上游appId：</span>
+                                    <span style={{fontSize:'14px',marginTop:'7px'}}>开户行：</span>
                                 </div>
-                                <Input placeholder="APP名称" className='classWidth'    {...init('parentId')}  />
+                                <Input  placeholder="开户行" className='classWidth'    {...init('bank')}  />
                                 <div className="flexStyle">
                                     <span></span>
-                                    <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>营业执照：</span>
+                                    <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>收款账户：</span>
                                 </div>
-                                
-                               <Input placeholder="营业执照" className='classWidth'  htmlType='file' {...init('file')} id="Photo"  onChange={(e)=>{
-                                    this.setState({file:document.getElementById("Photo").files[0]})
-                                }} />
+                                <Input  placeholder="收款账户" className='classWidth'   {...init('account')}   />
                             </Row>
 
-
+                            <span style={{fontSize:'24px',lineHeight:'60px'}}>图片信息</span>
+                            <Feedback title="上传图片小于1M" type="prompt"/>
                             <Row className="marginTop">
                                 <div className="flexStyle">
                                     <span></span>
@@ -957,39 +1016,24 @@ class CustomDialog extends Component {
                                 }} />
                             </Row>
 
-                            <span style={{fontSize:'24px',lineHeight:'60px'}}>结算信息</span>
-                            <Row>
-                                <div className="flexStyle">
-                                    <span></span>
-                                    <span style={{fontSize:'14px',marginTop:'7px'}}>账户类型：</span>
-                                </div>
-                                <Dropdown trigger={<Input  placeholder="账户类型" className='classWidth'    {...init('accounttype')}  value={this.accounttype} />}
-                                          triggerType="click"
-                                          visible={this.state.visibles3}
-                                          onVisibleChange={this.onVisibleChange3}
-                                          safeNode={() => this.refs.button}>
-                                    <Menu>
-                                        {type}
-                                    </Menu>
-                                </Dropdown>
-                                <div className="flexStyle">
-                                    <span></span>
-                                    <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>收款户名：</span>
-                                </div>
-                                <Input placeholder="收款户名" className='classWidth'    {...init('accountname')}/>
-                            </Row>
                             <Row className="marginTop">
                                 <div className="flexStyle">
                                     <span></span>
-                                    <span style={{fontSize:'14px',marginTop:'7px'}}>开户行：</span>
+                                    <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>营业执照：</span>
                                 </div>
-                                <Input  placeholder="开户行" className='classWidth'    {...init('bank')}  />
-                                <div className="flexStyle">
+                                
+                                <Input placeholder="营业执照" className='classWidth'  htmlType='file' {...init('file')} id="Photo"  onChange={(e)=>{
+                                    this.setState({file:document.getElementById("Photo").files[0]})
+                                }} />
+
+                                <div className="flexStyle hide">
                                     <span></span>
-                                    <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>收款账户：</span>
+                                    <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>营业执照：</span>
                                 </div>
-                                <Input  placeholder="收款账户" className='classWidth'   {...init('account')}   />
+                                
+                               <Input placeholder="营业执照" className='classWidth hide'   />
                             </Row>
+
                         </form>
                 </Dialog>
             );

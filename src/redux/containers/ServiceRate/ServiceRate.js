@@ -204,34 +204,34 @@ class ServiceRates extends Component {
         }
 
         const {getInitData,addData} = this.props;
-        let userData = localStorage.getItem("userFee0");
-        if(userData!=undefined || userData!=null){
-            userData = JSON.parse(userData);
-            let falg = "";
-            for(let i in userData){
-                if(userData[i].upstream == this.state.newData.upstream){
-                    falg = i;
-                }
-            }
-            if(falg == ""){
-                promptToast("不存在该上游渠道！")
-                return;
-            }
-            if(Number(this.state.newData.fee0)<Number(userData[falg].fee0)){
-                promptToast("结算费率过低！")
-                return;
-            }
+        // let userData = localStorage.getItem("userFee0");
+        // if(userData!=undefined || userData!=null){
+        //     userData = JSON.parse(userData);
+        //     let falg = "";
+        //     for(let i in userData){
+        //         if(userData[i].upstream == this.state.newData.upstream){
+        //             falg = i;
+        //         }
+        //     }
+        //     if(falg == ""){
+        //         promptToast("不存在该上游渠道！")
+        //         return;
+        //     }
+        //     if(Number(this.state.newData.fee0)<Number(userData[falg].fee0)){
+        //         promptToast("结算费率过低！")
+        //         return;
+        //     }
 
-            if(Number(this.state.newData.d0fee)<Number(userData[falg].d0fee)){
-                promptToast("代付费过低！")
-                return;
-            }
+        //     if(Number(this.state.newData.d0fee)<Number(userData[falg].d0fee)){
+        //         promptToast("代付费过低！")
+        //         return;
+        //     }
 
-            if(Number(this.state.newData.mode)<Number(userData[falg].mode)){
-                promptToast("鉴权费过低！")
-                return;
-            }
-        }
+        //     if(Number(this.state.newData.mode)<Number(userData[falg].mode)){
+        //         promptToast("鉴权费过低！")
+        //         return;
+        //     }
+        // }
         this.setState({
             visible: false,
             autoName:""
@@ -246,35 +246,33 @@ class ServiceRates extends Component {
     updateRates = () =>{
         const {updateData} = this.props;
         let userData = localStorage.getItem("userFee0");
+        // if(userData!=undefined || userData!=null){
+        //     userData = JSON.parse(userData);
+        //     let falg = "";
+        //     for(let i in userData){
+        //         if(userData[i].upstream == this.oldData.upstream){
+        //             falg = i;
+        //         }
+        //     }
+        //     if(falg == ""){
+        //         promptToast("不存在该上游渠道！")
+        //         return;
+        //     }
+        //     if(Number(this.state.newData.fee0)<Number(userData[falg].fee0)){
+        //         promptToast("结算费率过低！")
+        //         return;
+        //     }
 
-        console.log(userData)
-        if(userData!=undefined || userData!=null){
-            userData = JSON.parse(userData);
-            let falg = "";
-            for(let i in userData){
-                if(userData[i].upstream == this.oldData.upstream){
-                    falg = i;
-                }
-            }
-            if(falg == ""){
-                promptToast("不存在该上游渠道！")
-                return;
-            }
-            if(Number(this.state.newData.fee0)<Number(userData[falg].fee0)){
-                promptToast("结算费率过低！")
-                return;
-            }
+        //     if(Number(this.state.newData.d0fee)<Number(userData[falg].d0fee)){
+        //         promptToast("代付费过低！")
+        //         return;
+        //     }
 
-            if(Number(this.state.newData.d0fee)<Number(userData[falg].d0fee)){
-                promptToast("代付费过低！")
-                return;
-            }
-
-            if(Number(this.state.newData.mode)<Number(userData[falg].mode)){
-                promptToast("鉴权费过低！")
-                return;
-            }
-        }
+        //     if(Number(this.state.newData.mode)<Number(userData[falg].mode)){
+        //         promptToast("鉴权费过低！")
+        //         return;
+        //     }
+        // }
         this.setState({
             visible0: false,
             autoName:""
