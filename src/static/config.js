@@ -1,6 +1,6 @@
 const Appconfig = {
     'http':'http://',
-    'cdn':'web.xjpay.cc',
+    'cdn':'https://web.xjpay.cc',
     'url':'web.xjpay.cc'
 }
 

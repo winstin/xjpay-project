@@ -591,3 +591,12 @@ th .next-table-cell-wrapper{
     color: #fff;
 
 }
+
+.imgSize{
+    width: 80px;
+    height: 80px
+}
+
+.flexline{
+    display: flex;
+}

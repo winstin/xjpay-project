@@ -225,9 +225,9 @@ class ServiceMangers extends Component {
         return <div >{value==0?"启用":"冻结"}</div>
     }
 
-    updateData(newData){
-        const {updateData,chooseDatas} = this.props;
-        updateData(chooseDatas,newData);
+    updateData(appId){
+        const {getSelectId} = this.props;
+        getSelectId(appId)
         this.reLoad();
     }
 

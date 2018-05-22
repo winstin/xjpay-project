@@ -194,6 +194,7 @@ export function updateData(oldData,newData){
                 staffName: newData.staffName == undefined ? oldData[0].staffName : newData.staffName,
                 license: newData.license == undefined ? oldData[0].license : newData.license,
                 parentId: newData.parentId == undefined ? oldData[0].parentId : newData.parentId,
+                staffIdCard: newData.staffIdCard == undefined ? oldData[0].staffIdCard : newData.staffIdCard,
             };
     return (dispatch)=>{
         api({
@@ -211,6 +212,43 @@ export function updateData(oldData,newData){
                 errorToast('修改失败！原因：'+JSON.stringify(msg));
             }
         });
+    }
+}
+
+
+
+/**
+ * @Author   Winstin
+ * @DateTime 2018-05-04
+ * @param    string
+ * @license  获取选择数据
+ * @version  [version]
+ * @param    {Number}   pageno [description]
+ * @return   {[type]}          [description]
+ */
+export function getSelectId(appId='',){
+    return (dispatch)=>{
+        api({
+            method:'/agents/page',
+            mode:'jsonp',
+            args:{
+                appId:appId,
+                appName:'',
+                pageIndex:1,
+                pageSize:20
+            },
+            callback:(rsp)=>{
+                dispatch({
+                    type: CHOOSEDATA,
+                    chooseDatas:rsp.data.records,
+                });
+                
+            },
+            errCallback:(msg)=>{
+                // console.log(msg)
+            }
+        });
+      
     }
 }
 
