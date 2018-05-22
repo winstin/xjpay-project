@@ -17,19 +17,24 @@ const webUrl = config.webUrl;
  * @param    {Number}   pageno [description]
  * @return   {[type]}          [description]
  */
-export function getInitData(pageno = 1,startDate=getNowFormatDate(),endDate=getNowFormatDate(),agentName='',filterAppId='',){
-    return (dispatch)=>{
-        api({
-            method:'/profits/agent/page',
-            mode:'jsonp',
-            args:{
+export function getInitData(pageno = 1,startDate=getNowFormatDate(),endDate=getNowFormatDate(),agentName='',filterAppId='',upstream=""){
+
+    let serchData = {
                 startDate: startDate,
                 endDate: endDate,
                 agentName:agentName,
                 filterAppId:filterAppId,
                 pageIndex:pageno,
-                pageSize:20
-            },
+                pageSize:20,
+            };
+    if(upstream != ''){
+        serchData.upstream=upstream
+    }
+    return (dispatch)=>{
+        api({
+            method:'/profits/agent/page',
+            mode:'jsonp',
+            args:serchData,
             callback:(rsp)=>{
                 if(rsp.data.data == ""){
                     dispatch({

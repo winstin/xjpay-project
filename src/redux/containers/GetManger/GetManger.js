@@ -14,11 +14,24 @@ import * as GetManger from '../../actions/GetManger'
 import {FormatDateTime} from "static/utils.js"
 import './GetManger.css'
 import Headers from '../../components/Header/index.js'
-
-// const change = function(value) {
-//     console.log(value);
-// };
-
+import Menu from 'qnui/lib/menu';
+import Dropdown from 'qnui/lib/dropdown';
+const upstreamMent = [{
+    name:'全部',
+    value:''
+},{
+    name:'Q1',
+    value:'HF_SERVICE'
+},{
+    name:'Q2',
+    value:'CONGYU_SERVICE'
+},{
+    name:'Q3',
+    value:'KFT_SERVICE'
+},{
+    name:'Q4',
+    value:'HJ_SERVICE'
+}]
     
 
 class GetMangers extends Component {
@@ -31,10 +44,13 @@ class GetMangers extends Component {
               onSelectAll: function(selected, records){ console.log('onSelectAll', selected, records) },
               selectedRowKeys: []
             },
-            rateState: '所有'
+            rateState: '所有',
+            visibles:false,
+            visible:false,
         }
         this.startDate='';
         this.endDate='';
+        this.upstream='';
     }
 
     componentDidMount(){
@@ -63,11 +79,20 @@ class GetMangers extends Component {
 
     onSearch() {
         const {getInitData} = (this.props);
-        getInitData(1,this.startDate,this.endDate);
+        getInitData(1,this.startDate,this.endDate,this.upstream);
     }
+
+    onVisibleChange = (visibles,type,e) => {
+          this.setState({
+              visibles:visibles
+          })
+    };
     render(){
         const {add, value, switchState ,changeSwitchState,containerHeight,dataSource,sumTotalFee,sumOrderNum,sumD0fee,sumProfit,sumTotalProfit} = this.props;
         const TabPane = Tab.TabPane;
+        let PayStatement = upstreamMent.map((item,index)=>{
+            return <Menu.Item onClick={()=>{this.upstream = item.value;this.upstreamName = item.name}}>{item.name}</Menu.Item>
+        })
         return(
             <div >
                 <Headers title="收益管理"/>
@@ -114,7 +139,6 @@ class GetMangers extends Component {
                     <div className="display-flex">
                         <span className='top-sumtext-bold'>总收益:</span>
                         {<span className="text-center new-border" >{sumTotalProfit}</span>}
-
                     </div>
                     <div className="display-flex">
                         
@@ -126,7 +150,19 @@ class GetMangers extends Component {
                        
                     </div>
                 </Row>
-                
+                <Row className="marginTop-20">
+                    <span className='top-sumtext-bold'>查询条件:</span>
+                    
+                    <Dropdown trigger={<Input placeholder="上游渠道" size="large"  style={{width:'160px'}} value={this.upstreamName}/>}
+                              triggerType="click"
+                              visible={this.state.visibles}
+                              onVisibleChange={this.onVisibleChange}
+                              safeNode={() => this.refs.button}>
+                        <Menu>
+                            {PayStatement}
+                        </Menu>
+                    </Dropdown>
+                </Row>
                 <Row className="marginTop-20">
                     <span className='top-sumtext-bold'>时间选择：</span>
                     <RangePicker size="large" onChange={(a, b) => {

@@ -16,17 +16,24 @@ import {api,isEmpty} from "static/utils.js"
  * @param    {Number}   pageno [description]
  * @return   {[type]}          [description]
  */
-export function getInitData(pageno = 1,startDate='',endDate=''){
+export function getInitData(pageno = 1,startDate='',endDate='',upstream=''){
+
+    let serchData = {
+                startDate: startDate,
+                endDate: endDate,
+                pageIndex:pageno,
+                pageSize:20,
+            };
+    if(upstream != ''){
+        serchData.upstream=upstream
+    }
+
+
     return (dispatch)=>{
         api({
             method:'/profits/page',
             mode:'jsonp',
-            args:{
-                startDate: startDate,
-                endDate: endDate,
-                pageIndex:pageno,
-                pageSize:20
-            },
+            args:serchData,
             callback:(rsp)=>{
                 
                 let profitsData = rsp.data.data;

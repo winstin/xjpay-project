@@ -15,31 +15,52 @@ import Pagination from 'qnui/lib/pagination';
 import Dimensions from 'react-dimensions';
 import {FormatDateTime,getNowFormatDate} from "static/utils.js"
 import Headers from '../../components/Header/index.js'
-
+import Menu from 'qnui/lib/menu';
+import Dropdown from 'qnui/lib/dropdown';
 const onRowClick = function(record, index, e) {
         console.log(record, index, e);
     }
-
+const upstreamMent = [{
+    name:'全部',
+    value:''
+},{
+    name:'Q1',
+    value:'HF_SERVICE'
+},{
+    name:'Q2',
+    value:'CONGYU_SERVICE'
+},{
+    name:'Q3',
+    value:'KFT_SERVICE'
+},{
+    name:'Q4',
+    value:'HJ_SERVICE'
+}]
 
 class GunsIndex extends Component {
   constructor(props) {
         super(props);
+        this.state = {
+            visibles:false,
+            visible:false,
+        };
         this.startDate = getNowFormatDate();
         this.endDate = getNowFormatDate();
         this.agentName = '';
         this.filterAppId = '';
         this.current = 1;
+        this.upstream="";
     }
 
   onSearch(value) {
       this.current = 1;
       const {getInitData} = (this.props);
-      getInitData(1,this.startDate,this.endDate,this.agentName,this.filterAppId);
+      getInitData(1,this.startDate,this.endDate,this.agentName,this.filterAppId,this.upstream);
   }
 
   onExport(){
       const {exportData} = (this.props);
-      exportData(this.startDate,this.endDate,this.agentName,this.filterAppId); 
+      exportData(this.startDate,this.endDate,this.agentName,this.filterAppId,this.upstream); 
   }
 
 
@@ -70,8 +91,17 @@ class GunsIndex extends Component {
         return FormatDateTime(value);
   }
 
+  onVisibleChange = (visibles,type,e) => {
+      this.setState({
+          visibles:visibles
+      })
+  };
+
   render() {
         const {containerHeight,dataSource,total,sum_agent_profit,countMerchantNum,countOrderNum,totalMoney,totalProfit} = (this.props);
+        let PayStatement = upstreamMent.map((item,index)=>{
+            return <Menu.Item onClick={()=>{this.upstream = item.value;this.upstreamName = item.name}}>{item.name}</Menu.Item>
+        })
         return (
             <div >
                 <Headers title="渠道分润统计"/>
@@ -117,6 +147,15 @@ class GunsIndex extends Component {
                         <span className='top-sumtext-bold'>查询条件:</span>
                         <Input placeholder="所属渠道" size="large"  style={{width:'120px'}} onChange={(e)=>{this.agentName = e}}/>
                         <Input placeholder="渠道编号" size="large"  style={{width:'120px',marginLeft:'12px'}} onChange={(e)=>{this.filterAppId = e}}/>
+                        <Dropdown trigger={<Input placeholder="上游渠道" size="large"  style={{width:'120px',marginLeft:'12px'}} value={this.upstreamName}/>}
+                                  triggerType="click"
+                                  visible={this.state.visibles}
+                                  onVisibleChange={this.onVisibleChange}
+                                  safeNode={() => this.refs.button}>
+                            <Menu>
+                                {PayStatement}
+                            </Menu>
+                        </Dropdown>
                     </div>
                     <div className="display-flex">
 
