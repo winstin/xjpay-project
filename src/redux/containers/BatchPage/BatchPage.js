@@ -190,7 +190,7 @@ class BatchPage extends Component {
     handleChange(current) {
         this.current =current;
         const {getInitData} = this.props;
-        getInitData(current);
+        getInitData(current,this.startDate,this.endDate,this.orderNo,this.agentOrderNo,this.agentName,this.filterAppId,this.merchantName,this.mchId,this.orderState,this.result,this.upstream);
     }
 
 
@@ -387,7 +387,7 @@ function mapDispatchToProps(dispatch,ownProps){
 
 export default Dimensions({
   getHeight: function() { //element
-    return window.innerHeight - 400;
+    return window.innerHeight - 460;
   },
   getWidth: function() { //element
     return window.innerWidth - 24;
