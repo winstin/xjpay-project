@@ -30,13 +30,19 @@ export function getInitData(pageno = 1,appId='',appName='',isloading=true){
             isloading:isloading,
             callback:(rsp)=>{
                 if(rsp.data.records == ""){
-                    return;
+                    dispatch({
+                        type:INITDATA,
+                        dataSource: [],
+                        total:0
+                    });
+                }else{
+                    dispatch({
+                        type:INITDATA,
+                        dataSource: rsp.data.records,
+                        total:rsp.data.total
+                    }); 
                 }
-                dispatch({
-                    type:INITDATA,
-                    dataSource: rsp.data.records,
-                    total:rsp.data.total
-                });
+                
             },
             errCallback:(msg)=>{
                 // console.log(msg)
