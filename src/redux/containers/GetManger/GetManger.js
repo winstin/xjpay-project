@@ -210,7 +210,7 @@ function mapDispatchToProps(dispatch,ownProps){
 
 export default Dimensions({
   getHeight: function() { //element
-    return window.innerHeight - 290;
+    return window.innerHeight - 340;
   },
   getWidth: function() { //element
     return window.innerWidth - 24;

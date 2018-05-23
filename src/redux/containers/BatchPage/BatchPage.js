@@ -16,7 +16,22 @@ import Dropdown from 'qnui/lib/dropdown';
 import {getNowFormatDate,copyValue,FormatDateTime,isEmpty,promptToast,successToast} from "static/utils.js"
 import Headers from '../../components/Header/index.js'
 import BzDialog from '../../components/BzDialog/index.js'
-
+const upstreamMent = [{
+    name:'全部',
+    value:''
+},{
+    name:'Q1',
+    value:'HF_SERVICE'
+},{
+    name:'Q2',
+    value:'CONGYU_SERVICE'
+},{
+    name:'Q3',
+    value:'KFT_SERVICE'
+},{
+    name:'Q4',
+    value:'HJ_SERVICE'
+}]
 
 class BatchPage extends Component {
   constructor(props) {
@@ -25,8 +40,9 @@ class BatchPage extends Component {
             detailvisible:false,
             orderdata:{},
             visibles:false,
+            visibless:false,
             visible:false,
-            bzData:[]
+            bzData:[],
         };
         this.startDate=getNowFormatDate();
         this.endDate=getNowFormatDate();
@@ -40,24 +56,25 @@ class BatchPage extends Component {
         this.agentOrderNo='';
         this.orderSta='';
         this.current =1;
+        this.upstream='';
     }
 
     onSearch(value) {
         this.current =1;
         const {getInitData} = (this.props);
-        getInitData(1,this.startDate,this.endDate,this.orderNo,this.agentOrderNo,this.agentName,this.filterAppId,this.merchantName,this.mchId,this.orderState,this.result);
+        getInitData(1,this.startDate,this.endDate,this.orderNo,this.agentOrderNo,this.agentName,this.filterAppId,this.merchantName,this.mchId,this.orderState,this.result,this.upstream);
     }
 
 
     onSearch(value) {
         this.current =1;
         const {getInitData} = (this.props);
-        getInitData(1,this.startDate,this.endDate,this.orderNo,this.agentOrderNo,this.agentName,this.filterAppId,this.merchantName,this.mchId,this.orderState,this.result);
+        getInitData(1,this.startDate,this.endDate,this.orderNo,this.agentOrderNo,this.agentName,this.filterAppId,this.merchantName,this.mchId,this.orderState,this.result,this.upstream);
     }
 
     onExport(){
         const {exportData} = (this.props);
-        exportData(1,this.startDate,this.endDate,this.orderNo,this.agentOrderNo,this.agentName,this.filterAppId,this.merchantName,this.mchId,this.orderState,this.result); 
+        exportData(1,this.startDate,this.endDate,this.orderNo,this.agentOrderNo,this.agentName,this.filterAppId,this.merchantName,this.mchId,this.orderState,this.result,this.upstream); 
     }
 
 
@@ -193,11 +210,19 @@ class BatchPage extends Component {
         copyValue(str)
     }
     
-
+    onVisibleChanges = (visibles,type,e) => {
+          this.setState({
+              visibless:visibles
+          })
+    };
     render() {
         const {containerHeight,dataSource,total,countMerchantNum,countOrderNum,totalMoney,totalProfit} = (this.props);
         let PayStatement = Config.PayState.map((item,index)=>{
             return <Menu.Item onClick={()=>{this.orderState = item.value;this.orderSta = item.name}}>{item.name}</Menu.Item>
+        })
+
+        let upstreamMents = upstreamMent.map((item,index)=>{
+            return <Menu.Item onClick={()=>{this.upstream = item.value;this.upstreamName = item.name}}>{item.name}</Menu.Item>
         })
         return (
             <div>
@@ -265,6 +290,32 @@ class BatchPage extends Component {
                         <div className="display-flex">
                             <span className='top-sumtext'>交易结果：</span>
                             <Input placeholder="交易结果" size="large"  style={{width:'160px'}} onChange={(e)=>{this.result = e}}/>
+                        </div>
+                    </Row>
+
+                    <Row className="marginTop">
+                        <div className="display-flex">
+                            <span className='top-sumtext-bold'>上游渠道：</span>
+
+                            <Dropdown trigger={<Input placeholder="上游渠道" size="large"  style={{width:'160px'}} value={this.upstreamName}/>}
+                                      triggerType="click"
+                                      visible={this.state.visibless}
+                                      onVisibleChange={this.onVisibleChanges}
+                                      safeNode={() => this.refs.button}>
+                                <Menu>
+                                    {upstreamMents}
+                                </Menu>
+                            </Dropdown>
+                           
+                        </div>
+                        <div className="display-flex">
+
+                        </div>
+                        <div className="display-flex">
+
+                        </div>
+                        <div className="display-flex">
+       
                         </div>
                     </Row>
                     <Row className="marginTop">

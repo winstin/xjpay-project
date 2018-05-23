@@ -17,13 +17,10 @@ const webUrl = config.webUrl;
  * @param    {Number}   pageno [description]
  * @return   {[type]}          [description]
  */
-export function getInitData(pageno = 1,startDate=getNowFormatDate(),endDate=getNowFormatDate(),orderNo='',agentOrderNo='',agentName='',filterAppId='',merchantName='',mchId='',orderState='',result=''){
+export function getInitData(pageno = 1,startDate=getNowFormatDate(),endDate=getNowFormatDate(),orderNo='',agentOrderNo='',agentName='',filterAppId='',merchantName='',mchId='',orderState='',result='',upstream=''){
     let appId = localStorage.getItem("appId");
-    return (dispatch)=>{
-        api({
-            method:'/orders/page',
-            mode:'jsonp',
-            args:{
+
+    let serchData = {
                 startDate: startDate,
                 endDate: endDate,
                 orderNo: orderNo.trim(),
@@ -36,7 +33,16 @@ export function getInitData(pageno = 1,startDate=getNowFormatDate(),endDate=getN
                 result: result.trim(),
                 pageIndex:pageno,
                 pageSize:20
-            },
+            };
+    if(upstream != ''){
+        serchData.upstream=upstream
+    }
+
+    return (dispatch)=>{
+        api({
+            method:'/orders/page',
+            mode:'jsonp',
+            args:serchData,
             callback:(rsp)=>{
                 if(rsp.data.data == ""){
                     dispatch({
