@@ -25,7 +25,7 @@ export function getInitData(pageno=1,appId='',appName='',isloading=true){
              
                 dispatch({
                     type:INITDATA,
-                    dataSource: rsp.data.records,
+                    dataSource: rsp.data.data,
                     total: rsp.data.total
                 });
             },
@@ -77,18 +77,20 @@ export function getServiceData(){
 export function addData(data = {}){
     return (dispatch)=>{
         NetWorkPOST({
-            method:'/rates/add',
+            method:'/rates/add/'+data.appid,
             mode:'json',
+            dataType:'json',
             args:{
                 id:'',
                 code:data.code,
                 mode:data.mode,
                 appid:data.appid,
-                pointType:data.pointType,
+                pointsType:data.pointType,
                 type:data.type,
                 fee0:data.fee0,
                 d0fee:data.d0fee,
                 upstream:data.upstream,
+                defaultNewNoCardProfit:data.defaultNewNoCardProfit || ""
             },
             callback:(rsp)=>{
                 successToast('添加成功！')
@@ -108,6 +110,8 @@ export function addData(data = {}){
 
 
 export function updateData(oldData){
+    oldData.pointsType = oldData.points_type;
+    
     return (dispatch)=>{
         NetWorkPOST({
             method:'/rates/update',
@@ -127,6 +131,110 @@ export function updateData(oldData){
        
     }
 }
+
+
+/**
+ * @Author   Winstin
+ * @DateTime 2018-05-25
+ * @param    string
+ * @license  获取特殊银行费率
+ * @version  [version]
+ * @param    {[type]}   appId  [description]
+ * @param    {[type]}   rateId [description]
+ * @return   {[type]}          [description]
+ */
+export function getBankData(appId,rateId){
+    return (dispatch)=>{
+        NetWorkPOST({
+            method:'/rates/agent/'+appId+'/rate/'+rateId+'/specialBankRate',
+            mode:'json',
+            args:{
+               
+            },
+            callback:(rsp)=>{
+                console.log(rsp)
+            },
+            errCallback:(msg)=>{
+                if(msg.message){
+                    errorToast(msg.message)
+                }else{
+                    errorToast('添加失败！')
+                }
+                
+            }
+        });
+       
+    }
+}
+
+/**
+ * @Author   Winstin
+ * @DateTime 2018-05-25
+ * @param    string
+ * @license  添加特殊银行费率
+ * @version  [version]
+ * @param    {[type]}   appId  [description]
+ * @param    {[type]}   rateId [description]
+ */
+export function addBankData(appId,rateId,bankName='',bankCardType='',newNoCardProfit=''){
+    return (dispatch)=>{
+        NetWorkPOST({
+            method:'/rates/agent/'+appId+'/rate/'+rateId+'/specialBankRate',
+            mode:'json',
+            args:{
+                "bankCardType": bankCardType,
+                "bankName": bankName,
+                "id": '',
+                "newNoCardProfit": newNoCardProfit
+            },
+            callback:(rsp)=>{
+                console.log(rsp)
+            },
+            errCallback:(msg)=>{
+                if(msg.message){
+                    errorToast(msg.message)
+                }else{
+                    errorToast('添加失败！')
+                }
+                
+            }
+        });
+       
+    }
+}
+
+/**
+ * @Author   Winstin
+ * @DateTime 2018-05-25
+ * @param    string
+ * @license  删除特殊银行费率
+ * @version  [version]
+ * @param    {[type]}   appId  [description]
+ * @param    {[type]}   rateId [description]
+ * @return   {[type]}          [description]
+ */
+export function delBankData(rateId){
+    return (dispatch)=>{
+        NetWorkPOST({
+            method:'/rates/delete/'+rateId,
+            mode:'json',
+            args:{},
+            callback:(rsp)=>{
+                console.log(rsp)
+            },
+            errCallback:(msg)=>{
+                if(msg.message){
+                    errorToast(msg.message)
+                }else{
+                    errorToast('添加失败！')
+                }
+                
+            }
+        });
+       
+    }
+}
+
 
 export function getData(pageno){
     return (dispatch)=>{
@@ -165,13 +273,16 @@ export function SearchData(appId='',appName=''){
 export function autoSearch(appId='',callback){
     return (dispatch)=>{
         api({
-            method:'/agent/list',
+            method:'/agents/page',
             mode:'jsonp',
             args:{
                 appId:appId.trim(),
             },
             callback:(e)=>{
-                callback(e)
+                if(e.data){
+                    callback(e.data.data)
+                }
+                
             },
             errCallback:(msg)=>{
                 // console.log(msg)

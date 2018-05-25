@@ -98,32 +98,47 @@ class RoleDialog extends Component {
             return 'Q1';
         }else if(value == 'CONGYU_SERVICE'){
             return 'Q2';
+        }else if(value == 'HJ_SERVICE'){
+            return 'Q4';
         }
 
     }
 
     cellPointType = (value, index, record, context) => {
-       if(value == 0){
+        if(value == 0){
             return '商旅类';
         }else if(value == 2){
             return '一般类';
+        }else if(value == 1){
+            return '无积分';
+        }else if(value == 3){
+            return '新无卡';
         }else{
-            
             return '-';
         }
     }
 
 
     cellType = (value, index, record, context) => {
-        if(value == 0){
+        // if(value == 0){
             return 'D0';
-        }else{
+        /*}else{
             return 'T1';
-        }
+        }*/
     }
 
+
     cellMode0 = (value, index, record, context) => {
-        return (value/100).toFixed(2)+"分";
+        if (value) {
+            let text = (value/100).toFixed(2);
+            if(text == "NaN"){
+                return value
+            }else{
+                return text+"元";
+            }
+            
+        }
+        
     }
 
     cellFee0 = (value, index, record, context) => {
@@ -148,17 +163,16 @@ class RoleDialog extends Component {
                     </TabPane>
                     <TabPane tab="服务商费率" key="1" >
                         <Table dataSource={feeDataSource} onRowClick={onRowClick} fixedHeader maxBodyHeight={600}>
-                            <Table.Column title="编号" dataIndex="id"/>
-                            <Table.Column title="创建时间" dataIndex="createTime"/>
-                            <Table.Column title="服务商编号" dataIndex="appid"/>
+                            <Table.Column title="服务商编号" dataIndex="appId"/>
+                            <Table.Column title="创建时间" dataIndex="create_time"/>
                             <Table.Column title="服务商名称" dataIndex="agentName"/>
                             <Table.Column title="业务类型" dataIndex="code" cell={this.cellRender}/>
                             <Table.Column title="上游渠道" dataIndex="upstream" cell={this.cellUpstream}/>
-                            <Table.Column title="交易类型" dataIndex="pointType" cell={this.cellPointType}/>
+                            <Table.Column title="交易类型" dataIndex="points_type" cell={this.cellPointType}/>
                             <Table.Column title="结算类型" dataIndex="type" cell={this.cellType}/>
                             <Table.Column title="鉴权费" dataIndex="mode" cell={this.cellMode0}/>
                             <Table.Column title="结算费率(‰)" dataIndex="fee0" cell={this.cellFee0}/>
-                            <Table.Column title="代付费" dataIndex="d0fee"/>
+                            <Table.Column title="代付费" dataIndex="d0fee" cell={this.cellMode0}/>
                         </Table>
                     </TabPane>
                 </Tab>
@@ -180,40 +194,52 @@ class RoleDialog extends Component {
     render() {
         const {visible,downDetails,upDetail,feeDataSource} = this.props;
         let upData = [];
-        if(upDetail.appId != undefined){
+        if(upDetail  && upDetail.appId != undefined){
             upData = [upDetail];
         }
 
-        console.log(feeDataSource)
+        // console.log(feeDataSource)
+
+        // console.log(downDetails);  
         let downDetailsData = [];
         for(let a in downDetails){
             downDetails[a].Num = "1";
             downDetailsData.push(downDetails[a]);
-            let downDetails_a = downDetails[a].downDetails;
-            if(downDetails_a.length>=1){
-                for(let b in downDetails_a){
-                    downDetails_a[b].Num = "2";
-                    downDetails_a[b].up_appId = downDetails[a].appId;
-                    downDetailsData.push(downDetails_a[b]);
-                    let downDetails_b = downDetails_a[b].downDetails;
-                    if(downDetails_b.length>=1){
-                        for(let c in downDetails_b){
-                            downDetails_b[c].Num = "3";
-                            downDetails_b[c].up_appId = downDetails_a[b].appId;
-                            downDetailsData.push(downDetails_b[c]);
-                            let downDetails_c = downDetails_b[c].downDetails;
-                            if(downDetails_c.length>=1){
-                                for(let d in downDetails_c){
-                                    downDetails_c[d].Num = "4";
-                                    downDetails_c[d].up_appId = downDetails_b[c].appId;
-                                    downDetailsData.push(downDetails_c[d]);
+            if(downDetails[a].downDetails){
+                let downDetails_a = downDetails[a].downDetails;
+                if(downDetails_a.length>=1){
+                    for(let b in downDetails_a){
+                        downDetails_a[b].Num = "2";
+                        downDetails_a[b].up_appId = downDetails[a].appId;
+                        downDetailsData.push(downDetails_a[b]);
+                        if(downDetails_a[b].downDetails){
+                            let downDetails_b = downDetails_a[b].downDetails;
+                            if(downDetails_b.length>=1){
+                                for(let c in downDetails_b){
+                                    downDetails_b[c].Num = "3";
+                                    downDetails_b[c].up_appId = downDetails_a[b].appId;
+                                    downDetailsData.push(downDetails_b[c]);
+                                    if(downDetails_b[c].downDetails){
+                                        let downDetails_c = downDetails_b[c].downDetails;
+                                        if(downDetails_c.length>=1){
+                                            for(let d in downDetails_c){
+                                                downDetails_c[d].Num = "4";
+                                                downDetails_c[d].up_appId = downDetails_b[c].appId;
+                                                downDetailsData.push(downDetails_c[d]);
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         }
                     }
                 }
             }
-        }        
+        }  
+
+        // console.log(feeDataSource);
+
+
         return (
             <Dialog visible={visible}
                     onOk={this.setRoleid}

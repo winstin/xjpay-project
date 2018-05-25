@@ -208,7 +208,7 @@ class UserMangers extends Component {
         
         return (
             <div>
-                <div className='marginTop'>
+                <div className='paddingTop'>
                     <span className='top-sumtext-bold'>用户名称：</span>
                     <Input placeholder="帐号/姓名/手机号" size="large"  className='marginRight' onChange={this.onchange.bind(this,'name')}/>
                     <span className='top-sumtext-bold'>注册时间：</span>
@@ -276,7 +276,7 @@ function mapDispatchToProps(dispatch,ownProps){
 
 export default Dimensions({
   getHeight: function() { //element
-    return window.innerHeight - 237;
+    return window.innerHeight - 247;
   },
   getWidth: function() { //element
     return window.innerWidth - 24;

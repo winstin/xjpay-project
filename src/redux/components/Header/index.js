@@ -1,6 +1,7 @@
 import Breadcrumb from 'qnui/lib/breadcrumb';
 import React,{Component,PropTypes} from 'react'
 import Icon from 'qnui/lib/icon';
+import { Link } from 'react-router'
 
 let onMouseEnter = (id, item, nav) => {
     console.log('onMouseEnter')  
@@ -103,7 +104,7 @@ class RoleDialog extends Component {
             case"菜单管理":
               return {icon:'account',link:'/dist/OrderManger'}
               break;
-             default:
+            default:
               return  {icon:'minus',link:''}
 
         }
@@ -138,25 +139,25 @@ class RoleDialog extends Component {
             if(item == "首页"){
                 if("/dist/" != window.location.pathname){
                     return  <div className="nav-border" >
-                            <span onClick={this.linkUrl.bind(this,"/dist/")} className="paddtingRight-5">{item}</span>
+                            <Link to={"/dist/"} ><span className="paddtingRight-5">{item}</span></Link>
                         </div>
 
                 }else{
                     return  <div className="nav-border-active">
-                            <span onClick={this.linkUrl.bind(this,"/dist/")} className="paddtingRight-5">{item}</span>
+                            <Link to={"/dist/"} ><span className="paddtingRight-5-hover">{item}</span></Link>
                         </div>
                 }
                 
             }else{
                 if(url.link != window.location.pathname){
                     return  <div className="nav-border" onMouseDown={this.close.bind(this,item)}>
-                            <span onClick={this.linkUrl.bind(this,url.link)} className="paddtingRight-5">{item}</span>
+                            <Link to={url.link} ><span className="paddtingRight-5">{item}</span></Link>
                             <i className="next-icon next-icon-error next-icon-mediums topicon" onClick={this.delete.bind(this,item)}></i>
                         </div>
 
                 }else{
                     return  <div className="nav-border-active" onMouseDown={this.close.bind(this,item)}>
-                            <span onClick={this.linkUrl.bind(this,url.link)} className="paddtingRight-5">{item}</span>
+                            <Link to={url.link} ><span className="paddtingRight-5-hover">{item}</span></Link>
                             <i className="next-icon next-icon-error next-icon-mediums topicon" onClick={this.delete.bind(this,item)}></i>
                         </div>
 

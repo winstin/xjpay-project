@@ -72,6 +72,12 @@ class GetMangers extends Component {
         this.setState({ rowSelection });
     }
 
+    changePageno(e){
+        
+        const {getInitData} = (this.props);
+        getInitData(e,this.startDate,this.endDate,this.upstream);
+    }
+
 
     cellTime = (value, index, record, context) => {
         return FormatDateTime(value);
@@ -88,7 +94,7 @@ class GetMangers extends Component {
           })
     };
     render(){
-        const {add, value, switchState ,changeSwitchState,containerHeight,dataSource,sumTotalFee,sumOrderNum,sumD0fee,sumProfit,sumTotalProfit} = this.props;
+        const {add, value, switchState ,changeSwitchState,containerHeight,dataSource,sumTotalFee,sumOrderNum,sumD0fee,sumProfit,sumTotalProfit,total} = this.props;
         const TabPane = Tab.TabPane;
         let PayStatement = upstreamMent.map((item,index)=>{
             return <Menu.Item onClick={()=>{this.upstream = item.value;this.upstreamName = item.name}}>{item.name}</Menu.Item>
@@ -109,7 +115,7 @@ class GetMangers extends Component {
                     </div>
                     <div className="display-flex">
                         <span className='top-sumtext'>总手续费分成:</span>
-                        <span className="text-center new-border">{sumProfit}</span>
+                        <span className="text-center new-border">{sumTotalProfit}</span>
                     </div>
                     <div className="display-flex">
                         <span className='top-sumtext '>总D0手续费:</span>
@@ -138,7 +144,7 @@ class GetMangers extends Component {
                 <Row className="paddingTop">
                     <div className="display-flex">
                         <span className='top-sumtext-bold'>总收益:</span>
-                        {<span className="text-center new-border" >{sumTotalProfit}</span>}
+                        {<span className="text-center new-border" >{sumProfit}</span>}
                     </div>
                     <div className="display-flex">
                         
@@ -181,9 +187,9 @@ class GetMangers extends Component {
                         <Table.Column title='收益' dataIndex="sumTotalProfit" />
                     </Table>
                 </div>
-                {/*<div style={{marginTop:'20px',float:'right'}}>
-                    <Pagination pageSizeSelector={false} total={2} onChange={change}/>
-                </div>*/}
+                <div style={{marginTop:'20px',float:'right'}}>
+                    <Pagination size="large" total={total} pageSize={20} onChange={this.changePageno.bind(this)} />
+                </div>
             </div>
         );
     }
@@ -210,7 +216,7 @@ function mapDispatchToProps(dispatch,ownProps){
 
 export default Dimensions({
   getHeight: function() { //element
-    return window.innerHeight - 340;
+    return window.innerHeight - 390;
   },
   getWidth: function() { //element
     return window.innerWidth - 24;

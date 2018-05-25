@@ -191,7 +191,9 @@ class CustomDialog extends Component {
         if(type=="change"){
             const{dataSource} = this.props;
             this.updateData([dataSource],this.state.newData).then((response)=>{
+                // console.log(response);
                 successToast('修改成功！');
+                this.state.newData={};
                 this.props.index.setState({
                     visible: false
                 });
@@ -202,6 +204,7 @@ class CustomDialog extends Component {
         }else{
             this.fileUpload(this.state.file).then((response)=>{
                 successToast('添加成功！');
+                console.log(response);
                 this.props.index.setState({
                     visible: false
                 });
@@ -242,10 +245,11 @@ class CustomDialog extends Component {
             website: newData.website == undefined ? oldData[0].website : newData.website,
             staffName: newData.staffName == undefined ? oldData[0].staffName : newData.staffName,
             license: newData.license == undefined ? oldData[0].license : newData.license,
-            parentId: newData.parentId == undefined ? oldData[0].parentId : newData.parentId,
+            parentAppId: newData.parentAppId == undefined ? oldData[0].parentAppId : newData.parentAppId,
             staffIdCard: newData.staffIdCard == undefined ? oldData[0].staffIdCard : newData.staffIdCard,
+            appId: oldData[0].appId
         };
-
+        // console.log(updateData)
         if(this.state.file!=""&&this.state.file!=undefined){
             formData.append('licenseFile',this.state.file);
         }
@@ -265,37 +269,22 @@ class CustomDialog extends Component {
         if(this.state.cardBack!=""&&this.state.cardBack!=undefined){
             formData.append('cardBackFile',this.state.cardBack);
         }
-        
-        // formData.append('idCardFrontFile',this.state.idCardFront);
-        // formData.append('idCardBackFile',this.state.idCardBack);
-        // formData.append('cardFrontFile',this.state.cardFront);
-        // formData.append('cardBackFile',this.state.cardBack);
-
-
         formData.append("name", updateData.name);
         formData.append("signdate", updateData.signdate);
-
         formData.append("expiredate", updateData.expiredate);
         formData.append("principal", updateData.principal);
-
         formData.append("idtype", updateData.idtype);
         formData.append("accounttype", updateData.accounttype);
-
         formData.append("accountprovince", updateData.accountprovince);
-
         formData.append("id", updateData.id);
-
         formData.append("phone", updateData.phone);
-
         formData.append("province", updateData.province);
-
         formData.append("city", updateData.city);
         formData.append("address", updateData.address);
         formData.append("accountname", updateData.accountname);
         formData.append("account", updateData.account);
         formData.append("bank", updateData.bank);
         formData.append("accountcity", updateData.accountcity);
-
         formData.append("accountaddress", updateData.accountaddress);
         formData.append("linkman", updateData.linkman);
         formData.append("linkmantel", updateData.linkmantel);
@@ -303,14 +292,16 @@ class CustomDialog extends Component {
         formData.append("website", updateData.website);
         formData.append("staffIdCard", updateData.staffIdCard);
         formData.append("staffName", updateData.staffName);
-        formData.append("parentId", updateData.parentId);
-
+        formData.append("parentAppId", updateData.parentAppId);
+        formData.append("status", "0");
+        formData.append("appId", updateData.appId);
         const config = {
             headers: {
                 'content-type': 'multipart/form-data'
             }
         }
-        return  post(url, formData,config)
+        return  post(url, formData,config);
+        
     }
 
     fileUpload(file){
@@ -438,8 +429,9 @@ class CustomDialog extends Component {
         formData.append("website", this.field.getValues().website);
         formData.append("staffIdCard", this.field.getValues().staffIdCard);
         formData.append("staffName", this.field.getValues().staffName);
-        formData.append("parentId", this.field.getValues().parentId);
+        formData.append("parentAppId", this.field.getValues().parentId);
         
+        console.log(formData)
         const config = {
             headers: {
                 'content-type': 'multipart/form-data'
@@ -454,9 +446,11 @@ class CustomDialog extends Component {
             return  <Menu.Item onClick={
                         ()=>{
                             this.state.newData.accountprovince = item.value;
+
                             this.accountprovince=item.name
                             if(dataSource){
-                                dataSource.accountprovince = item.value
+                                dataSource.accountprovince = item.value;
+                                dataSource.accountProvince = item.value
                             }
                            
                             }}
@@ -470,7 +464,8 @@ class CustomDialog extends Component {
                     this.state.newData.accountaddress = item.value;
                     this.accountaddress=item.name
                     if(dataSource){
-                        dataSource.accountaddress = item.value
+                        dataSource.accountaddress = item.value;
+                        dataSource.accountAddress = item.value
                     }
                 }
             }>{item.name}</Menu.Item>
@@ -481,12 +476,12 @@ class CustomDialog extends Component {
                     this.state.newData.accounttype = item.value;
                     this.accounttype=item.name
                     if(dataSource){
-                        dataSource.accounttype = item.value
+                        dataSource.accounttype = item.value;
+                        dataSource.accountType = item.value
                     }
                 }
             }>{item.name}</Menu.Item>
         })
-        console.log(dataSource)
         if(title == '修改'){
             return (
                 <Dialog visible={visible}
@@ -641,7 +636,7 @@ class CustomDialog extends Component {
                                    <span></span>
                                    <span style={{fontSize:'14px',marginTop:'7px'}}>appId：</span>
                                </div>
-                               <Input placeholder="APP名称" className='classWidth'  defaultValue={dataSource.parentId}  onChange={(e)=>{this.state.newData.parentId = e}} />
+                               <Input placeholder="APP名称" className='classWidth'  defaultValue={dataSource.parentAppId}  onChange={(e)=>{this.state.newData.parentAppId = e}} />
                                <div className="flexStyle hide">
                                    <span></span>
                                    <span style={{fontSize:'14px',marginTop:'7px'}}>营业执照：</span>
@@ -694,7 +689,7 @@ class CustomDialog extends Component {
                                     <span style={{fontSize:'14px',marginTop:'7px'}}>身份证正面：</span>
                                 </div>
                                 <div className="classWidth ">
-                                    {  dataSource.idCardFront != ''?
+                                    {  (dataSource.idCardFront != '' && dataSource.idCardFront != undefined)?
                                             <a href={Appconfig+dataSource.idCardFront} target="view_window">
                                                 <img src={Appconfig+dataSource.idCardFront} className="imgSize"/>
                                             </a>
@@ -710,7 +705,7 @@ class CustomDialog extends Component {
                                     <span style={{fontSize:'14px',marginTop:'7px'}}>身份证反面：</span>
                                 </div>
                                 <div className="classWidth ">
-                                    {  dataSource.idCardBack != ''?
+                                    {  (dataSource.idCardBack != '' && dataSource.idCardBack != undefined)?
                                             <a href={Appconfig+dataSource.idCardBack} target="view_window"><img src={Appconfig+dataSource.idCardBack} className="imgSize"/></a>
                                             : <img src={noneImg} className="imgSize"/>
                                     }
@@ -726,7 +721,7 @@ class CustomDialog extends Component {
                                     <span style={{fontSize:'14px',marginTop:'7px'}}>结算卡正面：</span>
                                 </div>
                                 <div className="classWidth ">
-                                    {  dataSource.cardFront != ''?
+                                    {  (dataSource.cardFront != '' && dataSource.cardFront != undefined)?
                                             <a href={Appconfig+dataSource.cardFront} target="view_window"><img src={Appconfig+dataSource.cardFront} className="imgSize"/></a>
                                             : <img src={noneImg} className="imgSize"/>
                                     }
@@ -739,7 +734,7 @@ class CustomDialog extends Component {
                                     <span style={{fontSize:'14px',marginTop:'7px'}}>结算卡反面：</span>
                                 </div>
                                 <div className="classWidth ">
-                                    {  dataSource.cardBack != ''?
+                                    { (dataSource.cardBack != '' && dataSource.cardBack != undefined)?
                                             <a href={Appconfig+dataSource.cardBack} target="view_window"><img src={Appconfig+dataSource.cardBack} className="imgSize"/></a>
                                             : <img src={noneImg} className="imgSize"/>
                                     }                                    
@@ -755,7 +750,7 @@ class CustomDialog extends Component {
                                     <span style={{fontSize:'14px',marginTop:'7px'}}>营业执照：</span>
                                 </div>
                                 <div className="classWidth ">
-                                    {  dataSource.license != ''?
+                                    {  (dataSource.license != '' && dataSource.license != undefined)?
                                             <a href={Appconfig+dataSource.license} target="view_window"><img src={Appconfig+dataSource.license} className="imgSize"/></a>
                                             : <img src={noneImg} className="imgSize"/>
                                     }      

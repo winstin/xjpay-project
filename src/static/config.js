@@ -132,13 +132,66 @@ const PayState = [
 ]
 
 
+//支持银行
+const BankData = [
+	{
+		name:'工商银行',
+	},{
+		name:'光大银行',
+	},{
+		name:'上海银行',
+	},{
+		name:'中国银行',
+	},{
+		name:'中信银行',
+	},{
+		name:'民生银行',
+	},{
+		name:'农业银行',
+	},{
+		name:'建设银行',
+	},{
+		name:'交通银行',
+	},{
+		name:'邮政储蓄银行	',
+	},{
+		name:'华夏银行',
+	},{
+		name:'招商银行',
+	},{
+		name:'兴业银行',
+	},{
+		name:'平安银行',
+	},{
+		name:'广发银行股份有限公司',
+	},{
+		name:'浦发银行',
+	},{
+		name:'北京银行',
+	},{
+		name:'浦东发展银行	',
+	}
+]
+
+
+
+
+//卡类
+const bankCardType = [
+	{
+		name:'借记卡',
+
+	},{
+		name:'贷记卡',
+
+	}
+]
 
 
 
 
 
-
-export default {Appconfig,Department,RolePlayer,Orderment,PayState,webUrl}
+export default {Appconfig,Department,RolePlayer,Orderment,PayState,webUrl,BankData,bankCardType}
 /**
 项目常理存放地址
 **/

@@ -22,10 +22,6 @@ class CustomDialog extends Component {
         };
     }
 
-
-    
-
-
     
     onOpen = () => {
         this.props.index.setState({

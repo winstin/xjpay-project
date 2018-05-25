@@ -29,7 +29,7 @@ export function getInitData(pageno = 1,appId='',appName='',isloading=true){
             },
             isloading:isloading,
             callback:(rsp)=>{
-                if(rsp.data.records == ""){
+                if(rsp.data == ""){
                     dispatch({
                         type:INITDATA,
                         dataSource: [],
@@ -38,7 +38,7 @@ export function getInitData(pageno = 1,appId='',appName='',isloading=true){
                 }else{
                     dispatch({
                         type:INITDATA,
-                        dataSource: rsp.data.records,
+                        dataSource: rsp.data.data,
                         total:rsp.data.total
                     }); 
                 }
@@ -63,7 +63,6 @@ export function getInitData(pageno = 1,appId='',appName='',isloading=true){
  */
 export function getDetailData(appId,pageno=1){
     return (dispatch)=>{
-
          api({
             method:'/rates/page',
             mode:'jsonp',
@@ -86,11 +85,16 @@ export function getDetailData(appId,pageno=1){
                             type:DetailDATA,
                             downDetails: rsp.data.downDetails,
                             upDetail:rsp.data.upDetail,
-                            feeDataSource: e.data.records,
+                            feeDataSource: e.data.data,
                         });
                     },
                     errCallback:(msg)=>{
-                        // console.log(msg)
+                        dispatch({
+                            type:DetailDATA,
+                            downDetails: [],
+                            upDetail:[],
+                            feeDataSource: e.data.data,
+                        });
                     }
                 });
             },
@@ -246,7 +250,7 @@ export function getSelectId(appId='',){
             callback:(rsp)=>{
                 dispatch({
                     type: CHOOSEDATA,
-                    chooseDatas:rsp.data.records,
+                    chooseDatas:rsp.data.data,
                 });
                 
             },

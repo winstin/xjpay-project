@@ -91,6 +91,10 @@ class TradeDetailDialog extends Component {
                     return "商旅类";
                 case "2":
                     return "一般类";
+                case "3":
+                    return "新无卡";
+                case "1":
+                    return "无积分";
             } 
         }
         

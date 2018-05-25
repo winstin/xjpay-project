@@ -57,10 +57,11 @@ export function freezeData(userId){
                 userId:userId
             },
             callback:(rsp)=>{
-                // console.log(rsp);
+                console.log(rsp);
                 successToast('操作成功！');
             },
             errCallback:(msg)=>{
+                console.log(msg);
                 errorToast('操作失败！');
             }
         });
@@ -78,11 +79,11 @@ export function unfreezeData(userId){
                 userId:userId
             },
             callback:(rsp)=>{
-                // console.log(rsp);
+                console.log(rsp);
                 successToast('操作成功！');
             },
             errCallback:(msg)=>{
-                // console.log(msg)
+                console.log(msg)
                 errorToast('操作失败！');
             }
         });

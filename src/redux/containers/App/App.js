@@ -45,7 +45,7 @@ class App extends Component {
         super(props);
         this.field = new Field(this);
         this.state={
-          isLogin:false,
+          isLogin:true,
           password:'',
           username:'',
           msg:'',
@@ -56,7 +56,6 @@ class App extends Component {
 
 
     componentDidMount(){
-        
         let self = this; 
         let now = new Date();
         let loginTime = localStorage.getItem("loginTime");//登录超时参数
@@ -102,6 +101,8 @@ class App extends Component {
               }
               
           }
+        }else{
+          self.setState({isLogin:false})
         }
 
     }
@@ -120,8 +121,6 @@ class App extends Component {
                   callback:(rsp)=>{
                       window.location.href="/dist/";
                       window.userType = localStorage.getItem("userType");
-                      
-
                       localStorage.setItem("menus",JSON.stringify(rsp.data));
                       self.setState({context:rsp.data,isLogin:true,msg:''});
                   },

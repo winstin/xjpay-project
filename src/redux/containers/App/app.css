@@ -37,9 +37,10 @@
     border-bottom: 3px solid #2E89DD;
 
 }
-/*.paddtingRight-5:hover{
-    color: #ccc
-}*/
+.paddtingRight-5:hover{
+    padding-right: 5px;
+    color: #fff
+}
 .nav-border{
     padding: 5px;
     border: 1px solid #ccc;
@@ -57,6 +58,9 @@
     background: #2E89DD
 }
 
+
+
+
 .nav-border-active{
     padding: 5px;
     cursor: pointer;
@@ -67,8 +71,15 @@
 }
 
 .paddtingRight-5{
-    padding-right: 5px
+    padding-right: 5px;
+    color: #333
 }
+.paddtingRight-5-hover{
+    padding-right: 5px;
+    color: #fff
+}
+
+
 
 .topicon{
     font-size: 10px;
@@ -599,4 +610,8 @@ th .next-table-cell-wrapper{
 
 .flexline{
     display: flex;
+}
+.dropdown{
+    height: 200px;
+    overflow: auto;
 }

@@ -262,9 +262,9 @@ class ServiceMangers extends Component {
                     <Table dataSource={dataSource} fixedHeader maxBodyHeight={containerHeight} rowSelection={{onChange: this.onRowClick,mode:'single'}}>
                         <Table.Column title="渠道编号" dataIndex="appId" width={100} />
                         <Table.Column title="公司名称" dataIndex="name" width={100} cell={this.cellAppName}/>
-                        <Table.Column title="执照编号" dataIndex="accountcity" width={200}/>
+                        {<Table.Column title="执照编号" dataIndex="accountcity" width={200}/>}
                         
-                        <Table.Column title="上游appId" dataIndex="parentId" width={100}/>
+                        <Table.Column title="上游appId" dataIndex="parentAppId" width={100}/>
 
                         <Table.Column title="渠道类型" dataIndex="accountprovince" cell={this.cellAccountprovince} width={100}/>
                         <Table.Column title="渠道级别" dataIndex="accountaddress" cell={this.cellAccountaddress} width={100}/>
@@ -280,7 +280,7 @@ class ServiceMangers extends Component {
                         <Table.Column title="商务邮箱" dataIndex="linkmantel" width={180}/>
 
                         <Table.Column title="财务邮箱" dataIndex="idtype" width={180}/>
-                        <Table.Column title="APP名称" dataIndex="appname"  width={100}/>
+                        <Table.Column title="APP名称" dataIndex="appName"  width={100}/>
 
                         <Table.Column title="官网地址" dataIndex="website" width={100}/>
                         <Table.Column title="账户类型" dataIndex="accounttype" cell={this.cellRender} width={100}/>

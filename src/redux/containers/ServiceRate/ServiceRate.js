@@ -15,7 +15,8 @@ import Dimensions from 'react-dimensions';
 import Dialog from 'qnui/lib/dialog';
 import Dropdown from 'qnui/lib/dropdown';
 import Menu from 'qnui/lib/menu';
-import {promptToast} from "static/utils.js"
+import {promptToast,FormatDateTime} from "static/utils.js"
+import BankDialog from '../../components/BankDialog/index.js'
 
 import Headers from '../../components/Header/index.js'
 
@@ -46,6 +47,12 @@ const pointTypeMent = [{
 },{
     name:'一般类',
     value:2
+},{
+    name:'新无卡',
+    value:3
+},{
+    name:'无积分',
+    value:1
 }]
 
 const typeMent = [{
@@ -71,6 +78,7 @@ class ServiceRates extends Component {
             visible3: false,
             visible4: false,
             visibles:false,
+            visiblebank:false,
             newData:{
                 code:1,codeName:'银联快捷',
                 upstream:'',upstreamName:'',
@@ -177,12 +185,11 @@ class ServiceRates extends Component {
 
     onRowClick = (index,record)=>{
         this.appid = index[0];
-
         this.oldData = record[0];
         this.oldData.codeName = this.cellRender(this.oldData.code);
         this.oldData.pointTypeName = this.cellPointType(this.oldData.pointType);
         this.oldData.typeName = this.cellType(this.oldData.type);
-        this.oldData.upstreamName = this.cellUpstream(this.oldData.upstream);
+        this.oldData.upstreamName = this.getUpstreamName(this.oldData.upstream);
     }
 
     /**
@@ -202,7 +209,6 @@ class ServiceRates extends Component {
             promptToast("请填写完整信息！")
             return;
         }
-
         const {getInitData,addData} = this.props;
         // let userData = localStorage.getItem("userFee0");
         // if(userData!=undefined || userData!=null){
@@ -308,16 +314,49 @@ class ServiceRates extends Component {
         });
     };
 
+    getBankData(record){
+        console.log(record)
+        const {getBankData} = this.props;
+        getBankData(record.appId,record.id);
+        this.setState({
+            visiblebank:true,
+        })
+    }
+
+    //删除银行费率
+    delBankData(){
+        const {delBankData} = this.props;
+
+    }
+
+    //添加银行费率
+    addBankData(){
+        const {addBankData} = this.props;
+    }
 
     cellRender = (value, index, record, context) => {
-        if(value == 1){
-            return '银联快捷';
-        }else{
-            return value;
-        }
+        return '银联快捷';
+        // if(value == 1){
+            
+        // }else{
+        //     return value;
+        // }
     }
 
     cellUpstream = (value, index, record, context) => {
+        if(value == 'KFT_SERVICE'){
+            return 'Q3';
+        }else if(value == 'HF_SERVICE'){
+            return 'Q1';
+        }else if(value == 'CONGYU_SERVICE'){
+            return 'Q2';
+        }else if(value == 'HJ_SERVICE'){
+            return <span onClick={this.getBankData.bind(this,record)}>Q4</span>;
+        }
+
+    }
+
+    getUpstreamName = (value, index, record, context) => {
         if(value == 'KFT_SERVICE'){
             return 'Q3';
         }else if(value == 'HF_SERVICE'){
@@ -331,31 +370,47 @@ class ServiceRates extends Component {
     }
 
     cellPointType = (value, index, record, context) => {
-       if(value == 0){
+        if(value == 0){
             return '商旅类';
         }else if(value == 2){
             return '一般类';
+        }else if(value == 1){
+            return '无积分';
+        }else if(value == 3){
+            return '新无卡';
         }else{
-            
             return '-';
         }
     }
 
 
     cellType = (value, index, record, context) => {
-        if(value == 0){
+        // if(value == 0){
             return 'D0';
-        }else{
-            return 'T1';
-        }
+        // }else{
+        //     return 'T1';
+        // }
     }
 
     cellMode = (value, index, record, context) => {
-        return (value/100).toFixed(2)+"分";
+        if (value) {
+            let text = (value/100).toFixed(2);
+            if(text == "NaN"){
+                return value
+            }else{
+                return text+"元";
+            }
+            
+        }
+        
     }
 
     cellFee = (value, index, record, context) => {
         return value;
+    }
+
+    cellTime = (value, index, record, context) => {
+        return <span >{FormatDateTime(value)}</span>;
     }
 
 
@@ -467,28 +522,27 @@ class ServiceRates extends Component {
                 </div>
                 <div style={{marginTop:'20px'}}>
                     <Table dataSource={dataSource} rowSelection={{onChange: this.onRowClick,mode:'single'}} fixedHeader maxBodyHeight={containerHeight}>
-                        <Table.Column title="编号" dataIndex="id"/>
-                        <Table.Column title="创建时间" dataIndex="createTime"/>
-                        <Table.Column title="服务商编号" dataIndex="appid"/>
-                        <Table.Column title="服务商名称" dataIndex="agentName"/>
+                        <Table.Column title="服务商编号" dataIndex="appId"/>
+                        {/*<Table.Column title="编号" dataIndex="id"/>*/}
+                        <Table.Column title="创建时间" dataIndex="create_time" cell={this.cellTime}/>
+                        <Table.Column title="服务商名称" dataIndex="appName"/>
                         <Table.Column title="业务类型" dataIndex="code" cell={this.cellRender}/>
                         <Table.Column title="上游渠道" dataIndex="upstream" cell={this.cellUpstream}/>
-                        <Table.Column title="交易类型" dataIndex="pointType" cell={this.cellPointType}/>
+                        <Table.Column title="交易类型" dataIndex="points_type" cell={this.cellPointType}/>
                         <Table.Column title="结算类型" dataIndex="type" cell={this.cellType}/>
                         <Table.Column title="鉴权费" dataIndex="mode" cell={this.cellMode}/>
                         <Table.Column title="结算费率(‰)" dataIndex="fee0" cell={this.cellFee}/>
-                        <Table.Column title="代付费" dataIndex="d0fee"/>
+                        <Table.Column title="代付费" dataIndex="d0fee" cell={this.cellMode}/>
                     </Table>
                 </div>
                 <div style={{marginTop:'20px',float:'right'}}>
                     <Pagination current={this.current} size="large" onChange={this.handleChange.bind(this)} pageSize={20} total={total}/>
                 </div>
-
                 <Dialog visible={this.state.visible}
-                        onOk={this.addRates}
-                        closable="esc,mask,close"
-                        onCancel={this.onClose}
-                        onClose={this.onClose} title="添加">
+                    onOk={this.addRates}
+                    closable="esc,mask,close"
+                    onCancel={this.onClose}
+                    onClose={this.onClose} title="添加">
                     <Row>
                         <div className="flexStyle">
                             <span></span>
@@ -591,14 +645,25 @@ class ServiceRates extends Component {
                         </div>
                         <Input placeholder="代付费(分)" className="textClsName"   style={{width:'180px'}} onChange={(e)=>{this.state.newData.d0fee = e}}/>
                     </Row>
+
+                    <Row className="marginTop">
+                        <div className="flexStyle">
+                            <span></span>
+                            <span style={{fontSize:'14px',marginTop:'7px'}}>XO值(角)：</span>
+                        </div>
+                        <Input placeholder="XO值" className="textClsName"   style={{width:'180px'}} onChange={(e)=>{this.state.newData.defaultNewNoCardProfit = e}}/>
+                        <div className="flexStyle hide">
+                            <span></span>
+                            <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>代付费(分)：</span>
+                        </div>
+                        <Input  className="textClsName hide"   style={{width:'180px'}} />
+                    </Row>
                 </Dialog>
-
-
                 <Dialog visible={this.state.visible0}
-                        onOk={this.updateRates}
-                        closable="esc,mask,close"
-                        onCancel={this.onCloseChange}
-                        onClose={this.onCloseChange} title="修改">
+                    onOk={this.updateRates}
+                    closable="esc,mask,close"
+                    onCancel={this.onCloseChange}
+                    onClose={this.onCloseChange} title="修改">
                     <Row>
                         <div className="flexStyle">
                             <span></span>
@@ -626,30 +691,11 @@ class ServiceRates extends Component {
                             <span></span>
                             <span style={{fontSize:'14px',marginTop:'7px'}}>上游渠道：</span>
                         </div>
-                        {/*<Dropdown trigger={<Input placeholder="上游渠道" className="textClsName"   style={{width:'180px'}} value={this.oldData.upstreamName} disabled/>}
-                                  triggerType="click"
-                                  visible={this.state.visible2}
-                                  onVisibleChange={this.onVisibleChange2}
-                                  safeNode={() => this.refs.button}>
-                            <Menu>
-                                {upstream0}
-                            </Menu>
-                        </Dropdown>*/}
                         <Input placeholder="上游渠道" className="textClsName"   style={{width:'180px'}} value={this.oldData.upstreamName} disabled/>
                         <div className="flexStyle">
                             <span></span>
                             <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>交易类型：</span>
                         </div>
-
-                        {/*<Dropdown trigger={<Input placeholder="交易类型" className="textClsName"   style={{width:'180px'}} value={this.oldData.pointTypeName}/>}
-                                  triggerType="click"
-                                  visible={this.state.visible4}
-                                  onVisibleChange={this.onVisibleChange4}
-                                  safeNode={() => this.refs.button}>
-                            <Menu>
-                                {pointType0}
-                            </Menu>
-                        </Dropdown>*/}
                         <Input placeholder="交易类型" className="textClsName"   style={{width:'180px'}} value={this.oldData.pointTypeName} disabled/>
                     </Row>
                     <Row className="marginTop">
@@ -684,7 +730,23 @@ class ServiceRates extends Component {
                         </div>
                         <Input placeholder="代付费(分)" className="textClsName"   style={{width:'180px'}} defaultValue={this.oldData.d0fee} onChange={(e)=>{this.oldData.d0fee = e}}/>
                     </Row>
+
+
+                    <Row className="marginTop">
+                        <div className="flexStyle">
+                            <span></span>
+                            <span style={{fontSize:'14px',marginTop:'7px'}}>XO值(角)：</span>
+                        </div>
+                        <Input placeholder="XO值" className="textClsName"   style={{width:'180px'}} onChange={(e)=>{this.oldData.defaultNewNoCardProfit = e}}/>
+                        <div className="flexStyle hide">
+                            <span></span>
+                            <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>代付费(分)：</span>
+                        </div>
+                        <Input  className="textClsName hide"   style={{width:'180px'}} />
+                    </Row>
                 </Dialog>
+
+                <BankDialog visible={this.state.visiblebank} index={this} title="银行获利值" dataSource={[]}/>
             </div>
         );
     }

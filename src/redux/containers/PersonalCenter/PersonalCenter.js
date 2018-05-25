@@ -90,6 +90,11 @@ class PersonalCenter extends Component {
 
     getUserInfo(){
         let userInfo = localStorage.getItem("userInfo");//用户信息
+
+        if(isEmpty(userInfo)){
+            return
+        }
+
         userInfo = JSON.parse(userInfo);
         api({
             method:'/agents/detail',
@@ -98,7 +103,6 @@ class PersonalCenter extends Component {
                 // url:'/'+userInfo.id
             },
             callback:(rsp)=>{
-                console.log(rsp);
                 let dataSource = JSON.parse(JSON.stringify(this.state.dataSource));
                 let agentData = rsp.data.agentrates;
                 if(agentData.length>0){
@@ -391,7 +395,7 @@ class PersonalCenter extends Component {
                     <div className="PersonalCenter">
                         <Headers title="首页"/>
                          <div className="space-bottom paddingTop marginTop-20">
-                            <span className='tips-title'>欢迎使用Guns管理系统</span>
+                            <span className='tips-title'>欢迎使用星洁科技后台管理系统</span>
                         </div>
                     </div>
                 );
