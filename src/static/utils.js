@@ -6,7 +6,7 @@ import Feedback from 'qnui/lib/feedback';
 import copy from 'copy-to-clipboard';
 import config from 'static/config.js';
 
-import loadingimg from 'static/loading.gif';
+// import loadingimg from 'static/loading.gif';
 
 const Toast = Feedback.toast;
 const webUrl = config.webUrl;
@@ -293,7 +293,6 @@ var Tools = {
     if(args!=''){
         args = '?'+args;
     }
-
     const uri = webUrl+method+args;
     let data = {};
     data.url = uri;
@@ -317,7 +316,7 @@ var Tools = {
         if(isloading){
             hideLoading();
         }
-        console.log(data);
+        // console.log(data);
         if(method=="/users/changePwd"){
             errCallback(data.responseJSON);
             return;
@@ -428,10 +427,6 @@ var Tools = {
           withCredentials: true
       };
       data.crossDomain = true;
-
-
-      
-
       $.ajax(data).done(function(e) {
           callback(e);
       }).fail(function(data,status,xhr) {

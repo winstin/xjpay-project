@@ -17,7 +17,6 @@ import Field from 'qnui/lib/field';
 import {api,ajax,compareTime,isEmpty} from "static/utils.js"
 import Dialog from 'qnui/lib/dialog';
 import testImg from 'static/login.png';
-import bcakgroundImg from 'static/loginbackgrond.jpg';
 import * as Login from '../../actions/Login'
 
 import Menu from 'qnui/lib/menu';  
