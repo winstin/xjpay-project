@@ -43,6 +43,7 @@ class BatchPage extends Component {
             visibless:false,
             visible:false,
             bzData:[],
+            moreSearch:false
         };
         this.startDate=getNowFormatDate();
         this.endDate=getNowFormatDate();
@@ -57,6 +58,7 @@ class BatchPage extends Component {
         this.orderSta='';
         this.current =1;
         this.upstream='';
+        this.cutHeight = 0;
     }
 
     onSearch(value) {
@@ -293,50 +295,62 @@ class BatchPage extends Component {
                         </div>
                     </Row>
 
-                    <Row className="marginTop">
-                        <div className="display-flex">
-                            <span className='top-sumtext-bold'>上游渠道：</span>
+                    {this.state.moreSearch && 
+                        <Row className="marginTop">
+                            <div className="display-flex">
+                                <span className='top-sumtext-bold'>上游渠道：</span>
+                                <Dropdown trigger={<Input placeholder="上游渠道" size="large"  style={{width:'160px'}} value={this.upstreamName}/>}
+                                          triggerType="click"
+                                          visible={this.state.visibless}
+                                          onVisibleChange={this.onVisibleChanges}
+                                          safeNode={() => this.refs.button}>
+                                    <Menu>
+                                        {upstreamMents}
+                                    </Menu>
+                                </Dropdown>
+                               
+                            </div>
+                            <div className="display-flex">
 
-                            <Dropdown trigger={<Input placeholder="上游渠道" size="large"  style={{width:'160px'}} value={this.upstreamName}/>}
-                                      triggerType="click"
-                                      visible={this.state.visibless}
-                                      onVisibleChange={this.onVisibleChanges}
-                                      safeNode={() => this.refs.button}>
-                                <Menu>
-                                    {upstreamMents}
-                                </Menu>
-                            </Dropdown>
-                           
-                        </div>
-                        <div className="display-flex">
+                            </div>
+                            <div className="display-flex">
 
-                        </div>
-                        <div className="display-flex">
-
-                        </div>
-                        <div className="display-flex">
-       
-                        </div>
-                    </Row>
-                    <Row className="marginTop">
-                        
-                        <span className='top-sumtext-bold'>时间选择：</span>
-                        <RangePicker size="large" onChange={(a, b) => {
-                            this.startDate = b[0];
-                            this.endDate = b[1];
-                        }} />
-                    </Row>
+                            </div>
+                            <div className="display-flex">
+           
+                            </div>
+                        </Row>
+                    }
+                    {this.state.moreSearch && 
+                        <Row className="marginTop">
+                            <span className='top-sumtext-bold'>时间选择：</span>
+                            <RangePicker size="large" onChange={(a, b) => {
+                                this.startDate = b[0];
+                                this.endDate = b[1];
+                            }} />
+                        </Row>
+                    }
                 </div>
                 
-                <Row style={{marginTop:'20px'}}>
+                <Row className="marginTop-center">
                     <Button type="primary" style={{width:'80px'}} size="large" onClick={this.onSearch.bind(this)}>搜索</Button>
                     <Button type="secondary" style={{width:'80px',marginLeft:'10px'}} size="large" onClick={this.onExport.bind(this)}>导出</Button>
                     <Button type="normal" size="large" style={{width:'100px',marginLeft:'10px'}} onClick={this.reSetData.bind(this)}>重置</Button>
                     <Button type="normal" size="large" style={{width:'100px',marginLeft:'10px'}} onClick={this.copyData.bind(this)}>复制</Button>
                     <Button type="secondary" style={{width:'80px',marginLeft:'10px'}} size="large" onClick={this.showBz.bind(this)}>备注</Button>
+
+                    <span className="blue-text"  onClick={()=>{
+                        if(this.state.moreSearch){
+                            this.cutHeight = 0;
+                        }else{
+                            this.cutHeight = 80;
+                        }
+                        this.setState({moreSearch:!this.state.moreSearch})
+
+                    }}>&nbsp;&nbsp;&nbsp;{!this.state.moreSearch?"高级搜索>>>":"收起<<<"}</span>
                 </Row>
                 <div style={{marginTop:'20px'}}>
-                    <Table dataSource={dataSource}  fixedHeader maxBodyHeight={containerHeight}>
+                    <Table dataSource={dataSource}  fixedHeader maxBodyHeight={containerHeight-this.cutHeight}>
                         <Table.Column title="订单号" dataIndex="orderNo" width={130} cell={this.cellBz}/>
                         <Table.Column title="渠道订单号" dataIndex="agentOrderNo" width={180}/>
                         <Table.Column title="渠道编号" dataIndex="channelAgent.appId"  width={90}/>
@@ -357,7 +371,8 @@ class BatchPage extends Component {
                         <Table.Column title="结算卡号" dataIndex="merchant.cardNumber"  width={100}/>*/}
                     </Table>
                 </div>
-                <div style={{marginTop:'20px',float:'right'}}>
+                <div className='footer-css'>
+                    <span className='footer-span'>总记录&nbsp;{total}&nbsp;条</span>
                     <Pagination current={this.current} size="large" total={total} pageSize={20} onChange={this.handleChange.bind(this)} />
                 </div>
                 <TradeDetailDialog visible={this.state.detailvisible} index={this} title="交易流水详情" dataSource={this.state.orderdata}/>
@@ -387,7 +402,7 @@ function mapDispatchToProps(dispatch,ownProps){
 
 export default Dimensions({
   getHeight: function() { //element
-    return window.innerHeight - 460;
+    return window.innerHeight - 380;
   },
   getWidth: function() { //element
     return window.innerWidth - 24;

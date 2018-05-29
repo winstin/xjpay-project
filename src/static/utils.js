@@ -4,7 +4,10 @@ import fetchJsonp from 'fetch-jsonp';
 
 import Feedback from 'qnui/lib/feedback';
 import copy from 'copy-to-clipboard';
-import config from 'static/config.js'
+import config from 'static/config.js';
+
+import loadingimg from 'static/loading.gif';
+
 const Toast = Feedback.toast;
 const webUrl = config.webUrl;
 // const webUrl = "http://localhost:3000";
@@ -87,16 +90,17 @@ var Tools = {
     }
     return str.substr(0, str.length-1);
   },
+
   showLoading:function(text = "加载中，请稍后"){
       let element = document.getElementById("c-loading-trade");
       if(this.isEmpty(element)){
           let html =`<div id="c-loading-trade" >
               <div style="background: #000;position: fixed;width: 100%;height: 100%;top: 0;left: 0;z-index: 1001;transition: opacity .3s;opacity: 0.05;"></div>
               <div  style="position: fixed;right: 40%;bottom: 45%;z-index:999999;margin-right:10px;padding: 20px;background-color: white;">
-                  <div>
-                  <img src = "//q.aiyongbao.com/trade/img/loading.gif" style="margin-right:10px;vertical-align: middle;"/>
-                  <font style="vertical-align: middle;color:#999">${text}</font>
-                  </div>
+                    <div>
+                    <img src = "//q.aiyongbao.com/trade/img/loading.gif" style="margin-right:10px;vertical-align: middle;"/>
+                    <font style="vertical-align: middle;color:#999">${text}</font>
+                    </div>
               </div>
           </div>`;
           let div = document.createElement('div');
@@ -104,6 +108,23 @@ var Tools = {
           document.getElementById('app').appendChild(div);
       }
   },
+
+  // showLoading:function(text = "加载中，请稍后"){
+  //     let element = document.getElementById("c-loading-trade");
+  //     if(this.isEmpty(element)){
+  //         let html =`<div id="c-loading-trade" >
+  //             <div style="background: #000;position: fixed;width: 100%;height: 100%;top: 0;left: 0;z-index: 1001;transition: opacity .3s;opacity: 0.05;"></div>
+  //             <div  style="position: fixed;right: 40%;bottom: 45%;z-index:999999">
+  //                   <div>
+  //                     <img src = ${loadingimg} style="margin-right:10px;vertical-align: middle;width:200px"/>
+  //                   </div>
+  //             </div>
+  //         </div>`;
+  //         let div = document.createElement('div');
+  //         div.innerHTML = html;
+  //         document.getElementById('app').appendChild(div);
+  //     }
+  // },
   hideLoading:function(){
       let elements = document.getElementById("c-loading-trade");
       if(elements) elements.parentNode.removeChild(elements);
@@ -296,7 +317,11 @@ var Tools = {
         if(isloading){
             hideLoading();
         }
-        console.log(data)
+        console.log(data);
+        if(method=="/users/changePwd"){
+            errCallback(data.responseJSON);
+            return;
+        }
         if(data.responseText){
             if(data.responseText.indexOf('登录超时')>-1){
               localStorage.setItem("loginTime","");
@@ -304,25 +329,21 @@ var Tools = {
               localStorage.setItem("userType","");
               localStorage.setItem("userInfo","");
               promptToast("登录超时，请退出重新登录!",2000)
-            }
-
-            if(data.responseText.indexOf('账号密码错误')>-1){
+              window.location.reload();
+            }else if(data.responseText.indexOf('账号密码错误')>-1){
               errorToast("账号密码错误!",2000)
-            }
-
-            if(data.responseText.indexOf('502 Bad Gateway')>-1){
+            }else if(data.responseText.indexOf('502 Bad Gateway')>-1){
               localStorage.setItem("loginTime","");
               localStorage.setItem("appId","");
               localStorage.setItem("userType","");
               localStorage.setItem("userInfo","");
               promptToast("服务器异常请稍后登录!",2000)
-            }
-
-            if(data.responseText.indexOf('权限异常')>-1){
+              window.location.reload();
+            }else if(data.responseText.indexOf('权限异常')>-1){
               promptToast("权限异常!",2000)
+            }else{
+              errCallback(data.responseText);
             }
-
-
         }else{
 
             errCallback(data.responseJSON)

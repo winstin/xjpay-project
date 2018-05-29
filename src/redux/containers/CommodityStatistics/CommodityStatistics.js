@@ -123,7 +123,8 @@ class GunsIndex extends Component {
                         <Table.Column title="D0代付手续费" dataIndex="sumD0fee"/>
                     </Table>
                 </div>
-                <div style={{marginTop:'20px',float:'right'}}>
+                <div className='footer-css'>
+                    <span className='footer-span'>总记录&nbsp;{total}&nbsp;条</span>
                     <Pagination current={this.current} size="large" total={total} pageSize={20} onChange={this.handleChange.bind(this)} />
                 </div>
             </div>

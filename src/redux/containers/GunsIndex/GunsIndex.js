@@ -126,6 +126,7 @@ class GunsIndex extends Component {
     cellTime = (value, index, record, context) => {
         return FormatDateTime(value);
     }
+
     
     cellType = (value, index, record, context) => {
         switch (value) {
@@ -135,6 +136,8 @@ class GunsIndex extends Component {
                 return '无积分';
             case '2':
                 return '标扣';
+            case '3':
+                return '新无卡';
 
         }
     }
@@ -227,7 +230,6 @@ class GunsIndex extends Component {
                     <div className='marginTop-20 paddingLeft-12'>
                         <span className='top-sumtext-bold'>时间选择：</span>
                         <RangePicker  size="large" onChange={(a, b) => {
-                            // console.log(b[0]);
                             this.startDate = b[0];
                             this.endDate = b[1];
                         }} />
@@ -246,7 +248,7 @@ class GunsIndex extends Component {
                             <Table.Column title="商户名称" dataIndex="name"/>
                             <Table.Column title="渠道编号" dataIndex="channelAgent.appId"/>
                             <Table.Column title="渠道名称" dataIndex="agentName" />
-                            <Table.Column title="建档时间" dataIndex="createTime" cell={this.cellTime} width="90"/>
+                            <Table.Column title="建档时间" dataIndex="createTime" cell={this.cellTime} width={100}/>
                             <Table.Column title="身份证号" dataIndex="idCard"/>
                             <Table.Column title="结算卡号" dataIndex="cardNumber"/>
                             <Table.Column title="商户类型" dataIndex="mchType" cell={this.cellType} width="90"/>
@@ -256,7 +258,8 @@ class GunsIndex extends Component {
                             <Table.Column title="状态" dataIndex="status" cell={this.cellStatus} width={100}/>
                         </Table>
                     </div>
-                    <div style={{marginTop:'20px',float:'right'}}>
+                    <div className='footer-css'>
+                        <span className='footer-span'>总记录&nbsp;{total}&nbsp;条</span>
                         <Pagination current={this.state.current} size="large" total={total} pageSize={20} onChange={this.changePageno.bind(this)} />
                     </div>
                 </div>

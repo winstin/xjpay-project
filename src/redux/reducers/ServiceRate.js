@@ -1,7 +1,7 @@
 /**
  @author wp
 **/
-import { INITDATA,GETDATA,SERVICEDATA } from '../actions/ServiceRate'
+import { INITDATA,GETDATA,SERVICEDATA,BANKDATA } from '../actions/ServiceRate'
 
 //初始化状态
 const initialState = {
@@ -9,7 +9,8 @@ const initialState = {
     'dataSource':[],
     'isLoad':true,
     'total':0,
-    serviceData:[]
+    serviceData:[],
+    bankData:[]
 }
 export default function PrintDialog(state = initialState, action){
     switch (action.type) {
@@ -19,6 +20,12 @@ export default function PrintDialog(state = initialState, action){
                     'isLoad':false,
                     'allData':action.dataSource,
                     'total':action.total,
+                });
+            break;
+        case BANKDATA:
+                return Object.assign({},state,{
+                    'bankData':action.bankData,
+                    
                 });
             break;
 

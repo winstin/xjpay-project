@@ -166,7 +166,8 @@ class OrderMangers extends Component {
                             <Table.Column title="状态" dataIndex="status" cell={this.cellState}/>
                         </Table>
                     </div>
-                    <div style={{marginTop:'20px',float:'right'}}>
+                    <div className='footer-css'>
+                        <span className='footer-span'>总记录&nbsp;{total}&nbsp;条</span>
                         <Pagination defaultCurrent={1} size="large" onChange={this.handleChange.bind(this)} pageSize={20} total={total}/>
                     </div>
                     

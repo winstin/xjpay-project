@@ -4,6 +4,7 @@
 export const INITDATA = "INITDATA";
 export const GETDATA = "GETDATA";
 export const SERVICEDATA = "SERVICEDATA";
+export const BANKDATA = "BANKDATA";
 
 
 
@@ -93,7 +94,11 @@ export function addData(data = {}){
                 defaultNewNoCardProfit:data.defaultNewNoCardProfit || ""
             },
             callback:(rsp)=>{
-                successToast('添加成功！')
+                if(rsp.message && rsp.message!="添加成功"){
+                    errorToast(rsp.message)
+                }else{
+                    successToast('添加成功！')
+                }
             },
             errCallback:(msg)=>{
                 if(msg.message){
@@ -111,14 +116,18 @@ export function addData(data = {}){
 
 export function updateData(oldData){
     oldData.pointsType = oldData.points_type;
-    
     return (dispatch)=>{
         NetWorkPOST({
             method:'/rates/update',
             mode:'json',
             args:oldData,
             callback:(rsp)=>{
-                successToast('修改成功！')
+                if(rsp.message && rsp.message!='修改成功'){
+                    errorToast(rsp.message)
+                }else{
+                    successToast('修改成功！')
+                }
+                
             },
             errCallback:(msg)=>{
                 if(msg.message){
@@ -148,17 +157,21 @@ export function getBankData(appId,rateId){
         NetWorkPOST({
             method:'/rates/agent/'+appId+'/rate/'+rateId+'/specialBankRate',
             mode:'json',
+            type:'GET',
             args:{
                
             },
             callback:(rsp)=>{
-                console.log(rsp)
+                dispatch({
+                    type:BANKDATA,
+                    bankData: rsp.data
+                });
             },
             errCallback:(msg)=>{
                 if(msg.message){
                     errorToast(msg.message)
                 }else{
-                    errorToast('添加失败！')
+                    errorToast('获取数据失败！')
                 }
                 
             }
@@ -176,11 +189,12 @@ export function getBankData(appId,rateId){
  * @param    {[type]}   appId  [description]
  * @param    {[type]}   rateId [description]
  */
-export function addBankData(appId,rateId,bankName='',bankCardType='',newNoCardProfit=''){
+export function addBankData(appId,rateId,bankName='',bankCardType='',newNoCardProfit='',callback){
     return (dispatch)=>{
         NetWorkPOST({
             method:'/rates/agent/'+appId+'/rate/'+rateId+'/specialBankRate',
             mode:'json',
+            dataType:'json',
             args:{
                 "bankCardType": bankCardType,
                 "bankName": bankName,
@@ -188,7 +202,8 @@ export function addBankData(appId,rateId,bankName='',bankCardType='',newNoCardPr
                 "newNoCardProfit": newNoCardProfit
             },
             callback:(rsp)=>{
-                console.log(rsp)
+                successToast('添加成功！')
+                callback('success');
             },
             errCallback:(msg)=>{
                 if(msg.message){
@@ -213,20 +228,51 @@ export function addBankData(appId,rateId,bankName='',bankCardType='',newNoCardPr
  * @param    {[type]}   rateId [description]
  * @return   {[type]}          [description]
  */
-export function delBankData(rateId){
+export function delBankData(appId,rateId,sbrId,callback){
     return (dispatch)=>{
         NetWorkPOST({
-            method:'/rates/delete/'+rateId,
+            method:'/rates/agent/'+appId+'/rate/'+rateId+'/specialBankRate/'+sbrId,
             mode:'json',
             args:{},
             callback:(rsp)=>{
-                console.log(rsp)
+                successToast('删除成功！')
+                callback('success');
             },
             errCallback:(msg)=>{
                 if(msg.message){
                     errorToast(msg.message)
                 }else{
-                    errorToast('添加失败！')
+                    errorToast('删除失败！')
+                }
+                
+            }
+        });
+       
+    }
+}
+
+
+export function updateBankData(appId,rateId,sbrId,bankName='',bankCardType='',newNoCardProfit='',callback){
+    return (dispatch)=>{
+        NetWorkPOST({
+            method:'/rates/agent/'+appId+'/rate/'+rateId+'/specialBankRate/'+sbrId+'/update',
+            mode:'json',
+            dataType:'json',
+            args:{
+                "bankCardType": bankCardType,
+                "bankName": bankName,
+                "id": '',
+                "newNoCardProfit": newNoCardProfit
+            },
+            callback:(rsp)=>{
+                successToast('修改成功！')
+                callback('success');
+            },
+            errCallback:(msg)=>{
+                if(msg.message){
+                    errorToast(msg.message)
+                }else{
+                    errorToast('修改失败！')
                 }
                 
             }

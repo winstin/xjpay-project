@@ -50,7 +50,8 @@ class App extends Component {
           username:'',
           msg:'',
           context:[],
-          appname:"星洁科技"
+          appname:"星洁科技",
+          isFirst:false
         }
     }
 
@@ -62,6 +63,8 @@ class App extends Component {
         window.userType = localStorage.getItem("userType");//用户身份
         window.userNick = localStorage.getItem("appId");
         let userInfo = localStorage.getItem("userInfo");//用户信息
+
+        let isFirst = localStorage.getItem("isFirst");//用户信息
         if (!isEmpty(loginTime)) {
           let res = compareTime(loginTime,now);
           if(res.minutes >= 30){
@@ -86,13 +89,22 @@ class App extends Component {
               }catch(e){
 
               }
+
               if(userInfo!=undefined && userInfo!=null){
+                  if(isFirst == "true"){
+                    context = [];
+                    // localStorage.setItem("isFirst",'false');
+                  }
                   self.setState({
                     isLogin:true,
                     context:context,
                     appname:userInfo.name
                   });
               }else{
+                  if(isFirst == "true"){
+                    context = [];
+                    // localStorage.setItem("isFirst",'false');
+                  }
                   self.setState({
                     isLogin:true,
                     context:context,
@@ -128,8 +140,10 @@ class App extends Component {
                     
                   }
               });
+              localStorage.setItem("isFirst",'false');
             }else{
               window.location.href="/dist/reSetPassword";
+              localStorage.setItem("isFirst",'true');
             }
         })
     }
@@ -355,7 +369,7 @@ class App extends Component {
                       >
                           <div className="qn-navigation-vertical" style={{background:backcolor}}>
                             <Icon type ="account" />
-                            <span>{appname}</span>
+                            <span className="span-height">{appname}</span>
                           </div>
                           {jsx}
                           <Myitem

@@ -99,7 +99,7 @@ export function emptyData(){
  * @param    {String}   result       [description]
  * @return   {[type]}                [description]
  */
-export function exportData(pageno = 1,startDate='',endDate='',agentName='',filterAppId=''){
+export function exportData(startDate='',endDate='',agentName='',filterAppId=''){
     return (dispatch)=>{ 
         let params = {
                 startDate: startDate,

@@ -89,6 +89,7 @@ class ServiceRates extends Component {
         };
         this.oldData = {};
         this.current = 1;
+        this.record = {};
         // this.rateId = "";
     }
 
@@ -252,6 +253,10 @@ class ServiceRates extends Component {
     updateRates = () =>{
         const {updateData} = this.props;
         let userData = localStorage.getItem("userFee0");
+
+        if(this.oldData.defaultNewNoCardProfit == undefined || this.oldData.defaultNewNoCardProfit == ''){
+            this.oldData.defaultNewNoCardProfit = this.oldData.default_new_no_card_profit
+        }
         // if(userData!=undefined || userData!=null){
         //     userData = JSON.parse(userData);
         //     let falg = "";
@@ -314,9 +319,9 @@ class ServiceRates extends Component {
         });
     };
 
-    getBankData(record){
-        console.log(record)
+    getBankData(record){        
         const {getBankData} = this.props;
+        this.record = record;
         getBankData(record.appId,record.id);
         this.setState({
             visiblebank:true,
@@ -324,14 +329,30 @@ class ServiceRates extends Component {
     }
 
     //删除银行费率
-    delBankData(){
-        const {delBankData} = this.props;
+    delBankData(rateId){
+        const {delBankData,getBankData} = this.props;
+        let self = this;
+        delBankData(this.record.appId,this.record.id,rateId,(e)=>{
+            getBankData(self.record.appId,self.record.id);
+        })
 
     }
 
     //添加银行费率
-    addBankData(){
-        const {addBankData} = this.props;
+    addBankData(bankName,bankCardType,newNoCardProfit){
+        const {addBankData,getBankData} = this.props;
+        let self = this;
+        addBankData(this.record.appId,this.record.id,bankName,bankCardType,newNoCardProfit,(e)=>{
+            getBankData(self.record.appId,self.record.id);
+        })
+    }
+
+    updateBankData(Id,bankName,bankCardType,newNoCardProfit){
+        const {updateBankData,getBankData} = this.props;
+        let self = this;
+        updateBankData(this.record.appId,this.record.id,Id,bankName,bankCardType,newNoCardProfit,(e)=>{
+            getBankData(self.record.appId,self.record.id);
+        })
     }
 
     cellRender = (value, index, record, context) => {
@@ -415,7 +436,7 @@ class ServiceRates extends Component {
 
 
     render() {
-        const {dataSource,isLoad,total,containerHeight} = this.props;
+        const {dataSource,isLoad,total,containerHeight,bankData} = this.props;
 
         let code = codeMent.map((item,index)=>{
             return  <Menu.Item onClick={
@@ -524,7 +545,7 @@ class ServiceRates extends Component {
                     <Table dataSource={dataSource} rowSelection={{onChange: this.onRowClick,mode:'single'}} fixedHeader maxBodyHeight={containerHeight}>
                         <Table.Column title="服务商编号" dataIndex="appId"/>
                         {/*<Table.Column title="编号" dataIndex="id"/>*/}
-                        <Table.Column title="创建时间" dataIndex="create_time" cell={this.cellTime}/>
+                        <Table.Column title="创建时间" dataIndex="create_time" cell={this.cellTime} width={100}/>
                         <Table.Column title="服务商名称" dataIndex="appName"/>
                         <Table.Column title="业务类型" dataIndex="code" cell={this.cellRender}/>
                         <Table.Column title="上游渠道" dataIndex="upstream" cell={this.cellUpstream}/>
@@ -533,9 +554,11 @@ class ServiceRates extends Component {
                         <Table.Column title="鉴权费" dataIndex="mode" cell={this.cellMode}/>
                         <Table.Column title="结算费率(‰)" dataIndex="fee0" cell={this.cellFee}/>
                         <Table.Column title="代付费" dataIndex="d0fee" cell={this.cellMode}/>
+                        <Table.Column title="获利费" dataIndex="default_new_no_card_profit" cell={this.cellMode}/>
                     </Table>
                 </div>
-                <div style={{marginTop:'20px',float:'right'}}>
+                <div className='footer-css'>
+                    <span className='footer-span'>总记录&nbsp;{total}&nbsp;条</span>
                     <Pagination current={this.current} size="large" onChange={this.handleChange.bind(this)} pageSize={20} total={total}/>
                 </div>
                 <Dialog visible={this.state.visible}
@@ -670,7 +693,7 @@ class ServiceRates extends Component {
                             <span style={{fontSize:'14px',marginTop:'7px'}}>渠道编号：</span>
                         </div>
                         
-                        <Input placeholder="渠道编号" className="textClsName"   style={{width:'180px'}} value={this.oldData.appid} disabled/>
+                        <Input placeholder="渠道编号" className="textClsName"   style={{width:'180px'}} value={this.oldData.appId} disabled/>
                         <div className="flexStyle">
                             <span></span>
                             <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>业务类型：</span>
@@ -696,7 +719,7 @@ class ServiceRates extends Component {
                             <span></span>
                             <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>交易类型：</span>
                         </div>
-                        <Input placeholder="交易类型" className="textClsName"   style={{width:'180px'}} value={this.oldData.pointTypeName} disabled/>
+                        <Input placeholder="交易类型" className="textClsName"   style={{width:'180px'}} value={this.cellPointType(this.oldData.points_type)} disabled/>
                     </Row>
                     <Row className="marginTop">
                         <div className="flexStyle">
@@ -737,7 +760,7 @@ class ServiceRates extends Component {
                             <span></span>
                             <span style={{fontSize:'14px',marginTop:'7px'}}>XO值(角)：</span>
                         </div>
-                        <Input placeholder="XO值" className="textClsName"   style={{width:'180px'}} onChange={(e)=>{this.oldData.defaultNewNoCardProfit = e}}/>
+                        <Input placeholder="XO值" className="textClsName"   style={{width:'180px'}} defaultValue={this.oldData.default_new_no_card_profit} onChange={(e)=>{this.oldData.defaultNewNoCardProfit = e}}/>
                         <div className="flexStyle hide">
                             <span></span>
                             <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>代付费(分)：</span>
@@ -746,7 +769,7 @@ class ServiceRates extends Component {
                     </Row>
                 </Dialog>
 
-                <BankDialog visible={this.state.visiblebank} index={this} title="银行获利值" dataSource={[]}/>
+                <BankDialog visible={this.state.visiblebank} index={this} title="银行获利值" dataSource={bankData}/>
             </div>
         );
     }
@@ -757,6 +780,7 @@ function mapStateToProps(state, ownProps){
         dataSource:state.ServiceRate.dataSource,
         isLoad:state.ServiceRate.isLoad,
         total:state.ServiceRate.total,
+        bankData:state.ServiceRate.bankData,
     }
 }
 

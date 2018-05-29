@@ -4,8 +4,8 @@ const Appconfig = {
     'url':'web.xjpay.cc'
 }
 
-const webUrl = "http://localhost:3000";
-
+// const webUrl = "https://web-test.xjpay.cc";//发布
+const webUrl = "http:/localhost:3000";//本地测试
 
 //部门
 const Department =[

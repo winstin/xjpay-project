@@ -615,3 +615,38 @@ th .next-table-cell-wrapper{
     height: 200px;
     overflow: auto;
 }
+
+.footer-css{
+    margin-top:20px;float:right;display:flex;
+    align-items:center
+}
+
+.footer-span{
+    margin-right: 20px;
+    color: #999
+}
+
+.span-height{
+    line-height: 24px;
+}
+.qn-navigation-vertical {
+    text-align: center;
+    height: 52px;
+    line-height: 24px;
+    background: #3089dc;
+    color: #fff;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 15px
+}
+
+.marginTop-center{
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+}
+
+
+

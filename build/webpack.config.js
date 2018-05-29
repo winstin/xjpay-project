@@ -17,7 +17,6 @@ debug('Creating configuration.')
 
 // const context = [`/rest/*`]
 
-
 const webpackConfig = {
   name: 'client',
   target: 'web',
@@ -45,6 +44,7 @@ const webpackConfig = {
 // ------------------------------------
 const APP_ENTRY = paths.client('main.js')
 
+console.log(APP_ENTRY)
 webpackConfig.entry = {
   app: __DEV__
     ? [APP_ENTRY].concat(`webpack-hot-middleware/client?path=${config.compiler_public_path}__webpack_hmr`)
@@ -56,7 +56,7 @@ webpackConfig.entry = {
 // Bundle Output
 // ------------------------------------
 webpackConfig.output = {
-  filename: `[name].[${config.compiler_hash_type}].js`,
+  filename: `[name].${config.version}.js`,
   chunkFilename: '[chunkhash].js',
   path: paths.dist(),
   publicPath: config.compiler_public_path
@@ -203,7 +203,7 @@ if (!__DEV__) {
   })
 
   webpackConfig.plugins.push(
-    new ExtractTextPlugin('[contenthash].css', {
+    new ExtractTextPlugin(`${config.version}.css`, {
       allChunks: true
     })
   )

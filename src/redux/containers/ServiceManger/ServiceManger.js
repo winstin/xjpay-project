@@ -280,7 +280,7 @@ class ServiceMangers extends Component {
                         <Table.Column title="商务邮箱" dataIndex="linkmantel" width={180}/>
 
                         <Table.Column title="财务邮箱" dataIndex="idtype" width={180}/>
-                        <Table.Column title="APP名称" dataIndex="appName"  width={100}/>
+                        <Table.Column title="APP名称" dataIndex="appname"  width={100}/>
 
                         <Table.Column title="官网地址" dataIndex="website" width={100}/>
                         <Table.Column title="账户类型" dataIndex="accounttype" cell={this.cellRender} width={100}/>
@@ -291,7 +291,8 @@ class ServiceMangers extends Component {
                         <Table.Column title="状态" dataIndex="status" cell={this.cellStatus} width={100}/>
                     </Table>
                 </div>
-                <div style={{marginTop:'20px',float:'right'}}>
+                <div className='footer-css'>
+                    <span className='footer-span'>总记录&nbsp;{total}&nbsp;条</span>
                     <Pagination current={this.current} size="large" total={total} pageSize={20} onChange={this.changePageno.bind(this)} />
                 </div>
 

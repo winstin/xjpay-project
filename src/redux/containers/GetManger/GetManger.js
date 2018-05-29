@@ -182,12 +182,13 @@ class GetMangers extends Component {
                         <Table.Column title='交易日期' dataIndex="sumDate" />
                         <Table.Column title='交易金额' dataIndex="sumTotalFee" />
                         <Table.Column title='交易笔数' dataIndex="sumOrderNum" />
-                        <Table.Column title='交易手续费分成' dataIndex="sumProfit" />
+                        <Table.Column title='交易手续费分成' dataIndex="sumTotalProfit" />
                         <Table.Column title='D0手续费' dataIndex="sumD0fee"  />
-                        <Table.Column title='收益' dataIndex="sumTotalProfit" />
+                        <Table.Column title='收益' dataIndex="sumProfit" />
                     </Table>
                 </div>
-                <div style={{marginTop:'20px',float:'right'}}>
+                <div className='footer-css'>
+                    <span className='footer-span'>总记录&nbsp;{total}&nbsp;条</span>
                     <Pagination size="large" total={total} pageSize={20} onChange={this.changePageno.bind(this)} />
                 </div>
             </div>

@@ -164,9 +164,9 @@ class RoleDialog extends Component {
                     <TabPane tab="服务商费率" key="1" >
                         <Table dataSource={feeDataSource} onRowClick={onRowClick} fixedHeader maxBodyHeight={600}>
                             <Table.Column title="服务商编号" dataIndex="appId"/>
-                            <Table.Column title="创建时间" dataIndex="create_time"/>
-                            <Table.Column title="服务商名称" dataIndex="agentName"/>
-                            <Table.Column title="业务类型" dataIndex="code" cell={this.cellRender}/>
+                            {/*<Table.Column title="创建时间" dataIndex="create_time"/>*/}
+                            <Table.Column title="服务商名称" dataIndex="appName"/>
+                            {/*<Table.Column title="业务类型" dataIndex="code" cell={this.cellRender}/>*/}
                             <Table.Column title="上游渠道" dataIndex="upstream" cell={this.cellUpstream}/>
                             <Table.Column title="交易类型" dataIndex="points_type" cell={this.cellPointType}/>
                             <Table.Column title="结算类型" dataIndex="type" cell={this.cellType}/>

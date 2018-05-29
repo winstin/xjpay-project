@@ -21,6 +21,8 @@ export function Login(username="",password="",callback){
             mode:'json',
             args:{username:username,password:password},
             callback:(rsp)=>{
+                console.log("rsp")
+                console.log(rsp)
                 let now = new Date();
                 localStorage.setItem("loginTime",now);
                 localStorage.setItem("appId",username);

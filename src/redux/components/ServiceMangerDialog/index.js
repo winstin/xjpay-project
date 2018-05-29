@@ -29,33 +29,6 @@ const webUrl = config.webUrl;
 const Appconfig = config.Appconfig.cdn;
 
 
-
-const onRowClick = function(record, index, e) {
-        console.log(record, index, e);
-    },
-    getData = (length) => {
-        let result = [];
-        for (let i = 0; i < length; i++) {
-            result.push({
-                title: {name: `Quotation for 1PCS Nano ${3 + i}.0 controller compatible`},
-                id: 100306660940 + i,
-                time: 2000 + i
-            });
-        }
-        return result;
-    },
-    render = (value, index, record) => {
-        return <a>Remove({record.id})</a>;
-    };
-const rowSelection = {
-        onChange: onRowClick,
-        getProps: (record) => {
-            return {
-                disabled: record.id === 23324
-            };
-        }
-    };
-
 const accountprovince=[
     {
         name:'平台服务商',
@@ -86,17 +59,12 @@ const accounttype=[
     }
 ]
     
-
-
-
-
 class CustomDialog extends Component {
   constructor(props) {
         super(props);
         this.id = "";
         this.name = "";
         this.state = {
-            data: getData(30),
             visible: false,
             visibles:false,
             visiblesex:false,
@@ -105,6 +73,7 @@ class CustomDialog extends Component {
             visibles1:false,
             visibles2:false,
             visibles3:false,
+            autoName:"",
         };
          this.field = new Field(this);
     }
@@ -193,6 +162,11 @@ class CustomDialog extends Component {
             this.updateData([dataSource],this.state.newData).then((response)=>{
                 // console.log(response);
                 successToast('修改成功！');
+                this.state.file="";
+                this.state.idCardFront="";
+                this.state.idCardBack="";
+                this.state.cardFront="";
+                this.state.cardBack="";
                 this.state.newData={};
                 this.props.index.setState({
                     visible: false
@@ -203,13 +177,18 @@ class CustomDialog extends Component {
             });
         }else{
             this.fileUpload(this.state.file).then((response)=>{
-                successToast('添加成功！');
-                console.log(response);
-                this.props.index.setState({
-                    visible: false
-                });
 
-                this.props.index.reLoad();
+                if(response.data.message!="" && response.data.message!="添加成功"){
+                    errorToast(response.data.message);
+                }else{
+                    successToast('添加成功！');
+                    this.state.newData={};
+                    this.props.index.setState({
+                        visible: false
+                    });
+
+                    this.props.index.reLoad();
+                }
             }).catch((error)=>{
                 errorToast('添加失败！');
             })
@@ -311,52 +290,52 @@ class CustomDialog extends Component {
         const url = webUrl+'/agents/add';
         const formData = new FormData();
 
-        if(this.field.getValues().name == "" || this.field.getValues().name == undefined){
+        if(this.state.newData.name == "" || this.state.newData.name == undefined){
             promptToast("请填写完整信息！");
             return;
         }
 
-        if(this.field.getValues().idtype == "" || this.field.getValues().idtype == undefined){
+        if(this.state.newData.idtype == "" || this.state.newData.idtype == undefined){
             promptToast("请填写完整信息！");
             return;
         }
 
-        if(this.field.getValues().linkmantel == "" || this.field.getValues().linkmantel == undefined){
+        if(this.state.newData.linkmantel == "" || this.state.newData.linkmantel == undefined){
             promptToast("请填写完整信息！");
             return;
         }
 
-        if(this.field.getValues().linkman == "" || this.field.getValues().linkman == undefined){
+        if(this.state.newData.linkman == "" || this.state.newData.linkman == undefined){
             promptToast("请填写完整信息！");
             return;
         }
 
-        if(this.field.getValues().address == "" || this.field.getValues().address == undefined){
+        if(this.state.newData.address == "" || this.state.newData.address == undefined){
             promptToast("请填写完整信息！");
             return;
         }
 
-        if(this.field.getValues().principal == "" || this.field.getValues().principal == undefined){
+        if(this.state.newData.principal == "" || this.state.newData.principal == undefined){
             promptToast("请填写完整信息！");return;
         }
 
-        if(this.field.getValues().province == "" || this.field.getValues().province == undefined){
+        if(this.state.newData.province == "" || this.state.newData.province == undefined){
             promptToast("请填写完整信息！");return;
         }
 
-        if(this.field.getValues().city == "" || this.field.getValues().city == undefined){
+        if(this.state.newData.city == "" || this.state.newData.city == undefined){
             promptToast("请填写完整信息！");return;
         }
 
-        if(this.field.getValues().accountname == "" || this.field.getValues().accountname == undefined){
+        if(this.state.newData.accountname == "" || this.state.newData.accountname == undefined){
             promptToast("请填写完整信息！");return;
         }
 
-        if(this.field.getValues().account == "" || this.field.getValues().account == undefined){
+        if(this.state.newData.account == "" || this.state.newData.account == undefined){
             promptToast("请填写完整信息！");return;
         }
 
-        if(this.field.getValues().bank == "" || this.field.getValues().bank == undefined){
+        if(this.state.newData.bank == "" || this.state.newData.bank == undefined){
             promptToast("请填写完整信息！");return;
         }
 
@@ -368,11 +347,11 @@ class CustomDialog extends Component {
             promptToast("请填写完整信息！");return;
         }
 
-        if(this.field.getValues().accountcity == "" || this.field.getValues().accountcity == undefined){
+        if(this.state.newData.accountcity == "" || this.state.newData.accountcity == undefined){
             promptToast("请填写完整信息！");return;
         }
 
-        if(this.field.getValues().appname == "" || this.field.getValues().appname == undefined){
+        if(this.state.newData.appname == "" || this.state.newData.appname == undefined){
             promptToast("请填写完整信息！");return;
         }
 
@@ -396,42 +375,36 @@ class CustomDialog extends Component {
         if(this.state.cardBack!=""&&this.state.cardBack!=undefined){
             formData.append('cardBackFile',this.state.cardBack);
         }
-        
-
-        formData.append("name", this.field.getValues().name);
+        formData.append("name", this.state.newData.name);
         formData.append("signdate", this.signdate);
-
         formData.append("expiredate", this.expiredate);
-        formData.append("principal", this.field.getValues().principal);
-
-        formData.append("idtype", this.field.getValues().idtype);
+        formData.append("principal", this.state.newData.principal);
+        formData.append("idtype", this.state.newData.idtype);
         formData.append("accounttype", this.state.newData.accounttype);
-
         formData.append("accountprovince", this.state.newData.accountprovince);
-
         formData.append("id", '');
-
-        formData.append("phone", this.field.getValues().phone);
-
-        formData.append("province", this.field.getValues().province);
-
-        formData.append("city", this.field.getValues().city);
-        formData.append("address", this.field.getValues().address);
-        formData.append("accountname", this.field.getValues().accountname);
-        formData.append("account", this.field.getValues().account);
-        formData.append("bank", this.field.getValues().bank);
-        formData.append("accountcity", this.field.getValues().accountcity);
-
+        formData.append("phone", this.state.newData.phone);
+        formData.append("province", this.state.newData.province);
+        formData.append("city", this.state.newData.city);
+        formData.append("address", this.state.newData.address);
+        formData.append("accountname", this.state.newData.accountname);
+        formData.append("account", this.state.newData.account);
+        formData.append("bank", this.state.newData.bank);
+        formData.append("accountcity", this.state.newData.accountcity);
         formData.append("accountaddress", this.state.newData.accountaddress);
-        formData.append("linkman", this.field.getValues().linkman);
-        formData.append("linkmantel", this.field.getValues().linkmantel);
-        formData.append("appname", this.field.getValues().appname);
-        formData.append("website", this.field.getValues().website);
-        formData.append("staffIdCard", this.field.getValues().staffIdCard);
-        formData.append("staffName", this.field.getValues().staffName);
-        formData.append("parentAppId", this.field.getValues().parentId);
-        
-        console.log(formData)
+        formData.append("linkman", this.state.newData.linkman);
+        formData.append("linkmantel", this.state.newData.linkmantel);
+        formData.append("appname", this.state.newData.appname);
+        formData.append("website", this.state.newData.website);
+        formData.append("staffIdCard", this.state.newData.staffIdCard);
+        formData.append("staffName", this.state.newData.staffName);
+        formData.append("status", "0");
+
+        let parentId =  this.state.newData.parentId;
+        if((parentId == undefined || parentId == "") && window.userType =="管理员"){
+            parentId = "xj000001";
+        }
+        formData.append("parentAppId",parentId);
         const config = {
             headers: {
                 'content-type': 'multipart/form-data'
@@ -439,6 +412,34 @@ class CustomDialog extends Component {
         }
         return  post(url, formData,config)
     }
+
+
+    autoSearch(appId=''){
+        let self = this;
+        api({
+            method:'/agents/page',
+            mode:'jsonp',
+            isloading:false,
+            args:{
+                appId:appId.trim(),
+            },
+            callback:(e)=>{
+                if(e.data){
+                    if(e.data.data){
+                        self.setState({autoName:e.data.data[0].name})
+                    }else{
+                        self.setState({autoName:'未匹配到服务商'})
+                    }
+                }else{
+                    self.setState({autoName:'未匹配到服务商'})
+                }
+            },
+            errCallback:(msg)=>{
+                self.setState({autoName:'未匹配到服务商'})
+            }
+        });
+    }
+
     render() {
         let {dataSource,visible,title} = this.props;
         const init = this.field.init;
@@ -636,13 +637,16 @@ class CustomDialog extends Component {
                                    <span></span>
                                    <span style={{fontSize:'14px',marginTop:'7px'}}>appId：</span>
                                </div>
-                               <Input placeholder="APP名称" className='classWidth'  defaultValue={dataSource.parentAppId}  onChange={(e)=>{this.state.newData.parentAppId = e}} />
+                               <Input placeholder="APP名称" className='classWidth'  defaultValue={dataSource.parentAppId}  onChange={(e)=>{
+                                    this.state.newData.parentAppId = e;
+                                    this.autoSearch(e)
+                                }} />
                                <div className="flexStyle hide">
                                    <span></span>
-                                   <span style={{fontSize:'14px',marginTop:'7px'}}>营业执照：</span>
+                                   <span style={{fontSize:'14px',marginTop:'7px'}}>{this.state.autoName}</span>
                                </div>
-                               <div className="classWidth hide">
-                                  
+                               <div className="classWidth ">
+                                    <span style={{fontSize:'14px',marginTop:'7px'}}>{this.state.autoName}</span>
                                </div>
                            </Row> : ""}
 
@@ -682,7 +686,7 @@ class CustomDialog extends Component {
                             </Row>
 
                             <span style={{fontSize:'24px',lineHeight:'60px'}}>图片信息</span>
-                            <Feedback title="上传图片小于1M" type="prompt"/>
+                            <Feedback title="每次上传图片总大小务必小于1M" type="prompt"/>
                             <Row className="marginTop">
                                 <div className="flexStyle">
                                     <span></span>
@@ -770,7 +774,7 @@ class CustomDialog extends Component {
                 </Dialog>
             );
         }else{
-             return (
+            return (
                 <Dialog visible={visible}
                         closable="esc,mask,close"
                         onCancel={this.onClose}
@@ -786,19 +790,19 @@ class CustomDialog extends Component {
                                     <span style={{fontSize:'14px',marginTop:'7px'}}>公司名称：</span>
                                 </div>
                                 
-                                <Input placeholder="公司名称" {...init('name')} className='classWidth'  />
+                                <Input placeholder="公司名称"   onChange={(e)=>{this.state.newData.name = e}} className='classWidth'  />
                                 <div className="flexStyle">
                                     <span></span>
                                     <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>执照编号：</span>
                                 </div>
-                                <Input  placeholder="执照编号" className='classWidth'   {...init('accountcity')}  />
+                                <Input  placeholder="执照编号" className='classWidth'  onChange={(e)=>{this.state.newData.accountcity = e}}/>
                             </Row>
                             <Row className="marginTop">
                                 <div className="flexStyle">
                                     <span></span>
                                     <span style={{fontSize:'14px',marginTop:'7px'}}>渠道类型：</span>
                                 </div>
-                                <Dropdown trigger={<Input  placeholder="渠道类型" className='classWidth'   {...init('accountprovince')} value={this.accountprovince}  />}
+                                <Dropdown trigger={<Input  placeholder="渠道类型" className='classWidth' value={this.accountprovince}  />}
                                           triggerType="click"
                                           visible={this.state.visibles1}
                                           onVisibleChange={this.onVisibleChange1}
@@ -812,7 +816,7 @@ class CustomDialog extends Component {
                                     <span></span>
                                     <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>渠道级别：</span>
                                 </div>
-                                <Dropdown trigger={<Input  placeholder="渠道级别" className='classWidth'  {...init('accountaddress')}    value={this.accountaddress}/>}
+                                <Dropdown trigger={<Input  placeholder="渠道级别" className='classWidth'   value={this.accountaddress}/>}
                                           triggerType="click"
                                           visible={this.state.visibles2}
                                           onVisibleChange={this.onVisibleChange2}
@@ -842,13 +846,13 @@ class CustomDialog extends Component {
                                     <span></span>
                                     <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>身份证号：</span>
                                 </div>
-                                <Input placeholder="身份证号" className='classWidth'   {...init('staffIdCard')}  />
+                                <Input placeholder="身份证号" className='classWidth' onChange={(e)=>{this.state.newData.staffIdCard = e}}  />
 
                                 <div className="flexStyle">
                                     <span></span>
                                     <span style={{fontSize:'14px',marginTop:'7px'}}>法人姓名：</span>
                                 </div>
-                                <Input placeholder="法人姓名" className='classWidth'   {...init('principal')}   />
+                                <Input placeholder="法人姓名" className='classWidth'  onChange={(e)=>{this.state.newData.principal = e}}  />
                                 
                             </Row>
                             <Row className="marginTop">
@@ -856,13 +860,13 @@ class CustomDialog extends Component {
                                     <span></span>
                                     <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>法人电话：</span>
                                 </div>
-                                <Input placeholder="法人电话" className='classWidth'   {...init('phone')}  />
+                                <Input placeholder="法人电话" className='classWidth'  onChange={(e)=>{this.state.newData.phone = e}}  />
 
                                 <div className="flexStyle">
                                     <span></span>
                                     <span style={{fontSize:'14px',marginTop:'7px'}}>所在省份：</span>
                                 </div>
-                                <Input  placeholder="所在省份" className='classWidth'   {...init('province')} />
+                                <Input  placeholder="所在省份" className='classWidth'  onChange={(e)=>{this.state.newData.province = e}} />
                                 
                             </Row>
                             <Row className="marginTop">
@@ -870,12 +874,12 @@ class CustomDialog extends Component {
                                     <span></span>
                                     <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>所在城市：</span>
                                 </div>
-                                <Input  placeholder="所在城市" className='classWidth'  {...init('city')}   />
+                                <Input  placeholder="所在城市" className='classWidth' onChange={(e)=>{this.state.newData.city = e}}  />
                                 <div className="flexStyle">
                                     <span></span>
                                     <span style={{fontSize:'14px',marginTop:'7px'}}>详细地址：</span>
                                 </div>
-                                <Input  placeholder="详细地址" className='classWidth'  {...init('address')}  />
+                                <Input  placeholder="详细地址" className='classWidth' onChange={(e)=>{this.state.newData.address = e}}  />
                                 
                             </Row>
 
@@ -884,13 +888,13 @@ class CustomDialog extends Component {
                                     <span></span>
                                     <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>法人邮箱：</span>
                                 </div>
-                                <Input  placeholder="法人邮箱" className='classWidth'   {...init('linkman')} />
+                                <Input  placeholder="法人邮箱" className='classWidth'  onChange={(e)=>{this.state.newData.linkman = e}} />
 
                                 <div className="flexStyle">
                                     <span></span>
                                     <span style={{fontSize:'14px',marginTop:'7px'}}>商务邮箱：</span>
                                 </div>
-                                <Input  placeholder="商务邮箱" className='classWidth'   {...init('linkmantel')}  />
+                                <Input  placeholder="商务邮箱" className='classWidth'  onChange={(e)=>{this.state.newData.linkmantel = e}}  />
                                 
                             </Row>
 
@@ -899,12 +903,12 @@ class CustomDialog extends Component {
                                     <span></span>
                                     <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>财务邮箱：</span>
                                 </div>
-                                <Input  placeholder="财务邮箱" className='classWidth'   {...init('idtype')}  />
+                                <Input  placeholder="财务邮箱" className='classWidth'  onChange={(e)=>{this.state.newData.idtype = e}}  />
                                 <div className="flexStyle">
                                     <span></span>
                                     <span style={{fontSize:'14px',marginTop:'7px'}}>APP名称：</span>
                                 </div>
-                                <Input placeholder="APP名称" className='classWidth'    {...init('appname')}  />
+                                <Input placeholder="APP名称" className='classWidth'   onChange={(e)=>{this.state.newData.appname = e}}  />
                                 
                             </Row>
 
@@ -913,12 +917,12 @@ class CustomDialog extends Component {
                                     <span></span>
                                     <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>官网地址：</span>
                                 </div>
-                                <Input placeholder="官网地址" className='classWidth'    {...init('website')}  />
+                                <Input placeholder="官网地址" className='classWidth'  onChange={(e)=>{this.state.newData.website = e}} />
                                 <div className="flexStyle">
                                     <span></span>
                                     <span style={{fontSize:'14px',marginTop:'7px'}}>业务联系：</span>
                                 </div>
-                                <Input placeholder="业务联系" className='classWidth'  {...init('staffName')}   />
+                                <Input placeholder="业务联系" className='classWidth'  onChange={(e)=>{this.state.newData.staffName = e}}   />
                             </Row>
 
                             { window.userType=="管理员" ?
@@ -928,7 +932,7 @@ class CustomDialog extends Component {
                                         <span></span>
                                         <span style={{fontSize:'14px',marginTop:'7px'}}>appId：</span>
                                     </div>
-                                    <Input placeholder="APP名称" className='classWidth'    {...init('parentId')}  />
+                                    <Input placeholder="APP名称" className='classWidth' onChange={(e)=>{this.state.newData.parentId = e}}  />
                                     <div className="flexStyle hide">
                                         <span></span>
                                         <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>营业执照：</span>
@@ -945,7 +949,7 @@ class CustomDialog extends Component {
                                     <span></span>
                                     <span style={{fontSize:'14px',marginTop:'7px'}}>账户类型：</span>
                                 </div>
-                                <Dropdown trigger={<Input  placeholder="账户类型" className='classWidth'    {...init('accounttype')}  value={this.accounttype} />}
+                                <Dropdown trigger={<Input  placeholder="账户类型" className='classWidth'    value={this.accounttype} />}
                                           triggerType="click"
                                           visible={this.state.visibles3}
                                           onVisibleChange={this.onVisibleChange3}
@@ -958,23 +962,23 @@ class CustomDialog extends Component {
                                     <span></span>
                                     <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>收款户名：</span>
                                 </div>
-                                <Input placeholder="收款户名" className='classWidth'    {...init('accountname')}/>
+                                <Input placeholder="收款户名" className='classWidth'  onChange={(e)=>{this.state.newData.accountname = e}}/>
                             </Row>
                             <Row className="marginTop">
                                 <div className="flexStyle">
                                     <span></span>
                                     <span style={{fontSize:'14px',marginTop:'7px'}}>开户行：</span>
                                 </div>
-                                <Input  placeholder="开户行" className='classWidth'    {...init('bank')}  />
+                                <Input  placeholder="开户行" className='classWidth' onChange={(e)=>{this.state.newData.bank = e}} />
                                 <div className="flexStyle">
                                     <span></span>
                                     <span style={{fontSize:'14px',marginTop:'7px',marginLeft:'12px'}}>收款账户：</span>
                                 </div>
-                                <Input  placeholder="收款账户" className='classWidth'   {...init('account')}   />
+                                <Input  placeholder="收款账户" className='classWidth' onChange={(e)=>{this.state.newData.account = e}}   />
                             </Row>
 
                             <span style={{fontSize:'24px',lineHeight:'60px'}}>图片信息</span>
-                            <Feedback title="上传图片小于1M" type="prompt"/>
+                            <Feedback title="每次上传图片总大小务必小于1M" type="prompt"/>
                             <Row className="marginTop">
                                 <div className="flexStyle">
                                     <span></span>
